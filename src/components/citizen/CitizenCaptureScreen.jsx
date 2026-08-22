@@ -4,19 +4,18 @@ import {
   Flame, 
   Lock, 
   MapPin, 
-  Mic, 
   ShieldAlert, 
   ShieldCheck, 
   RefreshCw, 
   Zap, 
   ZapOff, 
-  Cpu, 
   Eye, 
   EyeOff, 
   Bot, 
   UserX, 
   ArrowLeft,
-  X
+  X,
+  SwitchCamera
 } from 'lucide-react';
 
 export const CitizenCaptureScreen = ({ onCaptureComplete, onBurnProtocol, onCancel }) => {
@@ -24,16 +23,77 @@ export const CitizenCaptureScreen = ({ onCaptureComplete, onBurnProtocol, onCanc
   const [recordingSeconds, setRecordingSeconds] = useState(0);
   const [useRealCamera, setUseRealCamera] = useState(false);
   const [cameraError, setCameraError] = useState(null);
+  const [facingMode, setFacingMode] = useState('environment'); // 'environment' (rear) or 'user' (front)
   const [isWiping, setIsWiping] = useState(false);
   const [autoRedactBystanders, setAutoRedactBystanders] = useState(true);
   const [flashScreen, setFlashScreen] = useState(false);
-  const [flashEnabled, setFlashEnabled] = useState(false);
 
   const videoRef = useRef(null);
   const mediaStreamRef = useRef(null);
   const timerRef = useRef(null);
 
-  // 3-Second Recording Simulation Flow
+  // 1. Automatically initialize device camera on mount
+  const startCamera = async (mode = facingMode) => {
+    try {
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+        mediaStreamRef.current = null;
+      }
+
+      const constraints = {
+        video: {
+          facingMode: { ideal: mode },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        },
+        audio: false
+      };
+
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (e1) {
+        // Fallback constraint if environment mode is unsupported
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      }
+
+      mediaStreamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.setAttribute('playsinline', 'true');
+        videoRef.current.muted = true;
+        try {
+          await videoRef.current.play();
+        } catch (e2) {}
+      }
+
+      setUseRealCamera(true);
+      setCameraError(null);
+    } catch (err) {
+      console.warn('Camera access error:', err);
+      setCameraError('Camera access unavailable. Optical HUD simulation active.');
+      setUseRealCamera(false);
+    }
+  };
+
+  useEffect(() => {
+    startCamera(facingMode);
+
+    return () => {
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [facingMode]);
+
+  // Flip front / rear camera
+  const handleFlipCamera = () => {
+    const nextMode = facingMode === 'environment' ? 'user' : 'environment';
+    setFacingMode(nextMode);
+    startCamera(nextMode);
+  };
+
+  // 3-Second Recording / Shutter Simulation Flow
   useEffect(() => {
     if (isRecording) {
       timerRef.current = setInterval(() => {
@@ -95,40 +155,7 @@ export const CitizenCaptureScreen = ({ onCaptureComplete, onBurnProtocol, onCanc
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isRecording, onCaptureComplete, autoRedactBystanders]);
-
-  // Real WebCam Stream toggle
-  const toggleRealCamera = async () => {
-    if (useRealCamera) {
-      if (mediaStreamRef.current) {
-        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-        mediaStreamRef.current = null;
-      }
-      setUseRealCamera(false);
-      setCameraError(null);
-    } else {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        mediaStreamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-        setUseRealCamera(true);
-        setCameraError(null);
-      } catch (err) {
-        setCameraError("Camera permission denied. Running in optical simulation mode.");
-        setUseRealCamera(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      if (mediaStreamRef.current) {
-        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
+  }, [isRecording, onCaptureComplete, autoRedactBystanders, useRealCamera]);
 
   const handleShutterPress = () => {
     setFlashScreen(true);
@@ -158,18 +185,18 @@ export const CitizenCaptureScreen = ({ onCaptureComplete, onBurnProtocol, onCanc
       {/* 1. CAMERA VIEWPORT (MATCHING EXACT REFERENCE IMAGE TOP & CENTER SHAPE)   */}
       {/* ========================================================================= */}
       <div className="relative w-full aspect-[9/16] min-h-[480px] bg-[#181818] flex flex-col justify-between overflow-hidden">
-        {/* Real Video Element if WebCam enabled */}
+        {/* Real Video Element if WebCam / Device Camera enabled */}
         {useRealCamera ? (
           <video
             ref={videoRef}
             autoPlay
             playsInline
             muted
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover z-10"
           />
         ) : (
-          /* High-Fidelity Minimal Dark Viewfinder */
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1c] via-[#141414] to-[#0f0f0f] flex flex-col items-center justify-center">
+          /* High-Fidelity Minimal Dark Viewfinder when camera permission is unavailable */
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1c] via-[#141414] to-[#0f0f0f] flex flex-col items-center justify-center z-10">
             {/* Subtle Rule of Thirds Optical Grid */}
             <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none opacity-10">
               <div className="border-r border-b border-white"></div>
@@ -183,57 +210,96 @@ export const CitizenCaptureScreen = ({ onCaptureComplete, onBurnProtocol, onCanc
               <div></div>
             </div>
 
-            {/* Viewfinder Center Reticle */}
-            <div className="relative flex items-center justify-center opacity-40">
+            {/* Center Focus Reticle */}
+            <div className="relative flex flex-col items-center justify-center opacity-70 space-y-2">
               <div className="w-16 h-16 rounded-full border border-dashed border-white/40 flex items-center justify-center">
-                <Camera className="w-7 h-7 text-white" />
+                <Camera className="w-7 h-7 text-white animate-pulse" />
               </div>
+              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest text-center">
+                [OPTICAL HUD SENSOR ACTIVE]
+              </p>
+              {cameraError && (
+                <button
+                  onClick={() => startCamera(facingMode)}
+                  className="text-[9.5px] bg-slate-800 hover:bg-slate-700 text-blue-300 px-2 py-0.5 rounded border border-slate-600 flex items-center gap-1 cursor-pointer"
+                >
+                  <RefreshCw className="w-3 h-3" /> Retry Device Camera
+                </button>
+              )}
             </div>
           </div>
         )}
 
-        {/* TOP BUTTONS (MATCHING EXACT CIRCULAR BUTTONS IN REFERENCE IMAGE) */}
+        {/* TOP CONTROLS (MATCHING EXACT CIRCULAR BUTTONS IN REFERENCE IMAGE) */}
         <div className="relative z-30 p-4 pt-5 flex items-center justify-between">
           {/* Top-Left Dark Circular Button (Exit / Cancel) */}
           <button
             onClick={onCancel}
-            className="w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 active:scale-95 backdrop-blur-md flex items-center justify-center text-white/90 border border-white/10 transition-all cursor-pointer shadow-md"
+            className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 active:scale-95 backdrop-blur-md flex items-center justify-center text-white/90 border border-white/15 transition-all cursor-pointer shadow-lg"
             title="Exit Camera"
           >
             <X className="w-5 h-5" />
           </button>
 
           {/* Top Center Security Indicators */}
-          <div className="flex items-center space-x-1.5 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 text-[9px] font-mono text-emerald-300">
+          <div className="flex items-center space-x-1.5 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/15 text-[9px] font-mono text-emerald-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>RAM BUFFER ONLY</span>
           </div>
 
-          {/* Top-Right Dark Circular Button (Camera Flip / WebCam Toggle) */}
+          {/* Top-Right Dark Circular Button (Camera Flip / Switch Front & Back) */}
           <button
-            onClick={toggleRealCamera}
-            className="w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 active:scale-95 backdrop-blur-md flex items-center justify-center text-white/90 border border-white/10 transition-all cursor-pointer shadow-md"
-            title={useRealCamera ? "Switch to HUD Mode" : "Enable WebCam"}
+            onClick={handleFlipCamera}
+            className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 active:scale-95 backdrop-blur-md flex items-center justify-center text-white/90 border border-white/15 transition-all cursor-pointer shadow-lg"
+            title="Flip Camera (Front/Rear)"
           >
-            <RefreshCw className="w-4 h-4" />
+            <SwitchCamera className="w-4 h-4" />
           </button>
         </div>
 
-        {/* AI Face Redaction Bounding Box in Viewfinder */}
+        {/* ========================================================================= */}
+        {/* INTERACTIVE YOLO BLUR TOGGLE CONTROL (TOGGLE BUTTON IN VIEWFINDER)        */}
+        {/* ========================================================================= */}
+        <div className="relative z-30 px-4 flex justify-center">
+          <button
+            onClick={() => setAutoRedactBystanders(!autoRedactBystanders)}
+            className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold backdrop-blur-md border transition-all cursor-pointer shadow-lg flex items-center gap-1.5 ${
+              autoRedactBystanders
+                ? 'bg-cyan-950/80 text-cyan-300 border-cyan-400 ring-2 ring-cyan-500/30'
+                : 'bg-black/70 text-slate-400 border-white/20 hover:text-white'
+            }`}
+            title="Click to toggle AI Bystander Face Redaction on/off"
+          >
+            {autoRedactBystanders ? (
+              <>
+                <Bot className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                <span>YOLO Bystander Blur: ON</span>
+                <Eye className="w-3 h-3 text-cyan-300" />
+              </>
+            ) : (
+              <>
+                <EyeOff className="w-3.5 h-3.5 text-slate-400" />
+                <span>YOLO Blur: OFF (Raw Video)</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* AI Face Redaction Bounding Box (ONLY VISIBLE WHEN autoRedactBystanders IS TRUE) */}
         {autoRedactBystanders && (
-          <div className="absolute top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-24 h-28 pointer-events-none z-20">
-            <div className="w-full h-full rounded-xl border border-dashed border-cyan-400/80 bg-cyan-950/30 backdrop-blur-md flex flex-col items-center justify-between p-1.5 shadow-lg">
-              <div className="w-full flex items-center justify-between text-[6.5px] font-mono text-cyan-300 bg-black/70 px-1 py-0.5 rounded">
+          <div className="absolute top-[42%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-28 h-32 pointer-events-none z-20 animate-fadeIn">
+            <div className="w-full h-full rounded-2xl border-2 border-dashed border-cyan-400/90 bg-cyan-950/40 backdrop-blur-xl flex flex-col items-center justify-between p-2 shadow-2xl">
+              <div className="w-full flex items-center justify-between text-[7px] font-mono text-cyan-300 bg-black/80 px-1.5 py-0.5 rounded">
                 <span className="flex items-center gap-0.5">
-                  <Bot className="w-2 h-2 text-cyan-400" /> YOLO-Edge
+                  <Bot className="w-2.5 h-2.5 text-cyan-400" /> YOLO-Edge
                 </span>
-                <span className="text-emerald-400 font-bold">98%</span>
+                <span className="text-emerald-400 font-bold">98.4%</span>
               </div>
-              <div className="w-8 h-8 rounded-full bg-white/10 border border-dashed border-cyan-300/60 flex items-center justify-center">
-                <UserX className="w-4 h-4 text-cyan-200" />
+              <div className="w-10 h-10 rounded-full bg-white/10 border border-dashed border-cyan-300/60 flex items-center justify-center backdrop-blur-2xl">
+                <UserX className="w-5 h-5 text-cyan-200" />
               </div>
-              <span className="text-[6.5px] font-mono text-cyan-200 uppercase text-center leading-none">
-                Bystander Blur
+              <span className="text-[7px] font-mono text-cyan-200 uppercase font-bold text-center leading-none">
+                Bystander Redacted
               </span>
             </div>
           </div>
@@ -241,17 +307,17 @@ export const CitizenCaptureScreen = ({ onCaptureComplete, onBurnProtocol, onCanc
 
         {/* Telemetry Chips at Viewfinder Bottom Corners */}
         <div className="relative z-30 p-4 pb-3 flex items-center justify-between text-[9px] font-mono">
-          <div className="bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/10 text-slate-300 flex items-center gap-1">
-            <MapPin className="w-2.5 h-2.5 text-emerald-400" />
+          <div className="bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/15 text-slate-300 flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-emerald-400" />
             <span>18.5204° N, 73.8567° E</span>
           </div>
 
           <button
             onClick={handleBurn}
-            className="bg-red-950/70 hover:bg-red-900 active:scale-95 text-red-300 backdrop-blur-md px-2.5 py-0.5 rounded-md border border-red-600/60 flex items-center gap-1 cursor-pointer transition-colors"
-            title="Instant RAM wipe"
+            className="bg-red-950/80 hover:bg-red-900 active:scale-95 text-red-300 backdrop-blur-md px-3 py-1 rounded-md border border-red-600/70 flex items-center gap-1 cursor-pointer transition-colors shadow-md"
+            title="Instant RAM purge"
           >
-            <Flame className="w-3 h-3 text-red-400" />
+            <Flame className="w-3.5 h-3.5 text-red-400" />
             <span className="font-bold">BURN</span>
           </button>
         </div>
@@ -259,7 +325,7 @@ export const CitizenCaptureScreen = ({ onCaptureComplete, onBurnProtocol, onCanc
         {/* Active Recording 3-Second Counter */}
         {isRecording && (
           <div className="absolute top-16 inset-x-0 flex justify-center z-30 pointer-events-none">
-            <div className="bg-red-600 text-white font-mono text-[11px] font-extrabold px-3 py-1 rounded-full flex items-center space-x-1.5 shadow-lg border border-red-400 animate-pulse">
+            <div className="bg-red-600 text-white font-mono text-[11px] font-extrabold px-3.5 py-1 rounded-full flex items-center space-x-1.5 shadow-lg border border-red-400 animate-pulse">
               <span className="w-2 h-2 rounded-full bg-white"></span>
               <span>RECORDING [{recordingSeconds}s / 3s]</span>
             </div>

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   ArrowLeft, 
   Play, 
@@ -140,17 +140,19 @@ export const AdminCaseVaultScreen = ({
                 className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
               />
 
-              {/* Simulated Blurred Face Box Overlay */}
-              <div className="absolute top-[28%] left-[45%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
-                <div className="w-20 h-24 rounded-xl border-2 border-dashed border-cyan-400 bg-cyan-950/60 backdrop-blur-xl flex flex-col items-center justify-center p-1.5 shadow-2xl">
-                  <div className="w-8 h-8 rounded-full bg-slate-500/30 border border-cyan-300 flex items-center justify-center backdrop-blur-2xl">
-                    <UserX className="w-4 h-4 text-cyan-200" />
+              {/* Conditional Blurred Face Box Overlay */}
+              {incident?.bystanderRedaction !== false && (
+                <div className="absolute top-[28%] left-[45%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
+                  <div className="w-20 h-24 rounded-xl border-2 border-dashed border-cyan-400 bg-cyan-950/60 backdrop-blur-xl flex flex-col items-center justify-center p-1.5 shadow-2xl">
+                    <div className="w-8 h-8 rounded-full bg-slate-500/30 border border-cyan-300 flex items-center justify-center backdrop-blur-2xl">
+                      <UserX className="w-4 h-4 text-cyan-200" />
+                    </div>
+                    <span className="text-[6.5px] font-mono text-cyan-200 uppercase font-bold text-center mt-1">
+                      Bystander Redacted
+                    </span>
                   </div>
-                  <span className="text-[6.5px] font-mono text-cyan-200 uppercase font-bold text-center mt-1">
-                    Bystander Redacted
-                  </span>
                 </div>
-              </div>
+              )}
 
               {/* Video/Media Bottom Bar */}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-3 flex items-center justify-between z-20">
