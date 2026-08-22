@@ -1,0 +1,291 @@
+[
+  {
+    "id": "PMC-VIG-2026-3767",
+    "priority": "Critical",
+    "priorityColor": "bg-red-100 text-red-700 border-red-200",
+    "category": "Anti-Corruption",
+    "subCategory": "Town Planning Extortion & Bribery",
+    "photoUrl": "http://localhost:5000/uploads/evidence_test.jpg",
+    "location": {
+      "ward": "Ward 14 (Kothrud)",
+      "locationName": "Paud Road Office",
+      "coordinates": "18.5204� N, 73.8567� E"
+    },
+    "ward": "Ward 14 (Kothrud)",
+    "locationName": "Paud Road Office",
+    "coordinates": "18.5204� N, 73.8567� E",
+    "text": {
+      "description": "Test bribe report",
+      "transcript": [
+        "System.Collections.Hashtable"
+      ]
+    },
+    "audioTranscript": [
+      "System.Collections.Hashtable"
+    ],
+    "timestamp": "2026-08-22T10:30:02.033Z",
+    "timeAgo": "Just now",
+    "integrityStatus": "Verified",
+    "sha256Hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "deviceIntegrity": "StrongBox TEE Hardware Keystore Signed",
+    "hardwareMac": "BC:D1:D3:4A:99:F1",
+    "zkNullifier": "0x7f4a9b21cd048e91aa76412b5e9089ac",
+    "bystanderRedaction": true,
+    "status": "Pending Officer Verification",
+    "assignedOfficer": "Unassigned (Desk 4)",
+    "slaRemaining": "6d 23h 59m",
+    "audioDuration": "00:03",
+    "aiFlags": [
+      "Bribery Extortion Detected",
+      "BSA 2023 Sec 63 Ready"
+    ],
+    "aiConfidence": "99.4%"
+  },
+  {
+    "id": "PMC-VIG-2026-4976",
+    "priority": "Critical",
+    "priorityColor": "bg-red-100 text-red-700 border-red-200",
+    "category": "Anti-Corruption",
+    "subCategory": "Town Planning Extortion & Bribery",
+    "photoUrl": "https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=800&q=80",
+    "location": {
+      "ward": "Ward 14 (Kothrud)",
+      "locationName": "Paud Road Divisional Office, Pune",
+      "coordinates": "18.5204° N, 73.8567° E"
+    },
+    "ward": "Ward 14 (Kothrud)",
+    "locationName": "Paud Road Divisional Office, Pune",
+    "coordinates": "18.5204° N, 73.8567° E",
+    "text": {
+      "description": "Town Planning officer soliciting illegal financial remuneration to process building sanction file.",
+      "transcript": [
+        {
+          "speaker": "Officer",
+          "time": "00:02",
+          "text": "Give me 500 rupees or I won't clear the file.",
+          "highlight": "500 rupees"
+        }
+      ]
+    },
+    "audioTranscript": [
+      {
+        "speaker": "Officer",
+        "time": "00:02",
+        "text": "Give me 500 rupees or I won't clear the file.",
+        "highlight": "500 rupees"
+      }
+    ],
+    "timestamp": "2026-08-22T10:25:20.604Z",
+    "timeAgo": "Just now",
+    "integrityStatus": "Verified",
+    "sha256Hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "deviceIntegrity": "StrongBox TEE Hardware Keystore Signed",
+    "hardwareMac": "BC:D1:D3:4A:99:F1",
+    "zkNullifier": "0x7f4a9b21cd048e91aa76412b5e9089ac",
+    "bystanderRedaction": true,
+    "status": "Pending Officer Verification",
+    "assignedOfficer": "Unassigned (Desk 4)",
+    "slaRemaining": "6d 23h 59m",
+    "audioDuration": "00:03",
+    "aiFlags": [
+      "Bribery Extortion Detected",
+      "BSA 2023 Sec 63 Ready"
+    ],
+    "aiConfidence": "99.4%"
+  },
+  {
+    "id": "PMC-VIG-2026-3411",
+    "priority": "Critical",
+    "priorityColor": "bg-red-100 text-red-700 border-red-200",
+    "category": "Anti-Corruption",
+    "subCategory": "Town Planning Extortion & Bribery",
+    "photoUrl": "https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=800&q=80",
+    "location": {
+      "ward": "Ward 14 (Kothrud)",
+      "locationName": "Paud Road Divisional Office, Pune",
+      "coordinates": "18.5204° N, 73.8567° E"
+    },
+    "ward": "Ward 14 (Kothrud)",
+    "locationName": "Paud Road Divisional Office, Pune",
+    "coordinates": "18.5204° N, 73.8567° E",
+    "text": {
+      "description": "Town Planning officer soliciting illegal financial remuneration to process building sanction file.",
+      "transcript": [
+        {
+          "speaker": "Officer",
+          "time": "00:02",
+          "text": "Give me 500 rupees or I won't clear the file.",
+          "highlight": "500 rupees"
+        }
+      ]
+    },
+    "audioTranscript": [
+      {
+        "speaker": "Officer",
+        "time": "00:02",
+        "text": "Give me 500 rupees or I won't clear the file.",
+        "highlight": "500 rupees"
+      }
+    ],
+    "timestamp": "2026-08-22T10:25:20.602Z",
+    "timeAgo": "Just now",
+    "integrityStatus": "Verified",
+    "sha256Hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "deviceIntegrity": "StrongBox TEE Hardware Keystore Signed",
+    "hardwareMac": "BC:D1:D3:4A:99:F1",
+    "zkNullifier": "0x7f4a9b21cd048e91aa76412b5e9089ac",
+    "bystanderRedaction": true,
+    "status": "Pending Officer Verification",
+    "assignedOfficer": "Unassigned (Desk 4)",
+    "slaRemaining": "6d 23h 59m",
+    "audioDuration": "00:03",
+    "aiFlags": [
+      "Bribery Extortion Detected",
+      "BSA 2023 Sec 63 Ready"
+    ],
+    "aiConfidence": "99.4%"
+  },
+  {
+    "id": "PMC-VIG-2026-9812",
+    "priority": "Critical",
+    "priorityColor": "bg-red-100 text-red-700 border-red-200",
+    "category": "Anti-Corruption",
+    "subCategory": "Town Planning Extortion & Bribery",
+    "photoUrl": "https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=800&q=80",
+    "location": {
+      "ward": "Ward 14 (Kothrud)",
+      "locationName": "PMC Divisional Office, Paud Road, Kothrud, Pune",
+      "coordinates": "18.5074° N, 73.8077° E"
+    },
+    "text": {
+      "description": "Town Planning officer explicitly demanding 500 rupees cash bribe to clear standard residential building sanction file.",
+      "transcript": [
+        {
+          "speaker": "Officer",
+          "time": "00:02",
+          "text": "Look, your building sanction file is stuck on my table. If you want the NOC signed today, there is a standard clearance charge."
+        },
+        {
+          "speaker": "Citizen",
+          "time": "00:07",
+          "text": "Sir, I have submitted all architectural drawings and paid official municipal fees online."
+        },
+        {
+          "speaker": "Officer",
+          "time": "00:12",
+          "text": "Give me 500 rupees or I won't clear the file. You know how things work here.",
+          "highlight": "500 rupees"
+        },
+        {
+          "speaker": "Officer",
+          "time": "00:18",
+          "text": "Either pay the cash on my desk or wait another six months for rejection."
+        }
+      ]
+    },
+    "timestamp": "2026-08-22T14:42:10+05:30",
+    "timeAgo": "1 hour ago",
+    "integrityStatus": "Verified",
+    "sha256Hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "deviceIntegrity": "StrongBox TEE Hardware Keystore Signed",
+    "hardwareMac": "BC:D1:D3:4A:99:F1",
+    "zkNullifier": "0x7f4a9b21cd048e91aa76412b5e9089ac",
+    "bystanderRedaction": true,
+    "status": "Pending Officer Verification",
+    "assignedOfficer": "Unassigned (Desk 4)",
+    "slaRemaining": "6d 14h 22m",
+    "audioDuration": "00:09",
+    "aiFlags": [
+      "Bribery Solicitation Detected",
+      "Prevention of Corruption Act Sec 7",
+      "Extortion Keyword Detected"
+    ],
+    "aiConfidence": "99.4%"
+  },
+  {
+    "id": "PMC-VIG-2026-9784",
+    "priority": "High",
+    "priorityColor": "bg-orange-100 text-orange-700 border-orange-200",
+    "category": "Infrastructure",
+    "subCategory": "Unsanctioned Commercial Encroachment",
+    "photoUrl": "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=800&q=80",
+    "location": {
+      "ward": "Ward 7 (Shivajinagar)",
+      "locationName": "Near Modern College Road, Shivajinagar, Pune",
+      "coordinates": "18.5314° N, 73.8446° E"
+    },
+    "text": {
+      "description": "Heavy concrete pillars being cast over municipal footpath without setback clearance.",
+      "transcript": [
+        {
+          "speaker": "Citizen",
+          "time": "00:03",
+          "text": "Heavy concrete pillars are being illegally cast over the municipal footpath without PMC setback clearance."
+        },
+        {
+          "speaker": "Contractor",
+          "time": "00:09",
+          "text": "We have local ward blessing. Don't take photos here or we will seize your phone."
+        }
+      ]
+    },
+    "timestamp": "2026-08-22T11:15:00+05:30",
+    "timeAgo": "4 hours ago",
+    "integrityStatus": "Verified",
+    "sha256Hash": "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
+    "deviceIntegrity": "StrongBox TEE Hardware Keystore Signed",
+    "hardwareMac": "94:E6:F7:21:40:AA",
+    "zkNullifier": "0x391ac89912048f72aae518390bca7821",
+    "bystanderRedaction": true,
+    "status": "Under Field Review",
+    "assignedOfficer": "Insp. S. Gaikwad (Encroachment Dept)",
+    "slaRemaining": "5d 08h 10m",
+    "audioDuration": "00:14",
+    "aiFlags": [
+      "Public Encroachment",
+      "Illegal Casting",
+      "Footpath Blockade"
+    ],
+    "aiConfidence": "96.8%"
+  },
+  {
+    "id": "PMC-VIG-2026-9650",
+    "priority": "Medium",
+    "priorityColor": "bg-blue-100 text-blue-700 border-blue-200",
+    "category": "Traffic",
+    "subCategory": "Illegal Cash Collection at Swargate Checkpost",
+    "photoUrl": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
+    "location": {
+      "ward": "Ward 2 (Swargate)",
+      "locationName": "Swargate Flyover Base, Pune",
+      "coordinates": "18.5018° N, 73.8580° E"
+    },
+    "text": {
+      "description": "Checkpost operators refusing digital challans and demanding 200 rupees direct cash.",
+      "transcript": [
+        {
+          "speaker": "Staff",
+          "time": "00:04",
+          "text": "No online challan machine working right now. Pay 200 cash directly to pass."
+        }
+      ]
+    },
+    "timestamp": "2026-08-22T08:30:00+05:30",
+    "timeAgo": "7 hours ago",
+    "integrityStatus": "Verified",
+    "sha256Hash": "1f82c4f0b2f90a2103fca07a12b489cd65991823abce12879034aa729012bb99",
+    "deviceIntegrity": "StrongBox TEE Hardware Keystore Signed",
+    "hardwareMac": "5C:96:9D:88:12:33",
+    "zkNullifier": "0x12bb491a89047fca23490b81aa09c812",
+    "bystanderRedaction": true,
+    "status": "Preliminary Audit",
+    "assignedOfficer": "Officer P. Mane (Traffic Vigilance)",
+    "slaRemaining": "4d 21h 45m",
+    "audioDuration": "00:11",
+    "aiFlags": [
+      "Unauthorized Cash Receipt",
+      "Challan Bypass"
+    ],
+    "aiConfidence": "94.2%"
+  }
+]
