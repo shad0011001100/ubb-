@@ -1,159 +1,387 @@
 import React, { useState, useEffect } from 'react';
-import { Screen01Onboarding } from './Screen01Onboarding';
-import { Screen02Screening } from './Screen02Screening';
-import { Screen03Home } from './Screen03Home';
-import { Screen04AIChat } from './Screen04AIChat';
-import { Screen05PeerMatching } from './Screen05PeerMatching';
-import { Screen06ConsentGate } from './Screen06ConsentGate';
-import { Screen07Progress } from './Screen07Progress';
-import { Screen08SOS } from './Screen08SOS';
-import { Screen09SelfCare } from './Screen09SelfCare';
-import { Screen10AutoCrisis } from './Screen10AutoCrisis';
-import { api } from '../../services/api';
+import { Screen01LoginSelection } from './Screen01LoginSelection';
+import { Screen02AnonymousLogin } from './Screen02AnonymousLogin';
+import { Screen03StudentDashboard } from './Screen03StudentDashboard';
+import { Screen04MoodCheckIn } from './Screen04MoodCheckIn';
+import { Screen05APositiveFlow } from './Screen05APositiveFlow';
+import { Screen05BConcernFlow } from './Screen05BConcernFlow';
+import { Screen06SafetyCheck } from './Screen06SafetyCheck';
+import { Screen07SupportGuidance } from './Screen07SupportGuidance';
+import { Screen08Level1Express } from './Screen08Level1Express';
+import { Screen09Level2PeerSupport } from './Screen09Level2PeerSupport';
+import { Screen10Level3UrgentCare } from './Screen10Level3UrgentCare';
+import { ScreenFeedbackModal } from './ScreenFeedbackModal';
+import { VolunteerAuthScreen } from './VolunteerAuthScreen';
+import { VolunteerDashboardView } from './VolunteerDashboardView';
+import { CounsellorDashboardView } from './CounsellorDashboardView';
+import { WallOfThoughtsView } from './WallOfThoughtsView';
+import { MyJourneyView } from './MyJourneyView';
+import { PhoneCall, ShieldAlert, X } from 'lucide-react';
+import { getTranslation } from '../../services/translations';
 
 export function PureUserApp({ onOpenDevPortal }) {
-  // Navigation state for the student
-  const [mobileScreen, setMobileScreen] = useState('onboarding');
+  // Navigation stack:
+  // 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'positive_flow' | 'concern_flow' |
+  // 'safety_check' | 'support_guidance' | 'level1_express' | 'level2_peer' | 'level3_care' |
+  // 'feedback' | 'wall_of_thoughts' | 'my_journey' | 'volunteer_auth' | 'volunteer_dashboard' | 'counsellor_dashboard'
+  const [currentScreen, setCurrentScreen] = useState('login_selection');
+  const [screenParams, setScreenParams] = useState({});
 
-  // User Profile
-  const [userProfile, setUserProfile] = useState({
-    anonymousId: 'Sprout_042',
-    anonymous_tag: 'Sprout_042',
-    language: 'en',
-    selected_language: 'en',
-    current_streak: 12,
-    breakGlassContact: '+91 98765 43210',
-    encrypted_break_glass_contact: '+91 98765 43210'
+  // Language state: 'en' | 'mr' | 'hi'
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
+
+  // Student profile
+  const [userProfile, setUserProfile] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ubb_user_profile');
+      return saved
+        ? JSON.parse(saved)
+        : {
+            id: 'anon-UBB-7K4P-29',
+            anonymousId: 'UBB-7K4P-29',
+            anonymous_tag: 'UBB-7K4P-29',
+            language: 'en',
+            selected_language: 'en',
+            current_streak: 3
+          };
+    } catch {
+      return {
+        id: 'anon-UBB-7K4P-29',
+        anonymousId: 'UBB-7K4P-29',
+        anonymous_tag: 'UBB-7K4P-29',
+        language: 'en',
+        selected_language: 'en',
+        current_streak: 3
+      };
+    }
   });
 
-  // Screening Results
-  const [screeningResults, setScreeningResults] = useState({
-    score: 8,
-    tier: 'peer',
-    risk_tier: 'MODERATE',
-    answers: { 1: 1, 2: 1, 3: 2, 4: 1, 5: 0, 6: 1, 7: 1, 8: 1 },
-    recommendationText: "You've felt loss of interest & exam strain recently. A peer supporter who understands campus life could help more than a chatbot right now."
-  });
+  // Volunteer/Counsellor profile
+  const [staffProfile, setStaffProfile] = useState(null);
 
-  // Crisis context
-  const [flaggedCrisisContext, setFlaggedCrisisContext] = useState('');
+  // Active check-in payload
+  const [currentCheckIn, setCurrentCheckIn] = useState(null);
 
-  // Subscribe to real-time events (e.g. crisis auto-lock)
-  useEffect(() => {
-    const unsubscribe = api.subscribeToEvents((event) => {
-      if (event.type === 'CRISIS_AUTO_LOCKED') {
-        setFlaggedCrisisContext(event.data?.reason || 'Crisis Language Detected');
-        setMobileScreen('auto_crisis');
-      }
+  // Emergency SOS Overlay
+  const [showGlobalSOS, setShowGlobalSOS] = useState(false);
+
+  const t = getTranslation(selectedLanguage);
+
+  const handleNavigate = (screen, params = {}) => {
+    setScreenParams(params);
+    setCurrentScreen(screen);
+  };
+
+  const handleMoodSelect = (checkInData) => {
+    setCurrentCheckIn(checkInData);
+    if (checkInData.type === 'positive') {
+      setCurrentScreen('positive_flow');
+    } else {
+      setCurrentScreen('concern_flow');
+    }
+  };
+
+  const handleConcernProceed = (updatedCheckIn) => {
+    setCurrentCheckIn(updatedCheckIn);
+    setCurrentScreen('safety_check');
+  };
+
+  const handleSafetyProceed = (updatedCheckIn) => {
+    setCurrentCheckIn(updatedCheckIn);
+    setCurrentScreen('support_guidance');
+  };
+
+  const handleSelectLevel = (levelNum) => {
+    if (levelNum === 1) setCurrentScreen('level1_express');
+    else if (levelNum === 2) setCurrentScreen('level2_peer');
+    else if (levelNum === 3) setCurrentScreen('level3_care');
+  };
+
+  const handleFinishActivity = (activityType) => {
+    setScreenParams({ activityType });
+    setCurrentScreen('feedback');
+  };
+
+  const handleResetData = () => {
+    setUserProfile({
+      id: 'anon-UBB-7K4P-29',
+      anonymousId: 'UBB-7K4P-29',
+      anonymous_tag: 'UBB-7K4P-29',
+      language: selectedLanguage,
+      selected_language: selectedLanguage,
+      current_streak: 1
     });
-    return () => unsubscribe();
-  }, []);
-
-  const handleCrisisTrigger = (text) => {
-    setFlaggedCrisisContext(text);
-    setMobileScreen('auto_crisis');
   };
 
   return (
     <div className="min-h-screen bg-[#0E1E20] flex items-center justify-center p-0 sm:p-4 font-work selection:bg-[#E3A06F] selection:text-[#241208]">
-      {/* Discreet floating switch to portal view for evaluators */}
-      {onOpenDevPortal && (
+      {/* Top Floating Gateway Switcher for SIH Evaluators */}
+      <div className="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 shadow-lg text-[10px] text-white">
+        <span className="font-mono text-[#E3A06F]">Ubb SIH System:</span>
         <button
-          onClick={onOpenDevPortal}
-          className="fixed top-3 right-3 z-50 text-[10px] font-mono bg-black/60 hover:bg-black/80 text-white/70 hover:text-white border border-white/10 px-2.5 py-1 rounded-full backdrop-blur-md transition-all cursor-pointer shadow-lg"
-          title="Switch to Admin & Evaluation Portals"
+          onClick={() => setCurrentScreen('login_selection')}
+          className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+            currentScreen !== 'volunteer_dashboard' && currentScreen !== 'counsellor_dashboard'
+              ? 'bg-[#E3A06F] text-[#241208] font-bold'
+              : 'hover:text-[#E3A06F]'
+          }`}
         >
-          ⚙️ Portals &amp; Analytics
+          Student View
         </button>
-      )}
+        <span>|</span>
+        <button
+          onClick={() => {
+            setStaffProfile({
+              id: 'vol-kunal-01',
+              name: 'Kunal Joshi (Psychology Volunteer)',
+              role: 'volunteer'
+            });
+            setCurrentScreen('volunteer_dashboard');
+          }}
+          className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+            currentScreen === 'volunteer_dashboard'
+              ? 'bg-[#4E7C63] text-white font-bold'
+              : 'hover:text-[#A3D1B9]'
+          }`}
+        >
+          Volunteer Portal
+        </button>
+        <span>|</span>
+        <button
+          onClick={() => {
+            setStaffProfile({
+              id: 'counsellor-pratibha-01',
+              name: 'Dr. Pratibha Deshmukh (Licensed Counsellor)',
+              role: 'counsellor'
+            });
+            setCurrentScreen('counsellor_dashboard');
+          }}
+          className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+            currentScreen === 'counsellor_dashboard'
+              ? 'bg-red-800 text-white font-bold'
+              : 'hover:text-red-300'
+          }`}
+        >
+          Counsellor Portal
+        </button>
+      </div>
 
-      {/* Responsive Pure Mobile Application Container */}
-      <div className="w-full sm:max-w-[420px] h-[100dvh] sm:h-[840px] sm:max-h-[92vh] bg-white sm:rounded-[36px] sm:border-[8px] sm:border-[#1E3A3D] shadow-2xl overflow-hidden relative flex flex-col">
-        {mobileScreen === 'onboarding' && (
-          <Screen01Onboarding
+      {/* Main Mobile App Frame */}
+      <div className="w-full max-w-sm h-screen sm:h-[660px] bg-white sm:rounded-[36px] shadow-2xl overflow-hidden border-0 sm:border-8 sm:border-[#1E3A3D] relative flex flex-col pt-6 sm:pt-0">
+        {/* Render Active Screen */}
+        {currentScreen === 'login_selection' && (
+          <Screen01LoginSelection
+            selectedLanguage={selectedLanguage}
+            onSelectLanguage={(lang) => setSelectedLanguage(lang)}
+            onContinueAsStudent={() => setCurrentScreen('anon_login')}
+            onVolunteerLogin={() => setCurrentScreen('volunteer_auth')}
+          />
+        )}
+
+        {currentScreen === 'anon_login' && (
+          <Screen02AnonymousLogin
             userProfile={userProfile}
             setUserProfile={setUserProfile}
-            onComplete={() => setMobileScreen('screening')}
+            selectedLanguage={selectedLanguage}
+            onContinue={() => setCurrentScreen('dashboard')}
           />
         )}
 
-        {mobileScreen === 'screening' && (
-          <Screen02Screening
-            screeningResults={screeningResults}
-            setScreeningResults={setScreeningResults}
+        {currentScreen === 'dashboard' && (
+          <Screen03StudentDashboard
             userProfile={userProfile}
-            onComplete={() => setMobileScreen('home')}
+            selectedLanguage={selectedLanguage}
+            onNavigate={handleNavigate}
+            onOpenSOS={() => setShowGlobalSOS(true)}
           />
         )}
 
-        {mobileScreen === 'home' && (
-          <Screen03Home
-            userProfile={userProfile}
-            screeningResults={screeningResults}
-            onNavigate={(screen) => setMobileScreen(screen)}
-            onOpenSOS={() => setMobileScreen('sos')}
+        {currentScreen === 'mood_checkin' && (
+          <Screen04MoodCheckIn
+            selectedLanguage={selectedLanguage}
+            onSelectMoodFlow={handleMoodSelect}
+            onNavigate={handleNavigate}
           />
         )}
 
-        {mobileScreen === 'ai_chat' && (
-          <Screen04AIChat
+        {currentScreen === 'positive_flow' && (
+          <Screen05APositiveFlow
             userProfile={userProfile}
-            onEscalateToPeer={() => setMobileScreen('peer_matching')}
-            onTriggerCrisis={handleCrisisTrigger}
-            onNavigate={(screen) => setMobileScreen(screen)}
+            checkInData={currentCheckIn}
+            selectedLanguage={selectedLanguage}
+            onNavigate={handleNavigate}
           />
         )}
 
-        {mobileScreen === 'peer_matching' && (
-          <Screen05PeerMatching
+        {currentScreen === 'concern_flow' && (
+          <Screen05BConcernFlow
+            checkInData={currentCheckIn}
+            selectedLanguage={selectedLanguage}
+            onProceedToSafety={handleConcernProceed}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'safety_check' && (
+          <Screen06SafetyCheck
+            checkInData={currentCheckIn}
+            selectedLanguage={selectedLanguage}
+            onProceedToGuidance={handleSafetyProceed}
+            onTriggerCrisis={() => setShowGlobalSOS(true)}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'support_guidance' && (
+          <Screen07SupportGuidance
+            checkInData={currentCheckIn}
+            selectedLanguage={selectedLanguage}
+            onSelectLevel={handleSelectLevel}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'level1_express' && (
+          <Screen08Level1Express
+            defaultTab={screenParams?.defaultTab || 'let_it_out'}
+            selectedLanguage={selectedLanguage}
+            onFinishActivity={handleFinishActivity}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'level2_peer' && (
+          <Screen09Level2PeerSupport
+            checkInData={currentCheckIn}
             userProfile={userProfile}
-            screeningResults={screeningResults}
-            onSelectPeer={(_peer) => {
-              setMobileScreen('consent_gate');
+            selectedLanguage={selectedLanguage}
+            onFinishActivity={handleFinishActivity}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'level3_care' && (
+          <Screen10Level3UrgentCare
+            selectedLanguage={selectedLanguage}
+            onFinishActivity={handleFinishActivity}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'feedback' && (
+          <ScreenFeedbackModal
+            activityType={screenParams?.activityType || 'general'}
+            selectedLanguage={selectedLanguage}
+            onNavigate={handleNavigate}
+            onSubmitFeedback={() => handleNavigate('dashboard')}
+          />
+        )}
+
+        {currentScreen === 'wall_of_thoughts' && (
+          <WallOfThoughtsView
+            userProfile={userProfile}
+            selectedLanguage={selectedLanguage}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'my_journey' && (
+          <MyJourneyView
+            userProfile={userProfile}
+            selectedLanguage={selectedLanguage}
+            onNavigate={handleNavigate}
+            onResetAllData={handleResetData}
+          />
+        )}
+
+        {currentScreen === 'volunteer_auth' && (
+          <VolunteerAuthScreen
+            selectedLanguage={selectedLanguage}
+            onBack={() => setCurrentScreen('login_selection')}
+            onLoginSuccess={(staff) => {
+              setStaffProfile(staff);
+              if (staff.role === 'counsellor') {
+                setCurrentScreen('counsellor_dashboard');
+              } else {
+                setCurrentScreen('volunteer_dashboard');
+              }
             }}
-            onNavigate={(screen) => setMobileScreen(screen)}
           />
         )}
 
-        {mobileScreen === 'consent_gate' && (
-          <Screen06ConsentGate
-            userProfile={userProfile}
-            peerName="Amber_17"
-            onAccept={() => setMobileScreen('peer_matching')}
-            onDecline={(_count) => {}}
-            onDeadlockTriggered={() => {}}
-            onNavigate={(screen) => setMobileScreen(screen)}
+        {currentScreen === 'volunteer_dashboard' && (
+          <VolunteerDashboardView
+            volunteerProfile={staffProfile}
+            onLogout={() => setCurrentScreen('login_selection')}
+            onOpenCounsellorEscalation={() => setCurrentScreen('counsellor_dashboard')}
           />
         )}
 
-        {mobileScreen === 'progress' && (
-          <Screen07Progress
-            userProfile={userProfile}
-            onNavigate={(screen) => setMobileScreen(screen)}
+        {currentScreen === 'counsellor_dashboard' && (
+          <CounsellorDashboardView
+            counsellorProfile={staffProfile}
+            onLogout={() => setCurrentScreen('login_selection')}
           />
         )}
 
-        {mobileScreen === 'sos' && (
-          <Screen08SOS
-            userProfile={userProfile}
-            onClose={() => setMobileScreen('home')}
-          />
-        )}
+        {/* Global Urgent SOS Modal */}
+        {showGlobalSOS && (
+          <div className="absolute inset-0 z-50 bg-[#7A2E2E]/95 backdrop-blur-md text-white p-5 flex flex-col justify-between overflow-y-auto animate-fadeIn select-none">
+            <div className="flex items-center justify-between pt-2">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-red-200 font-bold">
+                Emergency Crisis Protocol
+              </span>
+              <button
+                onClick={() => setShowGlobalSOS(false)}
+                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
-        {mobileScreen === 'self_care' && (
-          <Screen09SelfCare
-            userProfile={userProfile}
-            onNavigate={(screen) => setMobileScreen(screen)}
-          />
-        )}
+            <div className="text-center space-y-2 my-auto">
+              <div className="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center mx-auto animate-pulse">
+                <ShieldAlert className="w-6 h-6" />
+              </div>
+              <h3 className="font-fraunces text-xl font-bold text-white">
+                {t.screen6.urgentTitle}
+              </h3>
+              <p className="text-xs text-red-100 leading-relaxed max-w-xs mx-auto">
+                {t.screen6.urgentSub}
+              </p>
 
-        {mobileScreen === 'auto_crisis' && (
-          <Screen10AutoCrisis
-            detectedText={flaggedCrisisContext || "सगळं संपवावंसं वाटतंय, काहीच सुचत नाहीये"}
-            onOpenHelpline={() => setMobileScreen('sos')}
-            onConnectCounselor={() => setMobileScreen('peer_matching')}
-            onDismiss={() => setMobileScreen('home')}
-          />
+              {/* Contacts */}
+              <div className="space-y-2 pt-2 text-left">
+                {t.screen6.urgentContacts.map((c, i) => (
+                  <div key={i} className="bg-black/30 border border-white/20 rounded-2xl p-3 flex items-center justify-between">
+                    <div>
+                      <b className="text-xs text-white block">{c.name}</b>
+                      <span className="font-mono text-[11px] text-[#E3A06F] font-bold block">{c.number}</span>
+                    </div>
+                    <a
+                      href={`tel:${c.number.replace(/[^0-9+]/g, '')}`}
+                      className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1 cursor-pointer"
+                    >
+                      <PhoneCall className="w-3 h-3" />
+                      <span>Call</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setShowGlobalSOS(false);
+                  setCurrentScreen('level3_care');
+                }}
+                className="w-full py-2.5 rounded-full bg-white text-red-900 font-bold text-xs cursor-pointer hover:bg-slate-100 shadow-md"
+              >
+                Book Earliest Licensed Counsellor →
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

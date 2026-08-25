@@ -1,517 +1,653 @@
 /**
- * Ubb (ऊब) - Multilingual Translation Dictionary
- * Full localization support for Marathi (मराठी), Hindi (हिंदी), and English.
+ * Ubb (ऊब) - Comprehensive Multilingual Translation Dictionary
+ * Languages: English ('en'), Marathi ('mr'), Hindi ('hi')
  */
 
-export const translations = {
+export const TRANSLATIONS = {
   en: {
     common: {
       appName: "Ubb",
-      appTagline: "Warmth & Comfort",
+      tagline: "A warm space for every thought",
+      back: "Back",
+      continue: "Continue",
+      save: "Save",
+      cancel: "Cancel",
+      submit: "Submit",
+      skip: "Skip for now",
       home: "Home",
       talk: "Talk",
       progress: "Progress",
       selfCare: "Self-Care",
-      back: "Back",
-      cancel: "Cancel",
-      save: "Save",
-      continue: "Continue",
-      emergencySOS: "Need help right now?",
-      emergencySub: "Tap for immediate support · 24x7 Helplines & SOS",
-      anonymousId: "Anonymous Tag",
-      rlsProtected: "RLS Protected"
+      emergencySOS: "Need urgent help right now?",
+      emergencySub: "24x7 Campus Crisis & Tele-MANAS 14416",
+      rlsProtected: "RLS Protected · Zero-PII",
+      permanentDeleteNotice: "Your recording has been permanently deleted. Zero bytes remain.",
+      wasThisHelpful: "Was this helpful for you?",
+      reallyHelpful: "Really helpful",
+      good: "Good",
+      okay: "Okay",
+      notGreat: "Not that great",
+      stillNeedSupport: "I still need support"
     },
-    onboarding: {
-      tagline: "ऊब · Warmth & Comfort",
-      title: "You don't need your name to be heard.",
-      subtitle: "Choose your language. Talk to trained peers and counselors without ever sharing who you are.",
-      anonTagLabel: "Anonymous Tag (Supabase Auth)",
-      reRoll: "Re-roll",
-      breakGlassLabel: "Break-Glass Contact (Voluntary)",
-      breakGlassDesc: "Only pinged if you trigger emergency SOS. Stored with zero personal identifiers.",
-      breakGlassPlaceholder: "+91 98765 43210 (Optional)",
-      startButton: "Create anonymous ID & Begin →",
-      footerNote: "NO REAL NAME · NO ACADEMIC RECORD LINK · PRIVATE ON-DEVICE NLP"
+    screen1: {
+      title: "Welcome to Ubb",
+      subtitle: "A warm space for every thought",
+      studentBtn: "Continue as Student",
+      studentSub: "Anonymous · Private · No personal details required",
+      volunteerBtn: "Volunteer / Counsellor Login",
+      volunteerSub: "Access peer queue, moderation & appointments",
+      privacyNotice: "You do not need to share your name, phone number, or academic record to be heard."
     },
-    screening: {
-      title: "Quick Check-in",
-      approxTime: "~90s check",
-      options: [
-        { label: "Not at all", points: 0 },
-        { label: "Several days", points: 1 },
-        { label: "More than half the days", points: 2 },
-        { label: "Nearly every day", points: 3 }
+    screen2: {
+      title: "Your private Ubb ID has been created",
+      subtitle: "You can use this ID to access your journey safely across any device.",
+      saveNotice: "Please save your Ubb ID securely.",
+      pinLabel: "Create an optional 4-digit private PIN",
+      pinPlaceholder: "••••",
+      privacyPill: "No name · No phone · End-to-end zero PII",
+      continueBtn: "Continue to Dashboard →",
+      deleteDataNote: "You can permanently delete all your data anytime in Settings."
+    },
+    screen3: {
+      welcome: "Welcome back",
+      quote: "You don't have to solve everything today. Start with one small step.",
+      pulseTitle: "UbbPulse",
+      pulseDesc: "Quick mood check-in & personalized guidance",
+      letItOutTitle: "Let It Out",
+      letItOutDesc: "Temporary voice or text vent · Automatically deleted",
+      moodTunesTitle: "MoodTunes",
+      moodTunesDesc: "Calm music, nature sounds & acoustic binaural beats",
+      journalTitle: "Private Journal",
+      journalDesc: "Secure written expression saved locally on your device",
+      wallTitle: "Wall of Thoughts",
+      wallDesc: "Read & share anonymous encouraging notes with peers",
+      talkTitle: "Talk to Someone",
+      talkDesc: "Connect with a trained psychology peer or counsellor",
+      journeyTitle: "My Journey",
+      journeyDesc: "Review your check-in trends and helpfulness insights"
+    },
+    screen4: {
+      title: "How are you feeling right now?",
+      subtitle: "Treat this as a private check-in, not a clinical test.",
+      moods: {
+        good: "Good",
+        calm: "Calm",
+        sad: "Sad",
+        anxious: "Anxious",
+        irritated: "Irritated",
+        overwhelmed: "Overwhelmed",
+        numb: "Numb",
+        veryLow: "Very low",
+        dontKnow: "I don't know",
+        other: "Other",
+        preferNotToSay: "Prefer not to say"
+      },
+      intensityTitle: "How intense does this feeling feel right now?",
+      intensityLevels: {
+        little: "A little",
+        moderate: "Moderate",
+        strong: "Strong",
+        veryStrong: "Very strong"
+      },
+      nextBtn: "Next →"
+    },
+    screen5A: {
+      title: "What would you like to do next?",
+      expressOpt: "Express myself",
+      expressSub: "Relax with MoodTunes or write in my Journal",
+      helpPeersOpt: "Help my peers",
+      helpPeersSub: "Share an encouraging thought on the Wall of Thoughts",
+      activityOpt: "Explore a wellbeing activity",
+      activitySub: "4-7-8 Breathing, 5-4-3-2-1 Grounding, or Soundscapes",
+      dashOpt: "Continue to Dashboard",
+      wallPromptTitle: "Write something encouraging for another student",
+      wallPromptDesc: "Your message will be anonymous and reviewed by our moderation queue before appearing.",
+      starters: [
+        "One thing that helped me today was...",
+        "A reminder someone may need today...",
+        "I am proud of myself for..."
       ],
-      questions: [
-        { id: 1, category: "Anhedonia", title: "Over the last 2 weeks, have you had little interest or pleasure in doing things you normally enjoy?" },
-        { id: 2, category: "Depressed Mood", title: "Feeling down, depressed, or hopeless about academics or personal life?" },
-        { id: 3, category: "Sleep Disturbance", title: "Trouble falling or staying asleep, or sleeping too much during exam stress?" },
-        { id: 4, category: "Fatigue", title: "Feeling tired or having very little energy during the day?" },
-        { id: 5, category: "Appetite Change", title: "Poor appetite or overeating when stressed?" },
-        { id: 6, category: "Guilt & Stigma", title: "Feeling bad about yourself — or that you are a failure or have let your family down?" },
-        { id: 7, category: "Cognitive Load", title: "Trouble concentrating on lectures, reading, or everyday tasks?" },
-        { id: 8, category: "Distress Threshold", title: "Feeling overwhelmed to the point that daily activities feel unmanageable?" }
+      postBtn: "Post Anonymously",
+      draftBtn: "Save as Draft",
+      moderationStatus: "Automated Safety Filter → Volunteer Moderation Queue → Published"
+    },
+    screen5B: {
+      title: "What would you like support with?",
+      subtitle: "Select all that apply. You can choose more than one.",
+      topics: [
+        "Academics",
+        "Career",
+        "Future uncertainty",
+        "Family",
+        "Friends",
+        "Relationship",
+        "Financial stress",
+        "Loneliness",
+        "Self-confidence",
+        "Sleep or routine",
+        "Other",
+        "I don't know"
       ],
-      footerNotice: "Scores logged to public.screening_logs with Row Level Security."
+      moreDetailsLabel: "Would you like to tell us a little more? (Optional)",
+      moreDetailsPlaceholder: "Feel free to write a few words here... you can skip this if you prefer."
     },
-    home: {
-      welcomeBack: "Welcome back",
-      checkInScore: "Based on your check-in",
-      seePeerMatches: "See peer matches →",
-      actionTiersTitle: "Explore Support Paths",
-      tier1Title: "Quick Start AI Triage",
-      tier1Desc: "3-minute guided chat to explore what's heavy before speaking to a human.",
-      tier1Btn: "Start AI Check-in →",
-      tier2Title: "Connect with a Peer Supporter",
-      tier2Desc: "Trained student psychology volunteers who understand campus burnout.",
-      tier2Btn: "Choose a Peer →",
-      tier3Title: "1-on-1 Licensed Counselor",
-      tier3Desc: "Book confidential appointments with certified campus clinical therapists.",
-      tier3Btn: "Book Session →",
-      dailyGroundingTitle: "Daily Grounding Exercise",
-      dailyGroundingDesc: "4-7-8 Breathing pacer with calming 432Hz ambient drone.",
-      dailyGroundingBtn: "Try 2-Min Reset →"
+    screen6: {
+      title: "Immediate Safety Check",
+      subtitle: "Before we guide you to support, let's make sure you're safe right now.",
+      question: "Are you in immediate danger or thinking about hurting yourself or someone else?",
+      options: {
+        yes: "Yes, I need urgent help",
+        no: "No",
+        notSure: "I'm not sure",
+        preferNotToAnswer: "Prefer not to answer"
+      },
+      urgentTitle: "You deserve immediate human support",
+      urgentSub: "Please contact campus crisis services or official national helplines right now.",
+      urgentContacts: [
+        { name: "Campus Emergency Counselor Hotline", number: "+91 8000 123 456", note: "Available 24x7 on campus" },
+        { name: "Tele-MANAS (Govt of India)", number: "14416", note: "Toll-free 24x7 clinical support" },
+        { name: "KIRAN National Helpline", number: "1800-599-0019", note: "Ministry of Social Justice" }
+      ],
+      safetyDisclaimer: "Do not rely only on Ubb in an emergency. AI systems are not a substitute for professional clinical crisis intervention."
     },
-    aiChat: {
-      headerTitle: "Ubb — AI First Contact",
-      stepSub: "Voiceflow Triage · Step {step} of 3",
-      initialGreeting: "Hey. In a line or two — what's been weighing on you lately?",
-      inputPlaceholder: "Type in English, Marathi, or Hinglish…",
-      sendButton: "Send",
-      analyzingText: "Ollama parsing sentiment & context…",
-      matchedPeerTitle: "Matched: {name} ({role})",
-      matchedPeerDesc: "Your brief check-in context has been summarized safely so you don't have to repeat yourself. Nothing else from this screen goes further.",
-      startPeerBtn: "Start chatting with {name} →",
-      chooseElseBtn: "Choose someone else",
-      testPromptTitle: "Tap a scenario to test Multilingual NLP:"
+    screen7: {
+      guidanceTitle: "Ubb Support Guidance",
+      guidanceSub: "Based on your check-in, Ubb suggests starting with:",
+      levels: {
+        level1Title: "Level 1 — Space to Express or Relax",
+        level1Desc: "Take a quiet moment with private voice venting, calming soundscapes, or personal journaling.",
+        level2Title: "Level 2 — I Could Use Some Support",
+        level2Desc: "Connect privately with a trained psychology student volunteer who understands campus life.",
+        level3Title: "Level 3 — I Need Help Urgently",
+        level3Desc: "Book the earliest available licensed counsellor appointment or access crisis support."
+      },
+      exploreBtn: "Open Suggested Level →"
     },
-    peerMatching: {
-      headerTitle: "Chosen for how you're feeling",
-      headerSub: "Intelligent Helper Routing",
-      topMatchBadge: "Top Match for Your Check-in",
-      licensedBadge: "Licensed Counselor",
-      peerBadge: "Peer Guide",
-      allFilter: "All Matches",
-      marathiFilter: "मराठी Fluent",
-      burnoutFilter: "Exam & Burnout",
-      licensedFilter: "Licensed Only",
-      startChatBtn: "Start Anonymous Live Chat",
-      bookSessionBtn: "Book 1-on-1 Session ({slot})",
-      restingBadge: "Resting (2-hr shift completed)"
+    level1: {
+      title: "Take a gentle moment for yourself",
+      tabLetItOut: "Let It Out",
+      tabMoodTunes: "MoodTunes",
+      tabJournal: "Private Journal",
+      recordInstruction: "Record an audio vent. Pause, resume, or delete anytime. Zero audio is stored after playback.",
+      permanentDeleteConfirm: "✓ Your audio recording was permanently deleted from memory. Zero bytes remain.",
+      journalPrompt: "Write down whatever is taking up space in your head today...",
+      savedLocally: "Saved locally on your device · 100% private"
     },
-    consentGate: {
-      title: "Before we connect you with {name}",
-      subtitle: "Tier 03 · Consent Gate",
-      privacyNotice: "Zero PII is transferred. Your identity remains 100% anonymous.",
-      transfersTitle: "What WILL transfer to {name}:",
-      privateTitle: "What STAYS 100% private with you:",
-      t1: "Your anonymous ID ({anonId})",
-      t2: "Primary stress category (e.g., Exam Overload / Sleep Anxiety)",
-      t3: "PHQ-9 risk band (e.g., Moderate)",
-      p1: "Your exact question-by-question responses",
-      p2: "Your IP address, device location & academic record",
-      p3: "Your voluntary break-glass emergency contact",
-      acceptBtn: "I understand & agree to transfer summary →",
-      declineBtn: "Not right now (Keep chatting with AI)",
-      deadlockTitle: "Clinical Boundary Active",
-      deadlockDesc: "I want to ensure you get the best support, which is beyond peer scope right now. Live chat is paused, but all self-care tools remain open.",
-      goToSelfCare: "Open Self-Care Tools →"
+    level2: {
+      title: "You don't have to handle this alone",
+      subtitle: "Connect with a trained peer supporter in a safe, confidential environment.",
+      requestFormTitle: "Volunteer Support Request",
+      selectedTopic: "Selected Topic",
+      prefLanguage: "Preferred Language",
+      prefMode: "Preferred Mode",
+      prefTime: "Preferred Time",
+      consentText: "I agree to share the selected check-in summary with the assigned psychology volunteer.",
+      submitRequestBtn: "Submit Support Request",
+      lifecycle: {
+        step1: "Request submitted",
+        step2: "Volunteer assigned",
+        step3: "Volunteer accepts",
+        step4: "Private conversation",
+        step5: "Feedback & Close"
+      },
+      volunteerBoundaries: "Volunteer Guidelines: Listen empathetically without judging. Do not diagnose or prescribe medication. Escalate safety concerns immediately to the supervising counsellor."
     },
-    progress: {
-      title: "Your progress",
-      subtitle: "Since your first check-in, 6 weeks ago",
-      chartTitle: "Stress Level Trend (PHQ-9 Curve)",
-      totalDrop: "-47% Total Drop",
-      reportedStress: "Reported Stress",
-      checkInStreak: "Check-in Streak",
-      milestoneTitle: "Resilience Milestone Unlocked",
-      milestoneDesc: "You've completed 4 sessions with Amber_17. Your sleep check-ins have steadily improved 3 weeks running.",
-      habitTitle: "Atomic Habit Check-in",
-      habitSub: "Today's 30s reflection ready",
-      logMoodBtn: "Log Mood →"
-    },
-    sos: {
-      headerTitle: "Emergency Crisis Hub",
-      headerSub: "Zero Geolocation · Complete Confidentiality",
-      urgentBanner: "If you or someone you know is in immediate distress, you are not alone. Please reach out to these 24x7 verified Indian helplines right now.",
-      teleManasTitle: "Tele-MANAS (Govt. of India)",
-      teleManasSub: "24x7 National Mental Health Helpline · Toll-Free · 20+ Languages",
-      kiranTitle: "KIRAN Mental Health Line",
-      kiranSub: "Ministry of Social Justice · 24x7 Dedicated Crisis Support",
-      maitriTitle: "Maitri Crisis Line",
-      maitriSub: "NGO Support · Student Exam Stress & Suicide Prevention",
-      breakGlassTitle: "Break-Glass Contact Alert",
-      breakGlassDesc: "Send an automated anonymous SMS to your emergency contact ({contact}).",
-      triggerSmsBtn: "Dispatch Break-Glass SMS Alert",
-      smsSentSuccess: "✓ Emergency SMS successfully dispatched with zero PII!",
-      closeBtn: "Close SOS Screen"
-    },
-    selfCare: {
-      title: "Self-Care & Grounding",
-      subtitle: "Private, non-judgmental space for your mind",
-      tabLetItOut: "Let It Out (Burn Vent)",
-      tabWall: "Wall of Thoughts",
-      tabRelax: "Relax & Restore",
-      moodTitle: "How is your heart feeling right now?",
-      ventTitle: "Ephemeral Venting · Burn When Done",
-      ventDesc: "Write or record anything troubling you. Once you tap 'Burn', it is cryptographically erased with zero database retention.",
-      ventPlaceholder: "Pour your raw thoughts here... nobody is watching, judging, or saving this.",
-      burnButton: "🔥 Burn & Erase Forever",
-      burningText: "Zeroizing & Purging Vent…",
-      burnedSuccess: "✓ Your thoughts were released and permanently erased.",
-      wallTitle: "Wall of Community Warmth",
-      wallDesc: "Gentle letters and reminders written by fellow students.",
-      addLetterBtn: "Write a Warmth Note +",
-      relaxTitle: "4-7-8 Breathing Pacer",
-      relaxDesc: "Binaural 432Hz harmonic tone paired with autonomic nervous system calming.",
-      breatheInhale: "Inhale (4s)",
-      breatheHold: "Hold (7s)",
-      breatheExhale: "Exhale (8s)",
-      startBreathing: "Start 4-7-8 Breathing",
-      stopBreathing: "Pause Breathing",
-      soundscapeToggle: "432Hz Calming Drone"
+    level3: {
+      title: "Connect with professional support",
+      subtitle: "Book an appointment with a licensed mental health professional.",
+      counsellorA: {
+        name: "Dr. Pratibha Deshmukh",
+        specialization: "Student Wellbeing & Cognitive Resilience",
+        available: "Tomorrow, 10:30 AM"
+      },
+      counsellorB: {
+        name: "Dr. Anand Joshi",
+        specialization: "Academic & Personal Stress Management",
+        available: "Today, 4:30 PM"
+      },
+      bookBtn: "Book Appointment",
+      midnightTitle: "No counsellor is available right now",
+      midnightSub: "Your request has been marked as urgent. Earliest appointment: 8:30 AM tomorrow.",
+      whileYouWait: "While you wait for your appointment:",
+      whileYouWaitTools: [
+        "Contact designated campus emergency support",
+        "Use Let It Out for private temporary voice venting",
+        "Start MoodTunes acoustic binaural frequencies",
+        "Write in your private Journal",
+        "Reach out to a trusted person nearby"
+      ]
     }
   },
-
   mr: {
     common: {
       appName: "ऊब (Ubb)",
-      appTagline: "उब आणि मानसिक आधार",
+      tagline: "प्रत्येक विचारासाठी एक आपुलकीची जागा",
+      back: "मागे",
+      continue: "पुढे जा",
+      save: "जतन करा",
+      cancel: "रद्द करा",
+      submit: "सबमिट करा",
+      skip: "सध्या वगळा",
       home: "मुख्यपृष्ठ",
       talk: "संवाद",
       progress: "प्रगती",
       selfCare: "स्वतःची काळजी",
-      back: "मागे",
-      cancel: "रद्द करा",
-      save: "जतन करा",
-      continue: "पुढे जा",
       emergencySOS: "सध्या तात्काळ मदतीची गरज आहे?",
-      emergencySub: "तात्काळ २४x७ हेल्पलाईन आणि मदतीसाठी टॅप करा",
-      anonymousId: "अनामिक ओळख (Tag)",
-      rlsProtected: "RLS सुरक्षित"
+      emergencySub: "२४x७ कॅम्पस आपत्कालीन व Tele-MANAS १४४१६",
+      rlsProtected: "RLS सुरक्षित · शून्य वैयक्तिक माहिती",
+      permanentDeleteNotice: "तुमचा रेकॉर्ड केलेला ऑडिओ कायमचा हटवला गेला आहे.",
+      wasThisHelpful: "हा अनुभव तुमच्यासाठी उपयुक्त ठरला का?",
+      reallyHelpful: "खूप उपयुक्त",
+      good: "छान",
+      okay: "ठीकठाक",
+      notGreat: "फारसा नाही",
+      stillNeedSupport: "मला अजून मदतीची गरज आहे"
     },
-    onboarding: {
-      tagline: "ऊब · सुरक्षित आणि हक्काची जागा",
-      title: "तुमचं म्हणणं ऐकण्यासाठी नावाचा अडसर नको.",
-      subtitle: "तुमची भाषा निवडा. तुमची खरी ओळख कधीही न सांगता प्रशिक्षित समवयस्क आणि काउन्सिलरशी मोकळेपणाने बोला.",
-      anonTagLabel: "अनामिक ओळख (Supabase Auth)",
-      reRoll: "दुसरे नाव निवडा",
-      breakGlassLabel: "आपत्कालीन संपर्क (ऐच्छिक)",
-      breakGlassDesc: "फक्त तुम्ही SOS बटण दाबल्यावरच या नंबरवर संदेश जाईल. कोणतीही वैयक्तिक माहिती साठवली जात नाही.",
-      breakGlassPlaceholder: "+91 98765 43210 (ऐच्छिक)",
-      startButton: "अनामिक ओळख तयार करा व सुरू करा →",
-      footerNote: "नाव नाही · कॉलेज रेकॉर्डशी जोडणी नाही · संपूर्ण सुरक्षितता"
+    screen1: {
+      title: "ऊब मध्ये आपले स्वागत आहे",
+      subtitle: "प्रत्येक विचारासाठी एक सुरक्षित आणि आपुलकीची जागा",
+      studentBtn: "विद्यार्थी म्हणून पुढे जा",
+      studentSub: "पूर्णपणे अनामिक · १००% खाजगी · नाव-फोनची गरज नाही",
+      volunteerBtn: "व्हॉलंटिअर / समुपदेशक लॉगिन",
+      volunteerSub: "पीअर चॅट, मॉडरेशन आणि अपॉइंटमेंट व्यवस्थापन",
+      privacyNotice: "तुमचं म्हणणं ऐकण्यासाठी तुमचं नाव, फोन किंवा ओळख उघड करण्याची कोणतीही गरज नाही."
     },
-    screening: {
-      title: "९० सेकंद तपासणी (Check-in)",
-      approxTime: "~९० सेकंद",
-      options: [
-        { label: "मुळीच नाही", points: 0 },
-        { label: "काही दिवस", points: 1 },
-        { label: "अर्ध्याहून अधिक दिवस", points: 2 },
-        { label: "जवळपास दररोज", points: 3 }
+    screen2: {
+      title: "तुमची खाजगी Ubb ID तयार झाली आहे",
+      subtitle: "तुम्ही कोणत्याही डिव्हाइसवर तुमच्या प्रवासासाठी हा ID वापरू शकता.",
+      saveNotice: "कृपया तुमचा हा Ubb ID सुरक्षित ठिकाणी नोंदवून ठेवा.",
+      pinLabel: "ऐच्छिक ४-अंकी खाजगी PIN तयार करा",
+      pinPlaceholder: "••••",
+      privacyPill: "नाव नाही · नंबर नाही · पूर्ण सुरक्षितता",
+      continueBtn: "डॅशबोर्डकडे चला →",
+      deleteDataNote: "तुम्ही सेटिंग्जमधून तुमचा डेटा कधीही कायमचा नष्ट करू शकता."
+    },
+    screen3: {
+      welcome: "पुन्हा स्वागत आहे",
+      quote: "आजच सगळं सोडवलं पाहिजे असं नाही. एका छोट्या पावलाने सुरुवात करा.",
+      pulseTitle: "ऊब पल्स (UbbPulse)",
+      pulseDesc: "सध्याची मनःस्थिती तपासा आणि मार्गदर्शन मिळवा",
+      letItOutTitle: "मनातील सल (Let It Out)",
+      letItOutDesc: "हंगामी आवाज किंवा मजकूर · ऐकल्यानंतर लगेच नष्ट",
+      moodTunesTitle: "मूडट्यून्स (MoodTunes)",
+      moodTunesDesc: "शांत संगीत, निसर्गाचे नाद आणि बायनॉरॉल बीट्स",
+      journalTitle: "खाजगी डायरी (Journal)",
+      journalDesc: "तुमच्या डिव्हाइसवर १००% सुरक्षितपणे साठवलेले विचार",
+      wallTitle: "उब देणारे विचार (Wall of Thoughts)",
+      wallDesc: "इतर विद्यार्थ्यांचे सकारात्मक संदेश वाचा व लिहा",
+      talkTitle: "कोणाशीतरी बोला (Talk to Someone)",
+      talkDesc: "प्रशिक्षित समवयस्क मार्गदर्शक किंवा समुपदेशकाशी जोडा",
+      journeyTitle: "माझा प्रवास (My Journey)",
+      journeyDesc: "तुमच्या प्रगतीचा आलेख आणि आधीच्या नोंदी"
+    },
+    screen4: {
+      title: "तुम्हाला सध्या कसं वाटतंय?",
+      subtitle: "हा एक खाजगी चेक-इन आहे, कोणतीही वैद्यकीय तपासणी नाही.",
+      moods: {
+        good: "छान",
+        calm: "शांत",
+        sad: "उदास",
+        anxious: "चिंताग्रस्त",
+        irritated: "चिडचिड",
+        overwhelmed: "खूप जास्त ताण",
+        numb: "काहीच सुचेना",
+        veryLow: "खूप खचल्यासारखं",
+        dontKnow: "सांगता येत नाही",
+        other: "इतर",
+        preferNotToSay: "सांगायचे नाही"
+      },
+      intensityTitle: "या भावनेची तीव्रता सध्या किती वाटते?",
+      intensityLevels: {
+        little: "थोडीशी",
+        moderate: "मध्यम",
+        strong: "तीव्र",
+        veryStrong: "खूप जास्त तीव्र"
+      },
+      nextBtn: "पुढे जा →"
+    },
+    screen5A: {
+      title: "तुम्हाला आता काय करायला आवडेल?",
+      expressOpt: "स्वतःला व्यक्त करा",
+      expressSub: "MoodTunes संगीत ऐका किंवा डायरीत लिहा",
+      helpPeersOpt: "मित्रांना मदत करा",
+      helpPeersSub: "Wall of Thoughts वर सकारात्मक विचार लिहा",
+      activityOpt: "मनःशांती व्यायाम करा",
+      activitySub: "४-७-८ श्वसन व्यायाम किंवा निसर्ग ध्वनी",
+      dashOpt: "डॅशबोर्डवर परत जा",
+      wallPromptTitle: "इतर विद्यार्थ्यांसाठी एखादा उत्साहवर्धक विचार लिहा",
+      wallPromptDesc: "तुमचा संदेश अनामिक राहील आणि तपासणीनंतर वॉलवर दिसेल.",
+      starters: [
+        "आज मला मदत करणारी एक गोष्ट म्हणजे...",
+        "एखाद्याला आज ऐकण्याची गरज असलेला विचार...",
+        "मला स्वतःचा अभिमान वाटतो कारण..."
       ],
-      questions: [
-        { id: 1, category: "उत्साहाचा अभाव", title: "गेल्या २ आठवड्यांत, एरवी आवडणाऱ्या गोष्टींमध्ये रस किंवा आनंद कमी वाटला आहे का?" },
-        { id: 2, category: "उदासीन मनस्थिती", title: "अभ्यास किंवा वैयक्तिक आयुष्याबद्दल सतत खिन्न, उदास किंवा निराश वाटतंय का?" },
-        { id: 3, category: "झोपेच्या तक्रारी", title: "परीक्षेच्या ताणामुळे झोप लागण्यात त्रास होणे, मध्येच जाग येणे किंवा अतिझोप येणे?" },
-        { id: 4, category: "अशक्तपणा व थकवा", title: "दिवसभरात सतत खूप थकवा किंवा ऊर्जेचा अभाव जाणवणे?" },
-        { id: 5, category: "भूक न लागणे", title: "ताणामुळे भूक मंदावणे किंवा प्रमाणाबाहेर खाणे?" },
-        { id: 6, category: "अपराधीपणाची भावना", title: "स्वतःबद्दल वाईट वाटणे किंवा आपण घरच्यांना निराश केले आहे अशी भावना होणे?" },
-        { id: 7, category: "एकाग्रतेचा अभाव", title: "अभ्यास, वाचन किंवा दैनंदिन कामांमध्ये लक्ष केंद्रित करण्यात अडचण येणे?" },
-        { id: 8, category: "असह्य ताण", title: "दैनंदिन गोष्टी हाताळणे पूर्णपणे अशक्य झाल्यासारखे वाटणे?" }
+      postBtn: "अनामिकपणे पोस्ट करा",
+      draftBtn: "ड्राफ्ट म्हणून ठेवा",
+      moderationStatus: "सुरक्षा तपासणी → व्हॉलंटिअर मॉडरेशन → प्रसिद्ध"
+    },
+    screen5B: {
+      title: "तुम्हाला कोणत्या बाबतीत मदत हवी आहे?",
+      subtitle: "लागू असलेले सर्व पर्याय निवडा. एकापेक्षा जास्त निवडू शकता.",
+      topics: [
+        "अभ्यास व परीक्षा",
+        "करिअर",
+        "भविष्याची चिंता",
+        "कुटुंब",
+        "मित्र",
+        "नातेसंबंध",
+        "आर्थिक ताण",
+        "एकटेपणा",
+        "आत्मविश्वास",
+        "झोप किंवा दिनचर्या",
+        "इतर",
+        "सांगता येत नाही"
       ],
-      footerNotice: "तुमचे स्कोअर Row Level Security सह पूर्ण सुरक्षित साठवले जातात."
+      moreDetailsLabel: "थोडं अधिक सांगायला आवडेल का? (ऐच्छिक)",
+      moreDetailsPlaceholder: "इथे काही ओळी लिहू शकता... हवे असल्यास वगळू शकता."
     },
-    home: {
-      welcomeBack: "पुन्हा स्वागत आहे",
-      checkInScore: "तुमच्या तपासणीनुसार",
-      seePeerMatches: "मदतीसाठी योग्य व्यक्ती पहा →",
-      actionTiersTitle: "मदतीचे पर्याय निवडा",
-      tier1Title: "AI त्वरित संवाद (Triage)",
-      tier1Desc: "माणसाशी बोलण्यापूर्वी ३ मिनिटांच्या AI संवादात भावना स्पष्ट करा.",
-      tier1Btn: "AI संवाद सुरू करा →",
-      tier2Title: "प्रशिक्षित पीअर व्हॉलंटिअर",
-      tier2Desc: "कॉलेजचा ताण समजणारे वरिष्ठ सायकॉलॉजीचे विद्यार्थी.",
-      tier2Btn: "मित्र/मार्गदर्शक निवडा →",
-      tier3Title: "परवानाधारक क्लिनिकल काउन्सिलर",
-      tier3Desc: "तज्ज्ञ थेरपिस्टसोबत गोपनीय १-ऑन-१ सत्र बुक करा.",
-      tier3Btn: "सत्र बुक करा →",
-      dailyGroundingTitle: "दैनंदिन मनःशांती व्यायाम",
-      dailyGroundingDesc: "४-७-८ श्वसन व्यायाम आणि ४३२Hz शांत संगीत ध्वनी.",
-      dailyGroundingBtn: "२ मिनिटांचा व्यायाम सुरू करा →"
+    screen6: {
+      title: "तात्काळ सुरक्षा तपासणी",
+      subtitle: "मदत देण्यापूर्वी तुम्ही सुरक्षित असल्याची खात्री करूया.",
+      question: "तुम्ही सध्या काही धोक्यात आहात किंवा स्वतःला दुखावण्याचा विचार मनात येतोय का?",
+      options: {
+        yes: "होय, मला तात्काळ मदत हवी आहे",
+        no: "नाही",
+        notSure: "सांगता येत नाही",
+        preferNotToAnswer: "उत्तर द्यायचे नाही"
+      },
+      urgentTitle: "तुम्हाला लगेच प्रत्यक्ष मानवी मदतीची गरज आहे",
+      urgentSub: "कृपया लगेच कॅम्पस मदत क्रमांक किंवा राष्ट्रीय हेल्पलाईनशी संपर्क साधा.",
+      urgentContacts: [
+        { name: "कॅम्पस आपत्कालीन समुपदेशक हेल्पलाइन", number: "+91 8000 123 456", note: "२४ तास कॅम्पसमध्ये उपलब्ध" },
+        { name: "Tele-MANAS (भारत सरकार)", number: "१४४१६", note: "टोल-फ्री २४x७ क्लिनिकल मदत" },
+        { name: "KIRAN राष्ट्रीय हेल्पलाइन", number: "१८००-५९९-००१९", note: "सामाजिक न्याय मंत्रालय" }
+      ],
+      safetyDisclaimer: "आपत्कालीन परिस्थितीत केवळ ॲपवर अवलंबून राहू नका. AI प्रणाली ही मानवी उपचाराचा पर्याय नाही."
     },
-    aiChat: {
-      headerTitle: "ऊब — AI प्रथम संवाद",
-      stepSub: "मार्गदर्शित संवाद · पायरी {step}/३",
-      initialGreeting: "नमस्कार. थोडक्यात सांगा — सध्या मनात काय चाललंय किंवा कसला ताण आहे?",
-      inputPlaceholder: "मराठी, हिंदी किंवा इंग्रजीत टाइप करा…",
-      sendButton: "पाठवा",
-      analyzingText: "भावना आणि संदर्भ तपासत आहे…",
-      matchedPeerTitle: "योग्य जुळणी: {name} ({role})",
-      matchedPeerDesc: "तुमचा थोडक्यात संदर्भ सुरक्षितपणे तयार केला आहे, जेणेकरून तुम्हाला पुन्हा सर्व सांगावे लागणार नाही. इतर कोणतीही माहिती पुढे जात नाही.",
-      startPeerBtn: "{name} शी बोलायला सुरुवात करा →",
-      chooseElseBtn: "दुसऱ्या व्यक्तीची निवड करा",
-      testPromptTitle: "चाचणीसाठी खालील उदाहरणावर टॅप करा:"
+    screen7: {
+      guidanceTitle: "ऊब मदत मार्गदर्शन",
+      guidanceSub: "तुमच्या चेक-इननुसार, ऊब सुचवते की येथून सुरुवात करा:",
+      levels: {
+        level1Title: "पातळी १ — व्यक्त होण्याची किंवा शांत राहण्याची जागा",
+        level1Desc: "मनातील सल बोलून मोकळे व्हा, संगीत ऐका किंवा डायरीत लिहा.",
+        level2Title: "पातळी २ — मला थोड्या मार्गदर्शनाची गरज आहे",
+        level2Desc: "कॉलेजचा ताण समजणाऱ्या प्रशिक्षित सायकोलॉजी पीअर व्हॉलंटिअरशी बोला.",
+        level3Title: "पातळी ३ — मला तात्काळ समुपदेशकाची गरज आहे",
+        level3Desc: "परवानाधारक क्लिनिकल कौन्सिलरची भेट बुक करा किंवा हेल्पलाईनवर कॉल करा."
+      },
+      exploreBtn: "सुचवलेली पातळी उघडा →"
     },
-    peerMatching: {
-      headerTitle: "तुमच्या गरजेनुसार निवडलेले मार्गदर्शक",
-      headerSub: "बुद्धिमान निवड प्रणाली",
-      topMatchBadge: "तुमच्यासाठी सर्वोत्तम जुळणी",
-      licensedBadge: "परवानाधारक काउन्सिलर",
-      peerBadge: "पीअर गाईड",
-      allFilter: "सर्व",
-      marathiFilter: "मराठी भाषिक",
-      burnoutFilter: "परीक्षा व ताण",
-      licensedFilter: "केवळ परवानाधारक",
-      startChatBtn: "अनामिक लाईव्ह चॅट सुरू करा",
-      bookSessionBtn: "१-ऑन-१ सत्र बुक करा ({slot})",
-      restingBadge: "विश्रांती घेत आहेत (२ तासांची शिफ्ट पूर्ण)"
+    level1: {
+      title: "स्वतःसाठी थोडा वेळ द्या",
+      tabLetItOut: "मनातील सल (Let It Out)",
+      tabMoodTunes: "मूडट्यून्स (MoodTunes)",
+      tabJournal: "खाजगी डायरी",
+      recordInstruction: "मनातील भावना आवाजात रेकॉर्ड करा. ऐकल्यानंतर हा आवाज कायमचा नष्ट केला जातो.",
+      permanentDeleteConfirm: "✓ तुमचा ऑडिओ मेमरीमधून कायमचा हटवला गेला आहे. शून्य बाइट्स शिल्लक.",
+      journalPrompt: "आज डोक्यात जे काही विचार चालू आहेत ते मोकळेपणाने लिहा...",
+      savedLocally: "तुमच्या फोनवर १००% सुरक्षितपणे साठवले आहे"
     },
-    consentGate: {
-      title: "{name} शी जोडण्यापूर्वी संमती",
-      subtitle: "पायरी ०३ · गोपनीय संमती गेट",
-      privacyNotice: "कोणतीही वैयक्तिक माहिती जात नाही. तुमची ओळख १००% अनामिक राहते.",
-      transfersTitle: "{name} कडे काय पाठवले जाईल:",
-      privateTitle: "काय १००% खाजगी आणि तुमच्याकडेच राहील:",
-      t1: "तुमची अनामिक ओळख ({anonId})",
-      t2: "ताणाचा मुख्य प्रकार (उदा. परीक्षेचा ताण / झोपेची समस्या)",
-      t3: "PHQ-9 ताण पातळी (उदा. मध्यम)",
-      p1: "तुमची प्रत्येक प्रश्नाची सविस्तर उत्तरे",
-      p2: "तुमचा IP पत्ता, स्थान आणि कॉलेज रेकॉर्ड",
-      p3: "तुमचा आपत्कालीन फोन नंबर",
-      acceptBtn: "मला समजले, माहिती हस्तांतरित करा →",
-      declineBtn: "आता नको (AI शीच बोलत राहायचे आहे)",
-      deadlockTitle: "क्लिनिकल मर्यादा सक्रिय",
-      deadlockDesc: "तुम्हाला सर्वोत्तम मदत मिळावी यासाठी थेट चॅट थांबवण्यात आले आहे. सर्व स्व-काळजी साधने तुमच्यासाठी खुली आहेत.",
-      goToSelfCare: "स्व-काळजी साधने उघडा →"
+    level2: {
+      title: "तुम्ही एकटे नाही आहात",
+      subtitle: "गोपनीय वातावरणात प्रशिक्षित पीअर व्हॉलंटिअरशी जोडा.",
+      requestFormTitle: "पीअर व्हॉलंटिअर मदत विनंती",
+      selectedTopic: "निवडलेला विषय",
+      prefLanguage: "संवादाची भाषा",
+      prefMode: "संवादाचे माध्यम",
+      prefTime: "सोयीची वेळ",
+      consentText: "मी माझी निवडलेली माहिती नियुक्त केलेल्या व्हॉलंटिअरसोबत शेअर करण्यास संमती देतो/देते.",
+      submitRequestBtn: "मदत विनंती पाठवा",
+      lifecycle: {
+        step1: "विनंती पाठवली",
+        step2: "व्हॉलंटिअर नियुक्त",
+        step3: "व्हॉलंटिअरने स्वीकारले",
+        step4: "खाजगी चॅट",
+        step5: "अभिप्राय व समाप्त"
+      },
+      volunteerBoundaries: "व्हॉलंटिअर मार्गदर्शक तत्त्वे: न्याय न करता सहानुभूतीने ऐका. औषधे किंवा वैद्यकीय सल्ला देऊ नका. गंभीर धोका आढळल्यास लगेच समुपदेशकांना कळवा."
     },
-    progress: {
-      title: "तुमची प्रगती",
-      subtitle: "पहिल्या तपासणीपासून ६ आठवड्यांचा आलेख",
-      chartTitle: "ताण पातळीचा कल (PHQ-9 Curve)",
-      totalDrop: "-४७% एकूण घट",
-      reportedStress: "नोंदवलेला ताण",
-      checkInStreak: "सातत्य दिवस (Streak)",
-      milestoneTitle: "मानसिक कणखरतेचा टप्पा गाठला",
-      milestoneDesc: "तुम्ही ४ सत्रे पूर्ण केली आहेत. झोपेची गुणवत्ता सलग ३ आठवडे सुधारली आहे.",
-      habitTitle: "दैनंदिन स्व-तपासणी",
-      habitSub: "आजची ३० सेकंद नोंद तयार आहे",
-      logMoodBtn: "मूड नोंदवा →"
-    },
-    sos: {
-      headerTitle: "आपत्कालीन मदत केंद्र (SOS)",
-      headerSub: "स्थान ट्रॅकिंग नाही · १००% गोपनीयता",
-      urgentBanner: "जर तुम्ही किंवा तुमचे मित्र तीव्र मानसिक संकटात असाल, तर तुम्ही एकटे नाही आहात. खालील २४x७ मोफत भारतीय हेल्पलाईनवर त्वरित संपर्क साधा.",
-      teleManasTitle: "Tele-MANAS (भारत सरकार)",
-      teleManasSub: "२४x७ राष्ट्रीय मानसिक आरोग्य हेल्पलाईन · टोल-फ्री · २०+ भाषा",
-      kiranTitle: "किरण (KIRAN) हेल्पलाईन",
-      kiranSub: "सामाजिक न्याय मंत्रालय · २४x७ समर्पित मदत",
-      maitriTitle: "मैत्री (Maitri) हेल्पलाईन",
-      maitriSub: "विद्यार्थी ताण आणि आत्महत्या प्रतिबंध सहाय्य",
-      breakGlassTitle: "आपत्कालीन संपर्क अलर्ट",
-      breakGlassDesc: "तुमच्या आपत्कालीन संपर्कावर ({contact}) अनामिक SMS पाठवा.",
-      triggerSmsBtn: "आपत्कालीन SMS अलर्ट पाठवा",
-      smsSentSuccess: "✓ आपत्कालीन SMS यशस्वीरीत्या पाठवला गेला!",
-      closeBtn: "SOS बंद करा"
-    },
-    selfCare: {
-      title: "स्व-काळजी व मनःशांती",
-      subtitle: "मनातील भावना मोकळ्या करण्यासाठी सुरक्षित जागा",
-      tabLetItOut: "मनातील सल जळून नष्ट करा (Let It Out)",
-      tabWall: "उब देणारे विचार (Wall of Thoughts)",
-      tabRelax: "शांत व्हा आणि श्वास घ्या",
-      moodTitle: "सध्या मनाची स्थिती कशी वाटतेय?",
-      ventTitle: "मनातील भावना लिहा · आणि नष्ट करा",
-      ventDesc: "जे काही त्रास देत आहे ते मोकळेपणाने लिहा किंवा रेकॉर्ड करा. 'नष्ट करा' दाबल्यावर ते डेटाबेसमधून कायमचे नष्ट होईल.",
-      ventPlaceholder: "मनात जे काही आहे ते इथे लिहा... इथे कोणीही वाचणार नाही किंवा जतन करणार नाही.",
-      burnButton: "🔥 जाळून कायमचे नष्ट करा",
-      burningText: "विचार नष्ट होत आहेत…",
-      burnedSuccess: "✓ तुमचे विचार मोकळे झाले आणि कायमचे नष्ट झाले.",
-      wallTitle: "मित्रमंडळींचे प्रेमळ संदेश",
-      wallDesc: "इतर विद्यार्थ्यांनी लिहिलेले दिलासा देणारे विचार.",
-      addLetterBtn: "प्रेरणादायी संदेश लिहा +",
-      relaxTitle: "४-७-८ श्वसन व्यायाम",
-      relaxDesc: "४३२Hz शांत ध्वनीसह मज्जासंस्थेला त्वरित आराम देणारे तंत्र.",
-      breatheInhale: "श्वास घ्या (४ सेकंद)",
-      breatheHold: "श्वास रोखा (७ सेकंद)",
-      breatheExhale: "श्वास सोडा (८ सेकंद)",
-      startBreathing: "श्वसन सुरू करा",
-      stopBreathing: "श्वसन थांबवा",
-      soundscapeToggle: "४३२Hz शांत संगीत ध्वनी"
+    level3: {
+      title: "व्यावसायिक समुपदेशकांशी संपर्क",
+      subtitle: "परवानाधारक क्लिनिकल कौन्सिलरची भेट निश्चित करा.",
+      counsellorA: {
+        name: "डॉ. प्रतिभा देशमुख",
+        specialization: "विद्यार्थी मानसिक आरोग्य व ताण निवारण",
+        available: "उद्या, सकाळी १०:३०"
+      },
+      counsellorB: {
+        name: "डॉ. आनंद जोशी",
+        specialization: "अभ्यास व वैयक्तिक समस्या समुपदेशन",
+        available: "आज, दुपारी ४:३०"
+      },
+      bookBtn: "भेट बुक करा",
+      midnightTitle: "सध्या कोणताही समुपदेशक उपलब्ध नाही",
+      midnightSub: "तुमची विनंती तात्काळ म्हणून नोंदवली आहे. पहिली उपलब्ध वेळ: उद्या सकाळी ८:३०.",
+      whileYouWait: "भेट होईपर्यंत खालील साधने वापरा:",
+      whileYouWaitTools: [
+        "कॅम्पस आपत्कालीन क्रमांकावर संपर्क साधा",
+        "मनातील सल (Let It Out) मध्ये तात्पुरता आवाज रेकॉर्ड करा",
+        "MoodTunes बायनॉरॉल बीट्स ऐका",
+        "खाजगी डायरीत भावना लिहा",
+        "जवळच्या विश्वासू मित्राशी बोला"
+      ]
     }
   },
-
   hi: {
     common: {
       appName: "ऊब (Ubb)",
-      appTagline: "सहानुभूति और मानसिक संबल",
+      tagline: "हर विचार के लिए एक सुरक्षित जगह",
+      back: "पीछे",
+      continue: "आगे बढ़ें",
+      save: "सहेजें",
+      cancel: "रद्द करें",
+      submit: "सबमिट करें",
+      skip: "छोड़ें",
       home: "होम",
       talk: "बातचीत",
       progress: "प्रगति",
-      selfCare: "स्वयं की देखभाल",
-      back: "पीछे",
-      cancel: "रद्द करें",
-      save: "सहेजें",
-      continue: "आगे बढ़ें",
-      emergencySOS: "क्या तुरंत सहायता चाहिए?",
-      emergencySub: "24x7 हेल्पलाइन और आपातकालीन सहायता",
-      anonymousId: "गुमनाम पहचान",
-      rlsProtected: "RLS सुरक्षित"
+      selfCare: "आत्म-देखभाल",
+      emergencySOS: "तत्काल सहायता चाहिए?",
+      emergencySub: "24x7 कैंपस इमरजेंसी व Tele-MANAS 14416",
+      rlsProtected: "RLS सुरक्षित · शून्य व्यक्तिगत जानकारी",
+      permanentDeleteNotice: "आपकी ऑडियो रिकॉर्डिंग हमेशा के लिए हटा दी गई है।",
+      wasThisHelpful: "क्या यह आपके लिए मददगार रहा?",
+      reallyHelpful: "बहुत मददगार",
+      good: "अच्छा",
+      okay: "ठीक-ठाक",
+      notGreat: "खास नहीं",
+      stillNeedSupport: "मुझे अभी और मदद चाहिए"
     },
-    onboarding: {
-      tagline: "ऊब · सुरक्षित और आरामदायक वातावरण",
-      title: "अपनी बात कहने के लिए नाम की ज़रूरत नहीं।",
-      subtitle: "अपनी भाषा चुनें। अपनी पहचान बताए बिना प्रशिक्षित साथियों और काउंसलर्स से बात करें।",
-      anonTagLabel: "गुमनाम पहचान (Tag)",
-      reRoll: "नया नाम चुनें",
-      breakGlassLabel: "आपातकालीन संपर्क (वैकल्पिक)",
-      breakGlassDesc: "केवल SOS दबाने पर ही संपर्क किया जाएगा। कोई व्यक्तिगत डेटा स्टोर नहीं होता।",
-      breakGlassPlaceholder: "+91 98765 43210 (वैकल्पिक)",
-      startButton: "गुमनाम आईडी बनाएं और शुरू करें →",
-      footerNote: "कोई नाम नहीं · कॉलेज रिकॉर्ड से कोई लिंक नहीं · पूर्ण गोपनीयता"
+    screen1: {
+      title: "ऊब (Ubb) में आपका स्वागत है",
+      subtitle: "हर विचार के लिए एक सुरक्षित और अपनापन भरी जगह",
+      studentBtn: "विद्यार्थी के रूप में आगे बढ़ें",
+      studentSub: "गुमनाम · 100% निजी · नाम या फोन की आवश्यकता नहीं",
+      volunteerBtn: "वॉलंटियर / काउंसलर लॉगिन",
+      volunteerSub: "सपोर्ट कतार, मॉडरेशन और अपॉइंटमेंट देखें",
+      privacyNotice: "अपनी बात रखने के लिए आपको नाम या फोन नंबर साझा करने की आवश्यकता नहीं है।"
     },
-    screening: {
-      title: "90-सेकंड त्वरित चेक-इन",
-      approxTime: "~90 सेकंड",
-      options: [
-        { label: "बिल्कुल नहीं", points: 0 },
-        { label: "कुछ दिन", points: 1 },
-        { label: "आधे से अधिक दिन", points: 2 },
-        { label: "लगभग हर दिन", points: 3 }
+    screen2: {
+      title: "आपकी निजी Ubb ID बन गई है",
+      subtitle: "आप अपनी यात्रा जारी रखने के लिए इस ID का उपयोग कर सकते हैं।",
+      saveNotice: "कृपया अपनी यह Ubb ID सुरक्षित रूप से नोट कर लें।",
+      pinLabel: "वैकल्पिक 4-अंकों का निजी PIN बनाएं",
+      pinPlaceholder: "••••",
+      privacyPill: "कोई नाम नहीं · कोई नंबर नहीं · पूरी गोपनीयता",
+      continueBtn: "डैशबोर्ड पर जाएं →",
+      deleteDataNote: "आप सेटिंग्स से किसी भी समय अपना पूरा डेटा हटा सकते हैं।"
+    },
+    screen3: {
+      welcome: "वापसी पर स्वागत है",
+      quote: "आज ही सब कुछ हल करने की आवश्यकता नहीं है। एक छोटे कदम से शुरुआत करें।",
+      pulseTitle: "ऊब पल्स (UbbPulse)",
+      pulseDesc: "मूड चेक-इन करें और व्यक्तिगत मार्गदर्शन पाएं",
+      letItOutTitle: "मन की बात (Let It Out)",
+      letItOutDesc: "अस्थायी वॉयस या टेक्स्ट · सुनने के तुरंत बाद नष्ट",
+      moodTunesTitle: "मूडट्यून्स (MoodTunes)",
+      moodTunesDesc: "शांत संगीत, प्रकृति की ध्वनियां और बाइनॉरल बीट्स",
+      journalTitle: "निजी डायरी (Journal)",
+      journalDesc: "आपके डिवाइस पर 100% सुरक्षित रूप से सहेजे गए विचार",
+      wallTitle: "सकारात्मक विचार (Wall of Thoughts)",
+      wallDesc: "साथी छात्रों के प्रेरक संदेश पढ़ें और साझा करें",
+      talkTitle: "किसी से बात करें (Talk to Someone)",
+      talkDesc: "प्रशिक्षित मनोविज्ञान वॉलंटियर या काउंसलर से जुड़ें",
+      journeyTitle: "मेरी यात्रा (My Journey)",
+      journeyDesc: "अपने मूड के रुझान और पूर्व चेक-इन देखें"
+    },
+    screen4: {
+      title: "आप अभी कैसा महसूस कर रहे हैं?",
+      subtitle: "यह एक निजी चेक-इन है, कोई चिकित्सीय मूल्यांकन नहीं।",
+      moods: {
+        good: "अच्छा",
+        calm: "शांत",
+        sad: "उदास",
+        anxious: "चिंतित",
+        irritated: "चिड़चिड़ा",
+        overwhelmed: "बहुत अधिक तनाव",
+        numb: "सुन्न / कुछ समझ नहीं आ रहा",
+        veryLow: "बहुत निराश",
+        dontKnow: "पता नहीं",
+        other: "अन्य",
+        preferNotToSay: "बताना नहीं चाहते"
+      },
+      intensityTitle: "इस भावना की तीव्रता अभी कितनी महसूस हो रही है?",
+      intensityLevels: {
+        little: "थोड़ी सी",
+        moderate: "मध्यम",
+        strong: "तीव्र",
+        veryStrong: "अत्यधिक तीव्र"
+      },
+      nextBtn: "आगे बढ़ें →"
+    },
+    screen5A: {
+      title: "अब आप क्या करना चाहेंगे?",
+      expressOpt: "खुद को व्यक्त करें",
+      expressSub: "MoodTunes सुनें या निजी डायरी में लिखें",
+      helpPeersOpt: "साथियों की मदद करें",
+      helpPeersSub: "Wall of Thoughts पर कोई प्रेरक विचार साझा करें",
+      activityOpt: "शांति गतिविधि का अभ्यास करें",
+      activitySub: "4-7-8 श्वास व्यायाम या प्रकृति ध्वनियां",
+      dashOpt: "डैशबोर्ड पर जाएं",
+      wallPromptTitle: "अन्य छात्रों के लिए कोई प्रेरक संदेश लिखें",
+      wallPromptDesc: "आपका संदेश गुमनाम रहेगा और समीक्षा के बाद वॉल पर दिखाई देगा।",
+      starters: [
+        "आज जिस बात ने मेरी मदद की वो थी...",
+        "एक बात जो आज किसी को सुनने की जरूरत हो सकती है...",
+        "मुझे खुद पर गर्व है क्योंकि..."
       ],
-      questions: [
-        { id: 1, category: "रुचि की कमी", title: "पिछले 2 हफ्तों में, क्या आपको अपनी पसंदीदा गतिविधियों में कम आनंद मिला है?" },
-        { id: 2, category: "उदासी", title: "पढ़ाई या निजी जीवन को लेकर उदास या निराश महसूस होना?" },
-        { id: 3, category: "नींद की समस्या", title: "परीक्षा के तनाव में नींद न आना या बहुत अधिक नींद आना?" },
-        { id: 4, category: "थकान", title: "दिनभर बहुत अधिक थकान या ऊर्जा की कमी महसूस होना?" },
-        { id: 5, category: "भूख में बदलाव", title: "तनाव में कम या बहुत अधिक खाना?" },
-        { id: 6, category: "दोष भाव", title: "खुद को असफल मानना या परिवार को निराश करने का डर?" },
-        { id: 7, category: "एकाग्रता की कमी", title: "पढ़ाई या रोजमर्रा के कामों में ध्यान केंद्रित करने में कठिनाई?" },
-        { id: 8, category: "अत्यधिक तनाव", title: "दैनिक गतिविधियों को संभालने में पूरी तरह असमर्थ महसूस होना?" }
+      postBtn: "गुमनाम रूप से पोस्ट करें",
+      draftBtn: "ड्राफ्ट सहेजें",
+      moderationStatus: "सुरक्षा जांच → वॉलंटियर समीक्षा → प्रकाशित"
+    },
+    screen5B: {
+      title: "आप किस विषय में सहायता चाहते हैं?",
+      subtitle: "लागू होने वाले सभी विकल्प चुनें। एक से अधिक चुन सकते हैं।",
+      topics: [
+        "पढ़ाई और परीक्षा",
+        "करियर",
+        "भविष्य की अनिश्चितता",
+        "परिवार",
+        "मित्र",
+        "रिश्ते",
+        "आर्थिक तनाव",
+        "अकेलापन",
+        "आत्मविश्वास",
+        "नींद या दिनचर्या",
+        "अन्य",
+        "पता नहीं"
       ],
-      footerNotice: "Row Level Security के साथ आपके स्कोर सुरक्षित रहते हैं।"
+      moreDetailsLabel: "क्या आप थोड़ा और बताना चाहेंगे? (वैकल्पिक)",
+      moreDetailsPlaceholder: "यहाँ कुछ शब्द लिख सकते हैं... चाहें तो इसे छोड़ भी सकते हैं।"
     },
-    home: {
-      welcomeBack: "वापसी पर स्वागत है",
-      checkInScore: "आपके चेक-इन के आधार पर",
-      seePeerMatches: "सहायक साथी देखें →",
-      actionTiersTitle: "सहायता विकल्प",
-      tier1Title: "त्वरित AI सहायता",
-      tier1Desc: "किसी व्यक्ति से बात करने से पहले 3 मिनट के AI संवाद में स्थिति समझें।",
-      tier1Btn: "AI बातचीत शुरू करें →",
-      tier2Title: "प्रशिक्षित सहपाठी साथी",
-      tier2Desc: "कॉलेज का तनाव समझने वाले साइकोलॉजी के छात्र।",
-      tier2Btn: "साथी चुनें →",
-      tier3Title: "लाइसेंस प्राप्त काउंसलर",
-      tier3Desc: "प्रमाणित थेरेपिस्ट के साथ गोपनीय 1-ऑन-1 सत्र बुक करें।",
-      tier3Btn: "सत्र बुक करें →",
-      dailyGroundingTitle: "दैनिक मनःशांति अभ्यास",
-      dailyGroundingDesc: "4-7-8 श्वास तकनीक और 432Hz शांत संगीत धुन।",
-      dailyGroundingBtn: "2 मिनट का अभ्यास करें →"
+    screen6: {
+      title: "तत्काल सुरक्षा जांच",
+      subtitle: "सहायता की ओर बढ़ने से पहले आइए सुनिश्चित करें कि आप सुरक्षित हैं।",
+      question: "क्या आप किसी खतरे में हैं या खुद को नुकसान पहुंचाने का विचार आ रहा है?",
+      options: {
+        yes: "हाँ, मुझे तुरंत मदद चाहिए",
+        no: "नहीं",
+        notSure: "निश्चित नहीं हूँ",
+        preferNotToAnswer: "उत्तर नहीं देना चाहते"
+      },
+      urgentTitle: "आपको तुरंत प्रत्यक्ष मानवीय सहायता की आवश्यकता है",
+      urgentSub: "कृपया तुरंत कैंपस आपातकालीन सेवाओं या राष्ट्रीय हेल्पलाइन से संपर्क करें।",
+      urgentContacts: [
+        { name: "कैंपस आपातकालीन काउंसलर हेल्पलाइन", number: "+91 8000 123 456", note: "कैंपस में 24x7 उपलब्ध" },
+        { name: "Tele-MANAS (भारत सरकार)", number: "14416", note: "टोल-फ्री 24x7 मानसिक स्वास्थ्य सहायता" },
+        { name: "KIRAN राष्ट्रीय हेल्पलाइन", number: "1800-599-0019", note: "सामाजिक न्याय मंत्रालय" }
+      ],
+      safetyDisclaimer: "आपातकाल में केवल ऐप पर निर्भर न रहें। AI प्रणाली पेशेवर मानवीय देखभाल का विकल्प नहीं है।"
     },
-    aiChat: {
-      headerTitle: "ऊब — AI प्रथम संपर्क",
-      stepSub: "मार्गदर्शित संवाद · चरण {step}/3",
-      initialGreeting: "नमस्ते। संक्षेप में बताएं — आजकल मन में क्या चल रहा है या क्या तनाव है?",
-      inputPlaceholder: "हिंदी, मराठी या अंग्रेजी में लिखें…",
-      sendButton: "भेजें",
-      analyzingText: "भावनाओं और संदर्भ का विश्लेषण हो रहा है…",
-      matchedPeerTitle: "सुझाया गया साथी: {name} ({role})",
-      matchedPeerDesc: "आपकी स्थिति का संक्षिप्त सारांश तैयार है ताकि आपको बार-बार न बताना पड़े।",
-      startPeerBtn: "{name} से बात शुरू करें →",
-      chooseElseBtn: "कोई अन्य साथी चुनें",
-      testPromptTitle: "परीक्षण के लिए किसी उदाहरण पर टैप करें:"
+    screen7: {
+      guidanceTitle: "ऊब सहायता मार्गदर्शन",
+      guidanceSub: "आपके चेक-इन के आधार पर, ऊब सुझाव देती है कि यहाँ से शुरुआत करें:",
+      levels: {
+        level1Title: "स्तर 1 — खुद को व्यक्त करने या शांत होने का स्थान",
+        level1Desc: "अस्थायी वॉयस वेंटिंग, शांत संगीत या निजी डायरी लेखन का उपयोग करें।",
+        level2Title: "स्तर 2 — मुझे थोड़े मार्गदर्शन की आवश्यकता है",
+        level2Desc: "कॉलेज के माहौल को समझने वाले प्रशिक्षित मनोविज्ञान वॉलंटियर से बात करें।",
+        level3Title: "स्तर 3 — मुझे तुरंत काउंसलर की आवश्यकता है",
+        level3Desc: "लाइसेंस प्राप्त क्लिनिकल काउंसलर के साथ अपॉइंटमेंट बुक करें।"
+      },
+      exploreBtn: "सुझाए गए स्तर पर जाएं →"
     },
-    peerMatching: {
-      headerTitle: "आपकी स्थिति के अनुसार चुने गए साथी",
-      headerSub: "स्मार्ट सुझाव प्रणाली",
-      topMatchBadge: "आपके लिए सर्वोत्तम मिलान",
-      licensedBadge: "लाइसेंस प्राप्त काउंसलर",
-      peerBadge: "सहपाठी मार्गदर्शक",
-      allFilter: "सभी",
-      marathiFilter: "मराठी भाषी",
-      burnoutFilter: "परीक्षा व तनाव",
-      licensedFilter: "केवल लाइसेंस प्राप्त",
-      startChatBtn: "गुमनाम चैट शुरू करें",
-      bookSessionBtn: "1-ऑन-1 सत्र बुक करें ({slot})",
-      restingBadge: "विश्राम में (2 घंटे की शिफ्ट पूरी)"
+    level1: {
+      title: "खुद के लिए एक शांत पल निकालें",
+      tabLetItOut: "मन की बात (Let It Out)",
+      tabMoodTunes: "मूडट्यून्स (MoodTunes)",
+      tabJournal: "निजी डायरी",
+      recordInstruction: "अपनी बात वॉयस में रिकॉर्ड करें। सुनने के तुरंत बाद यह पूरी तरह नष्ट हो जाती है।",
+      permanentDeleteConfirm: "✓ आपकी ऑडियो रिकॉर्डिंग हमेशा के लिए हटा दी गई है। शून्य बाइट्स शेष।",
+      journalPrompt: "आज जो भी विचार मन में चल रहे हैं उन्हें खुलकर लिखें...",
+      savedLocally: "आपके फोन पर 100% सुरक्षित रूप से सहेजा गया"
     },
-    consentGate: {
-      title: "{name} से जुड़ने से पहले सहमति",
-      subtitle: "चरण 03 · सहमति गेट",
-      privacyNotice: "कोई व्यक्तिगत जानकारी साझा नहीं होती। पहचान 100% गुमनाम रहती है।",
-      transfersTitle: "{name} को क्या भेजा जाएगा:",
-      privateTitle: "क्या 100% निजी रहेगा:",
-      t1: "आपकी गुमनाम आईडी ({anonId})",
-      t2: "तनाव का मुख्य कारण (जैसे परीक्षा का तनाव)",
-      t3: "तनाव का स्तर (जैसे मध्यम)",
-      p1: "आपके सभी विस्तृत उत्तर",
-      p2: "आपका IP पता और कॉलेज रिकॉर्ड",
-      p3: "आपका आपातकालीन फोन नंबर",
-      acceptBtn: "सहमति दें और आगे बढ़ें →",
-      declineBtn: "अभी नहीं (AI से ही बात जारी रखें)",
-      deadlockTitle: "मर्यादा सीमा सक्रिय",
-      deadlockDesc: "आपकी सुरक्षा के लिए लाइव चैट रोक दी गई है। सभी स्व-देखभाल उपकरण उपलब्ध हैं।",
-      goToSelfCare: "स्व-देखभाल उपकरण खोलें →"
+    level2: {
+      title: "आप अकेले नहीं हैं",
+      subtitle: "सुरक्षित वातावरण में प्रशिक्षित साथी वॉलंटियर से जुड़ें।",
+      requestFormTitle: "वॉलंटियर सहायता अनुरोध",
+      selectedTopic: "चयनित विषय",
+      prefLanguage: "पसंदीदा भाषा",
+      prefMode: "बातचीत का माध्यम",
+      prefTime: "सुविधाजनक समय",
+      consentText: "मैं अपनी चयनित चेक-इन जानकारी को नियुक्त वॉलंटियर के साथ साझा करने की सहमति देता/देती हूँ।",
+      submitRequestBtn: "सहायता अनुरोध भेजें",
+      lifecycle: {
+        step1: "अनुरोध भेजा गया",
+        step2: "वॉलंटियर नियुक्त",
+        step3: "वॉलंटियर ने स्वीकार किया",
+        step4: "निजी चैट",
+        step5: "प्रतिक्रिया व समाप्त"
+      },
+      volunteerBoundaries: "वॉलंटियर दिशानिर्देश: बिना किसी पूर्वाग्रह के सहानुभूति से सुनें। कोई दवा या चिकित्सीय सलाह न दें। सुरक्षा का गंभीर जोखिम होने पर तुरंत काउंसलर को सूचित करें।"
     },
-    progress: {
-      title: "आपकी प्रगति",
-      subtitle: "पिछले 6 हफ्तों का सुधार",
-      chartTitle: "तनाव स्तर में सुधार (PHQ-9 Curve)",
-      totalDrop: "-47% कुल गिरावट",
-      reportedStress: "दर्ज तनाव",
-      checkInStreak: "चेक-इन स्ट्रीक (दिन)",
-      milestoneTitle: "मानसिक मजबूती का पड़ाव",
-      milestoneDesc: "आपने 4 सत्र पूरे कर लिए हैं। आपकी नींद में 3 हफ्तों से लगातार सुधार है।",
-      habitTitle: "दैनिक चेक-इन",
-      habitSub: "आज का 30 सेकंड का चेक-इन तैयार है",
-      logMoodBtn: "मूड दर्ज करें →"
-    },
-    sos: {
-      headerTitle: "आपातकालीन सहायता केंद्र (SOS)",
-      headerSub: "कोई लोकेशन ट्रैकिंग नहीं · पूर्ण गोपनीयता",
-      urgentBanner: "यदि आप या आपका कोई साथी गंभीर तनाव में है, तो आप अकेले नहीं हैं। कृपया 24x7 निःशुल्क भारतीय हेल्पलाइन पर तुरंत संपर्क करें।",
-      teleManasTitle: "Tele-MANAS (भारत सरकार)",
-      teleManasSub: "24x7 राष्ट्रीय मानसिक स्वास्थ्य हेल्पलाइन · 20+ भाषाएं",
-      kiranTitle: "किरण (KIRAN) हेल्पलाइन",
-      kiranSub: "सामाजिक न्याय मंत्रालय · 24x7 समर्पित सहायता",
-      maitriTitle: "मैत्री (Maitri) हेल्पलाइन",
-      maitriSub: "विद्यार्थी तनाव और आत्महत्या रोकथाम सहायता",
-      breakGlassTitle: "आपातकालीन संपर्क अलर्ट",
-      breakGlassDesc: "अपने आपातकालीन संपर्क ({contact}) पर गुमनाम SMS भेजें।",
-      triggerSmsBtn: "आपातकालीन SMS भेजें",
-      smsSentSuccess: "✓ आपातकालीन SMS सफलतापूर्वक भेजा गया!",
-      closeBtn: "SOS बंद करें"
-    },
-    selfCare: {
-      title: "स्व-देखभाल और मनःशांति",
-      subtitle: "मन को हल्का करने के लिए एक सुरक्षित स्थान",
-      tabLetItOut: "मन का बोझ जलाकर मिटाएं (Let It Out)",
-      tabWall: "सहानुभूति पत्र (Wall of Thoughts)",
-      tabRelax: "शांत हों और गहरी सांस लें",
-      moodTitle: "अभी आपका मन कैसा महसूस कर रहा है?",
-      ventTitle: "मन की बात लिखें · और नष्ट करें",
-      ventDesc: "जो भी बात परेशान कर रही है उसे लिखें। 'नष्ट करें' दबाते ही यह हमेशा के लिए मिट जाएगा।",
-      ventPlaceholder: "अपने विचार यहां लिखें... कोई भी इसे देख या सहेज नहीं रहा।",
-      burnButton: "🔥 जलाकर हमेशा के लिए मिटाएं",
-      burningText: "विचार मिटाए जा रहे हैं…",
-      burnedSuccess: "✓ आपके विचार हमेशा के लिए मिटा दिए गए।",
-      wallTitle: "साथियों के सकारात्मक संदेश",
-      wallDesc: "अन्य छात्रों द्वारा लिखे गए सांत्वना पत्र।",
-      addLetterBtn: "प्रेरणादायक संदेश लिखें +",
-      relaxTitle: "4-7-8 श्वास तकनीक",
-      relaxDesc: "432Hz शांत संगीत के साथ तंत्रिका तंत्र को तुरंत आराम।",
-      breatheInhale: "सांस अंदर लें (4s)",
-      breatheHold: "सांस रोकें (7s)",
-      breatheExhale: "सांस छोड़ें (8s)",
-      startBreathing: "श्वास अभ्यास शुरू करें",
-      stopBreathing: "रोकें",
-      soundscapeToggle: "432Hz शांत संगीत"
+    level3: {
+      title: "पेशेवर सहायता से जुड़ें",
+      subtitle: "लाइसेंस प्राप्त काउंसलर के साथ अपॉइंटमेंट बुक करें।",
+      counsellorA: {
+        name: "डॉ. प्रतिभा देशमुख",
+        specialization: "छात्र मानसिक स्वास्थ्य और तनाव प्रबंधन",
+        available: "कल, सुबह 10:30"
+      },
+      counsellorB: {
+        name: "डॉ. आनंद जोशी",
+        specialization: "अकादमिक और व्यक्तिगत परामर्श",
+        available: "आज, शाम 4:30"
+      },
+      bookBtn: "अपॉइंटमेंट बुक करें",
+      midnightTitle: "अभी कोई काउंसलर उपलब्ध नहीं है",
+      midnightSub: "आपका अनुरोध अत्यंत महत्वपूर्ण के रूप में दर्ज है। पहली उपलब्ध अपॉइंटमेंट: कल सुबह 8:30।",
+      whileYouWait: "अपॉइंटमेंट का इंतज़ार करते समय इन टूल्स का उपयोग करें:",
+      whileYouWaitTools: [
+        "कैंपस आपातकालीन नंबर पर संपर्क करें",
+        "Let It Out में अस्थायी वॉयस रिकॉर्ड करें",
+        "MoodTunes बाइनॉरल बीट्स सुनें",
+        "निजी डायरी में विचार लिखें",
+        "पास के किसी भरोसेमंद व्यक्ति से बात करें"
+      ]
     }
   }
 };
 
 export const getTranslation = (lang = 'en') => {
-  return translations[lang] || translations.en;
+  return TRANSLATIONS[lang] || TRANSLATIONS.en;
 };
