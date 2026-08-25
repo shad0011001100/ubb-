@@ -27,7 +27,7 @@ export function Screen08Level1Express({
   selectedLanguage = 'en'
 }) {
   const t = getTranslation(selectedLanguage);
-  const [activeSubTab, setActiveSubTab] = useState(defaultTab); // 'let_it_out' | 'mood_tunes' | 'journal'
+  const [activeSubTab, setActiveSubTab] = useState(defaultTab);
 
   // Let It Out states
   const [isRecording, setIsRecording] = useState(false);
@@ -55,7 +55,6 @@ export function Screen08Level1Express({
   const [selectedJournalMood, setSelectedJournalMood] = useState('🌱 Gentle');
   const [entrySavedNotice, setEntrySavedNotice] = useState(false);
 
-  // Recording Timer Effect
   useEffect(() => {
     if (isRecording && !isPaused) {
       timerRef.current = setInterval(() => {
@@ -67,7 +66,6 @@ export function Screen08Level1Express({
     return () => clearInterval(timerRef.current);
   }, [isRecording, isPaused]);
 
-  // Clean up audio on unmount
   useEffect(() => {
     return () => {
       binauralEngine.stop(0.3);
@@ -153,22 +151,22 @@ export function Screen08Level1Express({
   };
 
   return (
-    <div className="h-full bg-[#FFFFFF] text-[#14282B] flex flex-col justify-between overflow-hidden select-none">
+    <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none font-sans">
       {/* Header with Sub-Tabs */}
-      <div className="px-4 pt-4 pb-2 border-b border-[#D9E2DC]/60 bg-white">
-        <div className="flex items-center justify-between mb-2">
+      <div className="px-4 pt-4 pb-2 border-b border-[#c5c8bc]/50 bg-[#f9fbeb]">
+        <div className="flex items-center justify-between mb-2.5">
           <div className="flex items-center gap-2">
             <button
               onClick={() => onNavigate('dashboard')}
-              className="p-1 rounded-full hover:bg-slate-100 text-[#5B6E67] cursor-pointer"
+              className="p-1.5 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-wider text-[#4E7C63] font-bold">
+              <div className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold">
                 Level 1 · Self-Guided
               </div>
-              <h2 className="font-fraunces text-base font-semibold text-[#14282B]">
+              <h2 className="font-fraunces text-base font-semibold text-[#1a1d14]">
                 {t.level1.title}
               </h2>
             </div>
@@ -176,20 +174,20 @@ export function Screen08Level1Express({
 
           <button
             onClick={() => onFinishActivity('level1')}
-            className="text-[10px] px-2.5 py-1 rounded-full bg-[#3A5F4B] text-white font-semibold cursor-pointer hover:bg-[#2C4839]"
+            className="text-[10.5px] px-3 py-1 rounded-full bg-[#526140] hover:bg-[#435034] text-white font-bold cursor-pointer shadow-xs"
           >
             Done
           </button>
         </div>
 
         {/* 3 Interactive Sub-Tabs */}
-        <div className="grid grid-cols-3 gap-1 p-1 bg-[#F2F6F3] rounded-xl">
+        <div className="grid grid-cols-3 gap-1 p-1 bg-[#edefe0] rounded-2xl">
           <button
             onClick={() => setActiveSubTab('let_it_out')}
-            className={`py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-all cursor-pointer ${
+            className={`py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               activeSubTab === 'let_it_out'
-                ? 'bg-white text-[#B84C4C] shadow-xs'
-                : 'text-[#5B6E67] hover:text-[#14282B]'
+                ? 'bg-white text-[#815505] shadow-xs font-bold'
+                : 'text-[#5e5c52] hover:text-[#1a1d14]'
             }`}
           >
             <Flame className="w-3.5 h-3.5" />
@@ -198,10 +196,10 @@ export function Screen08Level1Express({
 
           <button
             onClick={() => setActiveSubTab('mood_tunes')}
-            className={`py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-all cursor-pointer ${
+            className={`py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               activeSubTab === 'mood_tunes'
-                ? 'bg-white text-[#4E7C63] shadow-xs'
-                : 'text-[#5B6E67] hover:text-[#14282B]'
+                ? 'bg-white text-[#526140] shadow-xs font-bold'
+                : 'text-[#5e5c52] hover:text-[#1a1d14]'
             }`}
           >
             <Music className="w-3.5 h-3.5" />
@@ -210,10 +208,10 @@ export function Screen08Level1Express({
 
           <button
             onClick={() => setActiveSubTab('journal')}
-            className={`py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-all cursor-pointer ${
+            className={`py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               activeSubTab === 'journal'
-                ? 'bg-white text-[#3A5F4B] shadow-xs'
-                : 'text-[#5B6E67] hover:text-[#14282B]'
+                ? 'bg-white text-[#5e5c52] shadow-xs font-bold'
+                : 'text-[#5e5c52] hover:text-[#1a1d14]'
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
@@ -227,8 +225,8 @@ export function Screen08Level1Express({
         {/* ================= 1. LET IT OUT (VOICE VENTING & DELETION) ================= */}
         {activeSubTab === 'let_it_out' && (
           <div className="space-y-3 animate-fadeIn">
-            <div className="bg-[#FFFBFB] border border-red-200 rounded-2xl p-4 space-y-3 text-center">
-              <div className="flex items-center justify-between text-[10px] font-mono text-[#B84C4C]">
+            <div className="bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-3xl p-4 space-y-3 text-center shadow-xs">
+              <div className="flex items-center justify-between text-[10px] font-mono text-[#815505] font-bold">
                 <span className="flex items-center gap-1">
                   <Flame className="w-3.5 h-3.5" /> Ephemeral Audio Vent
                 </span>
@@ -237,38 +235,38 @@ export function Screen08Level1Express({
                 </span>
               </div>
 
-              <p className="text-[11px] text-[#5B6E67] leading-relaxed">
+              <p className="text-[11px] text-[#5e5c52] leading-relaxed">
                 {t.level1.recordInstruction}
               </p>
 
               {/* Live Audio Visualizer / Timer */}
-              <div className="h-28 flex flex-col items-center justify-center bg-black/5 rounded-2xl border border-dashed border-red-300 relative overflow-hidden">
+              <div className="h-28 flex flex-col items-center justify-center bg-white rounded-3xl border border-dashed border-[#c5c8bc] relative overflow-hidden shadow-2xs">
                 {isRecording ? (
                   <div className="flex flex-col items-center gap-1.5">
-                    <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center animate-pulse shadow-lg">
+                    <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center animate-pulse shadow-md">
                       <Mic className="w-6 h-6" />
                     </div>
-                    <span className="font-mono text-base font-bold text-red-600">
+                    <span className="font-mono text-base font-bold text-red-700">
                       {formatSeconds(recordingSeconds)}
                     </span>
-                    <span className="text-[9px] font-mono text-[#5B6E67]">
+                    <span className="text-[9.5px] font-mono text-[#5e5c52]">
                       {isPaused ? 'Recording Paused' : 'Listening… speak freely'}
                     </span>
                   </div>
                 ) : hasRecordedAudio ? (
                   <div className="flex flex-col items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-[#526140] text-white flex items-center justify-center">
                       <CheckCircle2 className="w-5 h-5" />
                     </div>
-                    <span className="font-mono text-xs font-bold text-emerald-800">
+                    <span className="font-mono text-xs font-bold text-[#526140]">
                       Audio Ready ({formatSeconds(recordingSeconds)})
                     </span>
-                    <span className="text-[9.5px] text-[#5B6E67]">
+                    <span className="text-[9.5px] text-[#5e5c52]">
                       Play to review, or delete permanently below.
                     </span>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center gap-1 text-[#5B6E67]">
+                  <div className="flex flex-col items-center gap-1 text-[#5e5c52]">
                     <Mic className="w-8 h-8 text-slate-400" />
                     <span className="text-xs">Tap "Start Recording" to begin</span>
                   </div>
@@ -280,7 +278,7 @@ export function Screen08Level1Express({
                 {!isRecording && !hasRecordedAudio && (
                   <button
                     onClick={handleStartRecord}
-                    className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-md active:scale-95"
+                    className="px-5 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-md active:scale-95"
                   >
                     <Mic className="w-4 h-4" />
                     <span>Start Recording</span>
@@ -291,13 +289,13 @@ export function Screen08Level1Express({
                   <>
                     <button
                       onClick={handlePauseResumeRecord}
-                      className="px-3.5 py-2 rounded-xl bg-slate-200 text-[#14282B] text-xs font-semibold cursor-pointer"
+                      className="px-4 py-2.5 rounded-2xl bg-[#edefe0] text-[#1a1d14] text-xs font-semibold cursor-pointer"
                     >
                       {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                     </button>
                     <button
                       onClick={handleStopRecord}
-                      className="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
+                      className="px-4 py-2.5 rounded-2xl bg-red-600 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
                     >
                       <Square className="w-3.5 h-3.5 fill-white" />
                       <span>Finish</span>
@@ -309,7 +307,7 @@ export function Screen08Level1Express({
                   <>
                     <button
                       onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-                      className="px-4 py-2 rounded-xl bg-[#3A5F4B] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+                      className="px-4 py-2.5 rounded-2xl bg-[#526140] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
                     >
                       {isPlayingAudio ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                       <span>{isPlayingAudio ? 'Pause' : 'Play'}</span>
@@ -317,7 +315,7 @@ export function Screen08Level1Express({
 
                     <button
                       onClick={handlePermanentDeleteAudio}
-                      className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
+                      className="px-4 py-2.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Delete Permanently</span>
@@ -329,7 +327,7 @@ export function Screen08Level1Express({
 
             {/* Permanent Deletion Confirmation Banner */}
             {showDeletionBanner && (
-              <div className="bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-2xl p-3 text-xs flex items-center gap-2.5 animate-fadeIn shadow-xs">
+              <div className="bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-3xl p-4 text-xs flex items-center gap-2.5 animate-fadeIn shadow-2xs">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                 <span className="font-medium leading-snug">
                   {t.level1.permanentDeleteConfirm}
@@ -342,21 +340,21 @@ export function Screen08Level1Express({
         {/* ================= 2. MOODTUNES (ACOUSTIC RELAXATION) ================= */}
         {activeSubTab === 'mood_tunes' && (
           <div className="space-y-3 animate-fadeIn">
-            <div className="bg-[#14282B] text-white rounded-2xl p-4 space-y-3 border border-[#1E3A3D]">
+            <div className="bg-[#6a7a56] text-white rounded-3xl p-5 space-y-3.5 shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[9px] uppercase tracking-wider text-[#E3A06F] font-bold flex items-center gap-1">
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[#ffddb3] font-bold flex items-center gap-1">
                   <Headphones className="w-3.5 h-3.5" /> Web Audio Synthesizer
                 </span>
-                <span className="font-mono text-[9px] text-[#A3D1B9]">No MP3s · 0ms</span>
+                <span className="font-mono text-[9px] text-[#f9ffeb]/80">No MP3s · 0ms</span>
               </div>
 
               <div className="text-center py-2">
                 <div
-                  className={`w-24 h-24 rounded-full border-2 border-[#E3A06F]/50 bg-[#E3A06F]/10 flex flex-col items-center justify-center mx-auto transition-all ${
-                    isTunePlaying ? 'scale-110 animate-breathe shadow-lg shadow-[#E3A06F]/20' : 'scale-95'
+                  className={`w-28 h-28 rounded-full border-2 border-[#ffddb3] bg-white/10 flex flex-col items-center justify-center mx-auto transition-all ${
+                    isTunePlaying ? 'scale-110 animate-breathe shadow-lg shadow-[#ffddb3]/30' : 'scale-95'
                   }`}
                 >
-                  <Music className={`w-7 h-7 text-[#E3A06F] ${isTunePlaying ? 'animate-bounce' : 'opacity-70'}`} />
+                  <Music className={`w-8 h-8 text-[#ffddb3] ${isTunePlaying ? 'animate-bounce' : 'opacity-80'}`} />
                   <span className="font-mono text-xs font-bold text-white mt-1">
                     {BRAINWAVE_PRESETS[selectedTunePreset]?.beatFrequency || 6} Hz
                   </span>
@@ -372,16 +370,16 @@ export function Screen08Level1Express({
                     <button
                       key={p.id}
                       onClick={() => handleToggleBinauralTune(p.id)}
-                      className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
+                      className={`p-2.5 rounded-2xl border text-center transition-all cursor-pointer ${
                         isCurrentPlaying
-                          ? 'bg-[#E3A06F] border-[#E3A06F] text-[#241208] font-bold shadow-md'
+                          ? 'bg-[#ffddb3] border-[#ffddb3] text-[#291800] font-bold shadow-md'
                           : isSelected
-                          ? 'bg-white/15 border-[#E3A06F] text-white'
-                          : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                          ? 'bg-white/20 border-[#ffddb3] text-white'
+                          : 'bg-white/10 border-white/15 text-white/80 hover:bg-white/15'
                       }`}
                     >
-                      <span className="font-mono text-[9px] block font-bold">{p.beatFrequency}Hz</span>
-                      <span className="text-[10px] truncate block">{p.name.split(' ')[0]}</span>
+                      <span className="font-mono text-[9.5px] block font-bold">{p.beatFrequency}Hz</span>
+                      <span className="text-[10.5px] truncate block">{p.name.split(' ')[0]}</span>
                     </button>
                   );
                 })}
@@ -389,7 +387,7 @@ export function Screen08Level1Express({
 
               {/* Volume Slider */}
               <div className="flex items-center justify-between gap-3 pt-1">
-                <Volume2 className="w-3.5 h-3.5 text-[#E3A06F]" />
+                <Volume2 className="w-4 h-4 text-[#ffddb3]" />
                 <input
                   type="range"
                   min="0"
@@ -401,9 +399,9 @@ export function Screen08Level1Express({
                     setTuneVolume(v);
                     binauralEngine.setVolume(v);
                   }}
-                  className="flex-1 h-1.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#E3A06F]"
+                  className="flex-1 h-1.5 bg-white/30 rounded-lg appearance-none cursor-pointer accent-[#ffddb3]"
                 />
-                <span className="font-mono text-[9.5px] text-white/70">{Math.round(tuneVolume * 100)}%</span>
+                <span className="font-mono text-[10px] text-white/80">{Math.round(tuneVolume * 100)}%</span>
               </div>
             </div>
           </div>
@@ -412,12 +410,12 @@ export function Screen08Level1Express({
         {/* ================= 3. PRIVATE JOURNAL ================= */}
         {activeSubTab === 'journal' && (
           <div className="space-y-3 animate-fadeIn">
-            <div className="bg-[#F2F6F3] border border-[#D9E2DC] rounded-2xl p-3.5 space-y-2.5">
+            <div className="bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-3xl p-4 space-y-2.5 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#3A5F4B] font-bold">
+                <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#526140] font-bold">
                   New Journal Entry
                 </span>
-                <span className="font-mono text-[9px] text-[#5B6E67] bg-white px-2 py-0.5 rounded-full border border-[#D9E2DC]">
+                <span className="font-mono text-[9px] text-[#5e5c52] bg-white px-2.5 py-0.5 rounded-full border border-[#c5c8bc]/50 font-medium">
                   {t.level1.savedLocally}
                 </span>
               </div>
@@ -427,14 +425,14 @@ export function Screen08Level1Express({
                 value={newEntryText}
                 onChange={(e) => setNewEntryText(e.target.value)}
                 placeholder={t.level1.journalPrompt}
-                className="w-full bg-white border border-[#D9E2DC] rounded-xl p-2.5 text-xs text-[#14282B] placeholder-[#8FA69C] focus:outline-none focus:border-[#3A5F4B] resize-none"
+                className="w-full bg-white border border-[#c5c8bc] rounded-2xl p-3 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140] resize-none"
               />
 
               <div className="flex items-center justify-between pt-1">
                 <select
                   value={selectedJournalMood}
                   onChange={(e) => setSelectedJournalMood(e.target.value)}
-                  className="bg-white border border-[#D9E2DC] rounded-lg px-2 py-1 text-[11px] text-[#14282B] focus:outline-none"
+                  className="bg-white border border-[#c5c8bc] rounded-xl px-2.5 py-1 text-[11px] text-[#1a1d14] focus:outline-none"
                 >
                   <option value="🌱 Gentle">🌱 Gentle</option>
                   <option value="🌧️ Heavy">🌧️ Heavy</option>
@@ -445,7 +443,7 @@ export function Screen08Level1Express({
                 <button
                   onClick={handleSaveJournal}
                   disabled={!newEntryText.trim()}
-                  className="px-3.5 py-1.5 rounded-xl bg-[#3A5F4B] hover:bg-[#2C4839] disabled:opacity-40 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  className="px-4 py-2 rounded-2xl bg-[#526140] hover:bg-[#435034] disabled:opacity-40 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs"
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>Save Privately</span>
@@ -453,7 +451,7 @@ export function Screen08Level1Express({
               </div>
 
               {entrySavedNotice && (
-                <span className="text-[10px] text-emerald-700 font-medium block animate-fadeIn">
+                <span className="text-[10.5px] text-emerald-800 font-medium block animate-fadeIn">
                   ✓ Entry saved securely to local storage.
                 </span>
               )}
@@ -461,16 +459,16 @@ export function Screen08Level1Express({
 
             {/* Saved Entries List */}
             <div className="space-y-2 pt-1">
-              <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5B6E67] block">
+              <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] block font-bold">
                 Saved Entries ({journalEntries.length})
               </span>
               {journalEntries.map((entry) => (
                 <div
                   key={entry.id}
-                  className="bg-white border border-[#D9E2DC] rounded-2xl p-3 space-y-1.5 shadow-2xs relative"
+                  className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-3.5 space-y-1.5 shadow-2xs relative"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[9px] bg-slate-100 px-2 py-0.5 rounded-full text-[#5B6E67]">
+                    <span className="font-mono text-[9px] bg-[#f3f5e6] px-2.5 py-0.5 rounded-full text-[#526140] font-medium">
                       {entry.moodTag} · {entry.date}
                     </span>
                     <button
@@ -480,7 +478,7 @@ export function Screen08Level1Express({
                       <Trash2 className="w-3 h-3" />
                     </button>
                   </div>
-                  <p className="text-xs text-[#14282B] leading-relaxed whitespace-pre-wrap">
+                  <p className="text-xs text-[#1a1d14] leading-relaxed whitespace-pre-wrap">
                     {entry.text}
                   </p>
                 </div>

@@ -27,7 +27,6 @@ export function Screen05APositiveFlow({
     if (!wallMessage.trim()) return;
     setIsSubmitting(true);
 
-    // Save to Supabase community_letters (with is_approved: false by default for moderation queue)
     await ubbSupabase.postCommunityLetter({
       author_tag: anonId,
       content: wallMessage.trim()
@@ -38,21 +37,21 @@ export function Screen05APositiveFlow({
   };
 
   return (
-    <div className="h-full bg-[#FFFFFF] text-[#14282B] flex flex-col justify-between overflow-hidden select-none">
+    <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none font-sans">
       {/* Header */}
-      <div className="px-5 pt-4 pb-2 border-b border-[#D9E2DC]/60 flex items-center justify-between">
+      <div className="px-5 pt-4 pb-2.5 bg-[#f9fbeb] border-b border-[#c5c8bc]/50 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
             onClick={() => onNavigate('mood_checkin')}
-            className="p-1 rounded-full hover:bg-slate-100 text-[#5B6E67] cursor-pointer"
+            className="p-1.5 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <div className="font-mono text-[9px] uppercase tracking-wider text-[#4E7C63] font-bold">
+            <div className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold">
               {checkInData?.emoji} {checkInData?.label}
             </div>
-            <h2 className="font-fraunces text-base font-semibold text-[#14282B]">
+            <h2 className="font-fraunces text-lg font-bold text-[#1a1d14]">
               {t.screen5A.title}
             </h2>
           </div>
@@ -66,60 +65,63 @@ export function Screen05APositiveFlow({
             {/* Option 1: Express Myself */}
             <div
               onClick={() => onNavigate('level1_express')}
-              className="bg-white border border-[#D9E2DC] hover:border-[#4E7C63] rounded-2xl p-3.5 flex items-start gap-3 transition-all cursor-pointer shadow-2xs group"
+              className="bg-[#edefe0] border border-[#c5c8bc]/60 hover:border-[#526140] rounded-3xl p-4 flex items-start gap-3.5 transition-all cursor-pointer shadow-2xs group"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#4E7C63]/12 group-hover:bg-[#4E7C63]/20 flex items-center justify-center flex-shrink-0 text-[#4E7C63]">
+              <div className="w-10 h-10 rounded-2xl bg-[#526140]/15 group-hover:bg-[#526140]/25 flex items-center justify-center flex-shrink-0 text-[#526140]">
                 <Music className="w-5 h-5" />
               </div>
-              <div className="flex-1">
-                <b className="text-xs text-[#14282B] block">{t.screen5A.expressOpt}</b>
-                <p className="text-[10.5px] text-[#5B6E67] mt-0.5 leading-snug">
+              <div className="flex-1 min-w-0">
+                <b className="text-xs text-[#1a1d14] block">{t.screen5A.expressOpt}</b>
+                <p className="text-[11px] text-[#5e5c52] mt-0.5 leading-snug">
                   {t.screen5A.expressSub}
                 </p>
               </div>
+              <ChevronRight className="w-4 h-4 text-[#75786e] group-hover:text-[#526140]" />
             </div>
 
             {/* Option 2: Help My Peers (Wall of Thoughts Contribution) */}
             <div
               onClick={() => setShowWallComposer(true)}
-              className="bg-gradient-to-r from-[#FFFBF7] to-[#FFF6EE] border-2 border-[#E3A06F] rounded-2xl p-3.5 flex items-start gap-3 transition-all cursor-pointer shadow-sm group hover:scale-101"
+              className="bg-[#6a7a56] text-[#f9ffeb] rounded-3xl p-4 shadow-sm hover:scale-101 transition-all cursor-pointer flex items-start gap-3.5 group active:scale-99"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#E3A06F] text-[#241208] flex items-center justify-center flex-shrink-0 shadow-xs">
+              <div className="w-10 h-10 rounded-2xl bg-[#f9ffeb]/15 text-[#f9ffeb] flex items-center justify-center flex-shrink-0">
                 <MessageSquare className="w-5 h-5" />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <b className="text-xs text-[#241208]">{t.screen5A.helpPeersOpt}</b>
-                  <span className="font-mono text-[8.5px] bg-[#E3A06F] text-[#241208] px-1.5 py-0.2 rounded font-bold">
+                  <b className="text-xs text-[#f9ffeb]">{t.screen5A.helpPeersOpt}</b>
+                  <span className="font-mono text-[8.5px] bg-[#f9ffeb] text-[#526140] px-2 py-0.2 rounded-full font-bold">
                     Community
                   </span>
                 </div>
-                <p className="text-[10.5px] text-[#7A4A26] mt-0.5 leading-snug">
+                <p className="text-[11px] text-[#f9ffeb]/90 mt-0.5 leading-snug">
                   {t.screen5A.helpPeersSub}
                 </p>
               </div>
+              <ChevronRight className="w-4 h-4 text-[#f9ffeb]/80" />
             </div>
 
             {/* Option 3: Explore a Wellbeing Activity */}
             <div
               onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
-              className="bg-white border border-[#D9E2DC] hover:border-[#3A5F4B] rounded-2xl p-3.5 flex items-start gap-3 transition-all cursor-pointer shadow-2xs group"
+              className="bg-[#edefe0] border border-[#c5c8bc]/60 hover:border-[#526140] rounded-3xl p-4 flex items-start gap-3.5 transition-all cursor-pointer shadow-2xs group"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#3A5F4B]/10 group-hover:bg-[#3A5F4B]/20 flex items-center justify-center flex-shrink-0 text-[#3A5F4B]">
+              <div className="w-10 h-10 rounded-2xl bg-[#815505]/15 text-[#815505] flex items-center justify-center flex-shrink-0">
                 <Wind className="w-5 h-5" />
               </div>
-              <div className="flex-1">
-                <b className="text-xs text-[#14282B] block">{t.screen5A.activityOpt}</b>
-                <p className="text-[10.5px] text-[#5B6E67] mt-0.5 leading-snug">
+              <div className="flex-1 min-w-0">
+                <b className="text-xs text-[#1a1d14] block">{t.screen5A.activityOpt}</b>
+                <p className="text-[11px] text-[#5e5c52] mt-0.5 leading-snug">
                   {t.screen5A.activitySub}
                 </p>
               </div>
+              <ChevronRight className="w-4 h-4 text-[#75786e] group-hover:text-[#526140]" />
             </div>
 
             {/* Option 4: Return to Dashboard */}
             <button
               onClick={() => onNavigate('dashboard')}
-              className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#5B6E67] font-semibold text-xs transition-all cursor-pointer text-center"
+              className="w-full py-3 rounded-full bg-[#f3f5e6] hover:bg-[#edefe0] text-[#5e5c52] font-semibold text-xs transition-all cursor-pointer text-center"
             >
               {t.screen5A.dashOpt}
             </button>
@@ -128,27 +130,27 @@ export function Screen05APositiveFlow({
           /* Positive Wall Contribution Composer */
           <div className="space-y-3 animate-fadeIn">
             <div>
-              <h3 className="font-fraunces font-bold text-sm text-[#14282B]">
+              <h3 className="font-fraunces font-bold text-sm text-[#1a1d14]">
                 {t.screen5A.wallPromptTitle}
               </h3>
-              <p className="text-[11px] text-[#5B6E67] mt-0.5 leading-relaxed">
+              <p className="text-[11px] text-[#5e5c52] mt-0.5 leading-relaxed">
                 {t.screen5A.wallPromptDesc}
               </p>
             </div>
 
             {/* Example Starters */}
             <div className="space-y-1.5">
-              <span className="font-mono text-[9px] uppercase tracking-wider text-[#E3A06F] font-bold block">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-[#815505] font-bold block">
                 Prompt Starters
               </span>
               {t.screen5A.starters.map((starter, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleStarterSelect(starter)}
-                  className={`w-full text-left p-2 rounded-xl border text-[10.5px] transition-all cursor-pointer ${
+                  className={`w-full text-left p-2.5 rounded-2xl border text-[11px] transition-all cursor-pointer ${
                     selectedStarter === starter
-                      ? 'border-[#E3A06F] bg-[#E3A06F]/15 font-semibold text-[#241208]'
-                      : 'border-[#D9E2DC] bg-[#F2F6F3]/60 hover:bg-[#F2F6F3] text-[#5B6E67]'
+                      ? 'border-[#526140] bg-[#6a7a56]/15 font-semibold text-[#1a1d14]'
+                      : 'border-[#c5c8bc]/60 bg-white hover:bg-[#f3f5e6] text-[#5e5c52]'
                   }`}
                 >
                   "{starter}"
@@ -161,12 +163,12 @@ export function Screen05APositiveFlow({
               value={wallMessage}
               onChange={(e) => setWallMessage(e.target.value)}
               placeholder="Write your encouraging thought here..."
-              className="w-full bg-[#F2F6F3] border border-[#D9E2DC] rounded-xl p-3 text-xs text-[#14282B] placeholder-[#5B6E67] focus:outline-none focus:border-[#4E7C63] resize-none"
+              className="w-full bg-white border border-[#c5c8bc] rounded-2xl p-3.5 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140] resize-none"
             />
 
             {/* Moderation Status / Success Notice */}
             {moderationSubmitted ? (
-              <div className="bg-emerald-50 border border-emerald-300 rounded-xl p-3 text-emerald-900 text-xs space-y-1.5 animate-fadeIn">
+              <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-4 text-emerald-900 text-xs space-y-2 animate-fadeIn">
                 <div className="flex items-center gap-1.5 font-bold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>Submitted to Volunteer Moderation Queue!</span>
@@ -176,15 +178,15 @@ export function Screen05APositiveFlow({
                 </p>
                 <button
                   onClick={() => onNavigate('dashboard')}
-                  className="mt-2 text-[10.5px] px-3 py-1 bg-emerald-700 text-white rounded-full font-semibold cursor-pointer"
+                  className="mt-1 text-[10.5px] px-4 py-1.5 bg-[#526140] text-white rounded-full font-semibold cursor-pointer"
                 >
                   Return to Dashboard →
                 </button>
               </div>
             ) : (
-              <div className="space-y-2">
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-2 text-[9.5px] font-mono text-[#5B6E67] flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#4E7C63]" />
+              <div className="space-y-2.5">
+                <div className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-2xl p-2.5 text-[10px] font-mono text-[#5e5c52] flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#526140]" />
                   <span>{t.screen5A.moderationStatus}</span>
                 </div>
 
@@ -192,14 +194,14 @@ export function Screen05APositiveFlow({
                   <button
                     onClick={handlePostWall}
                     disabled={!wallMessage.trim() || isSubmitting}
-                    className="flex-1 py-2.5 rounded-xl bg-[#E3A06F] hover:bg-[#C9814F] disabled:opacity-40 text-[#241208] font-bold text-xs cursor-pointer shadow-xs transition-all"
+                    className="flex-1 py-3 rounded-full bg-[#526140] hover:bg-[#435034] disabled:opacity-40 text-white font-bold text-xs cursor-pointer shadow-xs transition-all"
                   >
                     {isSubmitting ? 'Submitting…' : t.screen5A.postBtn}
                   </button>
 
                   <button
                     onClick={() => setShowWallComposer(false)}
-                    className="px-3.5 py-2.5 rounded-xl bg-slate-100 text-[#5B6E67] text-xs cursor-pointer"
+                    className="px-4 py-3 rounded-full bg-[#edefe0] text-[#5e5c52] text-xs cursor-pointer font-semibold"
                   >
                     Cancel
                   </button>

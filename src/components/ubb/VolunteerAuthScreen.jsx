@@ -6,7 +6,7 @@ export function VolunteerAuthScreen({
   onBack,
   selectedLanguage = 'en'
 }) {
-  const [role, setRole] = useState('volunteer'); // 'volunteer' | 'counsellor'
+  const [role, setRole] = useState('volunteer');
   const [email, setEmail] = useState('kunal.joshi@campus.edu.in');
   const [password, setPassword] = useState('••••••••');
   const [twoFactor, setTwoFactor] = useState('');
@@ -27,52 +27,52 @@ export function VolunteerAuthScreen({
   };
 
   return (
-    <div className="h-full bg-gradient-to-b from-[#14282B] via-[#1E3A3D] to-[#2B4B3D] text-white flex flex-col justify-between p-5 select-none overflow-y-auto">
+    <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between p-5 select-none overflow-y-auto font-sans">
       {/* Header */}
       <div className="pt-2 text-center">
         <div className="flex items-center justify-between mb-3">
           <button
             onClick={onBack}
-            className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+            className="p-1.5 rounded-full bg-[#edefe0] hover:bg-[#e8e9db] text-[#5e5c52] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <span className="font-mono text-[9px] bg-white/10 text-[#C3D2CB] px-2 py-0.5 rounded-full">
+          <span className="font-mono text-[9px] bg-[#f3f5e6] text-[#526140] px-2.5 py-0.5 rounded-full border border-[#c5c8bc]/60 font-bold">
             Staff & Volunteer Gateway
           </span>
           <div className="w-6" />
         </div>
 
-        <div className="w-12 h-12 rounded-2xl bg-[#E3A06F]/20 border border-[#E3A06F]/40 flex items-center justify-center mx-auto mb-2 shadow-lg">
-          <HeartHandshake className="w-6 h-6 text-[#E3A06F]" />
+        <div className="w-14 h-14 rounded-3xl bg-[#6a7a56]/15 border border-[#526140]/30 flex items-center justify-center mx-auto mb-2.5 shadow-xs">
+          <HeartHandshake className="w-7 h-7 text-[#526140]" />
         </div>
 
-        <h2 className="font-fraunces text-xl font-bold text-white mb-1">
+        <h2 className="font-fraunces text-2xl font-bold text-[#1a1d14] mb-1">
           Support Staff Portal
         </h2>
-        <p className="text-xs text-[#C3D2CB]">
+        <p className="text-xs text-[#5e5c52] max-w-xs mx-auto">
           Access your assigned queue, moderation tasks, and appointments.
         </p>
       </div>
 
       {/* Role Switcher & Form */}
-      <form onSubmit={handleLogin} className="bg-black/30 border border-white/15 rounded-2xl p-4 my-auto space-y-3.5 shadow-xl">
+      <form onSubmit={handleLogin} className="bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-3xl p-5 my-auto space-y-3.5 shadow-sm">
         {/* Role Toggle */}
         <div>
-          <label className="font-mono text-[9px] uppercase tracking-wider text-[#E3A06F] font-semibold block mb-1.5">
+          <label className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold block mb-1.5">
             Select Your Role
           </label>
-          <div className="grid grid-cols-2 gap-1.5 p-1 bg-white/10 rounded-xl">
+          <div className="grid grid-cols-2 gap-1.5 p-1 bg-[#edefe0] rounded-2xl">
             <button
               type="button"
               onClick={() => {
                 setRole('volunteer');
                 setEmail('kunal.joshi@campus.edu.in');
               }}
-              className={`py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+              className={`py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
                 role === 'volunteer'
-                  ? 'bg-[#E3A06F] text-[#241208] font-bold shadow-sm'
-                  : 'text-white/80 hover:text-white'
+                  ? 'bg-[#526140] text-white font-bold shadow-xs'
+                  : 'text-[#5e5c52] hover:text-[#1a1d14]'
               }`}
             >
               Peer Volunteer
@@ -84,10 +84,10 @@ export function VolunteerAuthScreen({
                 setRole('counsellor');
                 setEmail('dr.pratibha@campus.edu.in');
               }}
-              className={`py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+              className={`py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
                 role === 'counsellor'
-                  ? 'bg-[#E3A06F] text-[#241208] font-bold shadow-sm'
-                  : 'text-white/80 hover:text-white'
+                  ? 'bg-red-800 text-white font-bold shadow-xs'
+                  : 'text-[#5e5c52] hover:text-[#1a1d14]'
               }`}
             >
               Counsellor
@@ -97,7 +97,7 @@ export function VolunteerAuthScreen({
 
         {/* Email */}
         <div>
-          <label className="font-mono text-[9px] uppercase tracking-wider text-white/70 block mb-1">
+          <label className="font-mono text-[9px] uppercase tracking-wider text-[#5e5c52] font-semibold block mb-1">
             Institutional Email or ID
           </label>
           <div className="relative">
@@ -106,15 +106,15 @@ export function VolunteerAuthScreen({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#E3A06F]"
+              className="w-full bg-white border border-[#c5c8bc] rounded-2xl px-3.5 py-2 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140]"
             />
-            <Mail className="w-3.5 h-3.5 absolute right-3 top-2.5 text-white/40" />
+            <Mail className="w-3.5 h-3.5 absolute right-3.5 top-2.5 text-[#75786e]" />
           </div>
         </div>
 
         {/* Password */}
         <div>
-          <label className="font-mono text-[9px] uppercase tracking-wider text-white/70 block mb-1">
+          <label className="font-mono text-[9px] uppercase tracking-wider text-[#5e5c52] font-semibold block mb-1">
             Password
           </label>
           <div className="relative">
@@ -123,15 +123,15 @@ export function VolunteerAuthScreen({
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#E3A06F]"
+              className="w-full bg-white border border-[#c5c8bc] rounded-2xl px-3.5 py-2 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140]"
             />
-            <Lock className="w-3.5 h-3.5 absolute right-3 top-2.5 text-white/40" />
+            <Lock className="w-3.5 h-3.5 absolute right-3.5 top-2.5 text-[#75786e]" />
           </div>
         </div>
 
         {/* Optional 2FA */}
         <div>
-          <label className="font-mono text-[9px] uppercase tracking-wider text-white/70 block mb-1">
+          <label className="font-mono text-[9px] uppercase tracking-wider text-[#5e5c52] font-semibold block mb-1">
             2FA Security Code (Optional)
           </label>
           <div className="relative">
@@ -141,16 +141,16 @@ export function VolunteerAuthScreen({
               value={twoFactor}
               onChange={(e) => setTwoFactor(e.target.value)}
               placeholder="123456"
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#E3A06F] font-mono tracking-wider"
+              className="w-full bg-white border border-[#c5c8bc] rounded-2xl px-3.5 py-2 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140] font-mono tracking-wider"
             />
-            <KeyRound className="w-3.5 h-3.5 absolute right-3 top-2.5 text-white/40" />
+            <KeyRound className="w-3.5 h-3.5 absolute right-3.5 top-2.5 text-[#75786e]" />
           </div>
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-2.5 rounded-xl bg-[#E3A06F] hover:bg-[#C9814F] text-[#241208] font-bold text-xs cursor-pointer shadow-md transition-all mt-2"
+          className="w-full py-3.5 rounded-full bg-[#526140] hover:bg-[#435034] text-white font-bold text-xs cursor-pointer shadow-md transition-all mt-2"
         >
           {isLoading ? 'Verifying Credentials…' : `Enter ${role === 'volunteer' ? 'Volunteer' : 'Counsellor'} Dashboard →`}
         </button>
@@ -158,7 +158,7 @@ export function VolunteerAuthScreen({
 
       {/* Role-Based Privacy Notice */}
       <div className="pt-2 text-center">
-        <p className="text-[10px] text-[#A3D1B9] leading-tight">
+        <p className="text-[10px] text-[#5e5c52] leading-tight max-w-xs mx-auto">
           Role-Based Access: Volunteers see only assigned cases. Counsellors view escalated records. Zero personal student contact details are ever revealed.
         </p>
       </div>
