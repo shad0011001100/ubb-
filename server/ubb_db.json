@@ -1,0 +1,139 @@
+{
+  "peers": [
+    {
+      "id": "peer-amber-17",
+      "name": "Amber_17",
+      "avatarColor": "#E3A06F",
+      "role": "3RD YR PSYCHOLOGY",
+      "verificationType": "Supervised by Dr. Rao, Reg. No. 4521",
+      "isVerified": true,
+      "bio": "I've been through exam-season burnout too. Let's talk it through at your pace.",
+      "specialties": [
+        "Academic Stress",
+        "Sleep Anxiety",
+        "First-Gen Struggles"
+      ],
+      "activeMinutesToday": 75,
+      "maxAllowedMinutes": 120,
+      "status": "online",
+      "lastActive": "2026-08-24T17:25:02.197Z",
+      "isCounselor": false
+    },
+    {
+      "id": "peer-kunal-09",
+      "name": "Kunal_09",
+      "avatarColor": "#4E7C63",
+      "role": "FINAL YR MSW COUNSELING",
+      "verificationType": "Supervised by Prof. V. Kulkarni, Tata Institute",
+      "isVerified": true,
+      "bio": "Trained in non-violent communication & active listening. Safe space for Marathi & Hindi speakers.",
+      "specialties": [
+        "Homesickness",
+        "Social Anxiety",
+        "Language Barriers"
+      ],
+      "activeMinutesToday": 118,
+      "maxAllowedMinutes": 120,
+      "status": "online",
+      "lastActive": "2026-08-24T17:25:02.198Z",
+      "isCounselor": false
+    },
+    {
+      "id": "counselor-dr-priya",
+      "name": "Dr. Priya M.",
+      "avatarColor": "#3A5F4B",
+      "role": "LICENSED CLINICAL PSYCHOLOGIST",
+      "verificationType": "RCI License #A-88213 · Verified",
+      "isVerified": true,
+      "bio": "10+ yrs clinical experience with student anxiety, depression, and somatic sleep disorders.",
+      "specialties": [
+        "Clinical Depression",
+        "Panic Attacks",
+        "Trauma Support"
+      ],
+      "activeMinutesToday": 40,
+      "maxAllowedMinutes": 240,
+      "status": "online",
+      "lastActive": "2026-08-24T17:25:02.198Z",
+      "isCounselor": true,
+      "nextSlot": "Today, 4:00 PM"
+    },
+    {
+      "id": "counselor-dr-anand",
+      "name": "Dr. Anand Joshi",
+      "avatarColor": "#C9814F",
+      "role": "SENIOR PSYCHIATRIC CONSULTANT",
+      "verificationType": "NMC Reg. #2008/04/1192 · Verified",
+      "isVerified": true,
+      "bio": "Specializes in severe stress interventions and psychotherapeutic mental health routing.",
+      "specialties": [
+        "Crisis De-escalation",
+        "Medical Consult",
+        "ADHD & Mood"
+      ],
+      "activeMinutesToday": 30,
+      "maxAllowedMinutes": 240,
+      "status": "online",
+      "lastActive": "2026-08-24T17:25:02.198Z",
+      "isCounselor": true,
+      "nextSlot": "Tomorrow, 11:00 AM"
+    }
+  ],
+  "wallOfThoughts": [
+    {
+      "id": "thought-1",
+      "author": "Sprout_902",
+      "tag": "Exam Anxiety",
+      "content": "To whoever is studying at 3 AM crying over syllabus: Your worth is not defined by one semester. Drink some water and breathe.",
+      "timestamp": "2 hours ago",
+      "likes": 42,
+      "warmthIcon": "🌱"
+    },
+    {
+      "id": "thought-2",
+      "author": "Amber_17 (Peer)",
+      "tag": "Gentle Reminder",
+      "content": "If all you did today was get out of bed and brush your teeth, that was enough. You are surviving, and that takes courage.",
+      "timestamp": "4 hours ago",
+      "likes": 67,
+      "warmthIcon": "✨"
+    },
+    {
+      "id": "thought-3",
+      "author": "Dr. Priya M. (Counselor)",
+      "tag": "Grounding",
+      "content": "Notice 5 things you can see around you right now. 4 things you can touch. You are grounded in this exact moment, and you are safe.",
+      "timestamp": "Yesterday",
+      "likes": 89,
+      "warmthIcon": "🌊"
+    },
+    {
+      "id": "thought-4",
+      "author": "Quiet_Owl_11",
+      "tag": "Marathi Note",
+      "content": "काळजी करू नकोस. वेळ बदलते, मन शांत ठेव. तू एकटा नाहीस.",
+      "timestamp": "2 days ago",
+      "likes": 31,
+      "warmthIcon": "🧡"
+    }
+  ],
+  "supervisorQueue": [],
+  "automationLogs": [],
+  "shadowbannedUsers": [],
+  "deadlockUsers": {
+    "Sprout_042": {
+      "declineCount": 0,
+      "isDeadlocked": false,
+      "cooldownUntil": null
+    }
+  },
+  "crisisIncidents": [
+    {
+      "id": "crisis_1787595403865",
+      "anonymousId": "Sprout_042",
+      "timestamp": "2026-08-24T18:16:43.865Z",
+      "reason": "suicide_ideation",
+      "confidence": 98
+    }
+  ]
+}
