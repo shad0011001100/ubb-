@@ -22,7 +22,7 @@ import { getTranslation } from '../../services/translations';
 export function PureUserApp({ onOpenDevPortal }) {
   // Navigation stack:
   // 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'positive_flow' | 'concern_flow' |
-  // 'safety_check' | 'support_guidance' | 'level1_express' | 'level2_peer' | 'level3_care' |
+  // 'support_guidance' | 'safety_check' | 'level1_express' | 'level2_peer' | 'level3_care' |
   // 'feedback' | 'wall_of_thoughts' | 'my_journey' | 'volunteer_auth' | 'volunteer_dashboard' | 'counsellor_dashboard'
   const [currentScreen, setCurrentScreen] = useState('login_selection');
   const [screenParams, setScreenParams] = useState({});
@@ -81,20 +81,26 @@ export function PureUserApp({ onOpenDevPortal }) {
     }
   };
 
+  // From Concern flow (Screen 5B) -> Go directly to Support Guidance (Screen 7)
   const handleConcernProceed = (updatedCheckIn) => {
-    setCurrentCheckIn(updatedCheckIn);
-    setCurrentScreen('safety_check');
-  };
-
-  const handleSafetyProceed = (updatedCheckIn) => {
     setCurrentCheckIn(updatedCheckIn);
     setCurrentScreen('support_guidance');
   };
 
   const handleSelectLevel = (levelNum) => {
-    if (levelNum === 1) setCurrentScreen('level1_express');
-    else if (levelNum === 2) setCurrentScreen('level2_peer');
-    else if (levelNum === 3) setCurrentScreen('level3_care');
+    if (levelNum === 1) {
+      setCurrentScreen('level1_express');
+    } else if (levelNum === 2) {
+      setCurrentScreen('level2_peer');
+    } else if (levelNum === 3) {
+      // Immediate Safety Check is triggered ONLY when 3rd Level is selected
+      setCurrentScreen('safety_check');
+    }
+  };
+
+  const handleSafetyProceed = (updatedCheckIn) => {
+    setCurrentCheckIn(updatedCheckIn);
+    setCurrentScreen('level3_care');
   };
 
   const handleFinishActivity = (activityType) => {
@@ -167,7 +173,7 @@ export function PureUserApp({ onOpenDevPortal }) {
       </div>
 
       {/* Main Mobile App Frame */}
-      <div className="w-full max-w-sm h-screen sm:h-[660px] bg-white sm:rounded-[36px] shadow-2xl overflow-hidden border-0 sm:border-8 sm:border-[#1E3A3D] relative flex flex-col pt-6 sm:pt-0">
+      <div className="w-full max-w-sm h-screen sm:h-[660px] bg-[#f9fbeb] sm:rounded-[36px] shadow-2xl overflow-hidden border-0 sm:border-8 sm:border-[#1E3A3D] relative flex flex-col pt-6 sm:pt-0">
         {/* Render Active Screen */}
         {currentScreen === 'login_selection' && (
           <Screen01LoginSelection
@@ -222,21 +228,21 @@ export function PureUserApp({ onOpenDevPortal }) {
           />
         )}
 
-        {currentScreen === 'safety_check' && (
-          <Screen06SafetyCheck
-            checkInData={currentCheckIn}
-            selectedLanguage={selectedLanguage}
-            onProceedToGuidance={handleSafetyProceed}
-            onTriggerCrisis={() => setShowGlobalSOS(true)}
-            onNavigate={handleNavigate}
-          />
-        )}
-
         {currentScreen === 'support_guidance' && (
           <Screen07SupportGuidance
             checkInData={currentCheckIn}
             selectedLanguage={selectedLanguage}
             onSelectLevel={handleSelectLevel}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'safety_check' && (
+          <Screen06SafetyCheck
+            checkInData={currentCheckIn}
+            selectedLanguage={selectedLanguage}
+            onProceedToCare={handleSafetyProceed}
+            onTriggerCrisis={() => setShowGlobalSOS(true)}
             onNavigate={handleNavigate}
           />
         )}
@@ -333,15 +339,15 @@ export function PureUserApp({ onOpenDevPortal }) {
               </span>
               <button
                 onClick={() => setShowGlobalSOS(false)}
-                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="text-center space-y-2 my-auto">
-              <div className="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center mx-auto animate-pulse">
-                <ShieldAlert className="w-6 h-6" />
+              <div className="w-14 h-14 rounded-3xl bg-white/20 text-white flex items-center justify-center mx-auto animate-pulse shadow-lg">
+                <ShieldAlert className="w-7 h-7" />
               </div>
               <h3 className="font-fraunces text-xl font-bold text-white">
                 {t.screen6.urgentTitle}
@@ -353,16 +359,16 @@ export function PureUserApp({ onOpenDevPortal }) {
               {/* Contacts */}
               <div className="space-y-2 pt-2 text-left">
                 {t.screen6.urgentContacts.map((c, i) => (
-                  <div key={i} className="bg-black/30 border border-white/20 rounded-2xl p-3 flex items-center justify-between">
+                  <div key={i} className="bg-black/30 border border-white/20 rounded-3xl p-3.5 flex items-center justify-between">
                     <div>
                       <b className="text-xs text-white block">{c.name}</b>
-                      <span className="font-mono text-[11px] text-[#E3A06F] font-bold block">{c.number}</span>
+                      <span className="font-mono text-[11.5px] text-[#fdc16d] font-bold block">{c.number}</span>
                     </div>
                     <a
                       href={`tel:${c.number.replace(/[^0-9+]/g, '')}`}
-                      className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1 cursor-pointer"
+                      className="px-4 py-2 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1 cursor-pointer"
                     >
-                      <PhoneCall className="w-3 h-3" />
+                      <PhoneCall className="w-3.5 h-3.5" />
                       <span>Call</span>
                     </a>
                   </div>
@@ -374,9 +380,9 @@ export function PureUserApp({ onOpenDevPortal }) {
               <button
                 onClick={() => {
                   setShowGlobalSOS(false);
-                  setCurrentScreen('level3_care');
+                  setCurrentScreen('safety_check');
                 }}
-                className="w-full py-2.5 rounded-full bg-white text-red-900 font-bold text-xs cursor-pointer hover:bg-slate-100 shadow-md"
+                className="w-full py-3 rounded-full bg-white text-red-900 font-bold text-xs cursor-pointer hover:bg-slate-100 shadow-md"
               >
                 Book Earliest Licensed Counsellor →
               </button>

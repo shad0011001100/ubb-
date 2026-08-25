@@ -4,7 +4,7 @@ import { getTranslation } from '../../services/translations';
 
 export function Screen06SafetyCheck({
   checkInData,
-  onProceedToGuidance,
+  onProceedToCare,
   onTriggerCrisis,
   onNavigate,
   selectedLanguage = 'en'
@@ -30,10 +30,14 @@ export function Screen06SafetyCheck({
       return;
     }
 
-    onProceedToGuidance({
-      ...checkInData,
-      safetyAnswer: selectedSafetyOption
-    });
+    if (onProceedToCare) {
+      onProceedToCare({
+        ...checkInData,
+        safetyAnswer: selectedSafetyOption
+      });
+    } else {
+      onNavigate('level3_care');
+    }
   };
 
   return (
@@ -42,14 +46,14 @@ export function Screen06SafetyCheck({
       <div className="px-5 pt-4 pb-2.5 bg-[#f9fbeb] border-b border-[#c5c8bc]/50 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
-            onClick={() => onNavigate('mood_checkin')}
+            onClick={() => onNavigate('support_guidance')}
             className="p-1.5 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <div className="font-mono text-[9px] uppercase tracking-wider text-[#815505] font-bold">
-              Step 2 · Safety Assessment
+            <div className="font-mono text-[9px] uppercase tracking-wider text-red-700 font-bold">
+              Level 3 · Immediate Safety Check
             </div>
             <h2 className="font-fraunces text-lg font-bold text-[#1a1d14]">
               {t.screen6.title}
@@ -185,7 +189,10 @@ export function Screen06SafetyCheck({
 
           <div className="pt-3 space-y-2">
             <button
-              onClick={() => onProceedToGuidance({ ...checkInData, safetyAnswer: 'escalated_urgent', forceLevel: 3 })}
+              onClick={() => {
+                setShowUrgentModal(false);
+                onNavigate('level3_care');
+              }}
               className="w-full py-3 rounded-full bg-white text-red-900 font-bold text-xs cursor-pointer hover:bg-slate-100 shadow-md"
             >
               Book Earliest Licensed Counsellor →
