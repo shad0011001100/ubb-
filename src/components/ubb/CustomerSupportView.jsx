@@ -64,7 +64,7 @@ export function CustomerSupportView({
       if (query.includes('audio') || query.includes('sound') || query.includes('music')) {
         replyText = "For audio issues, ensure your device volume is turned up and silent mode is switched off. MoodTunes operates 100% offline via Web Audio.";
       } else if (query.includes('id') || query.includes('pin') || query.includes('login')) {
-        replyText = "Your Ubb ID is completely anonymous. If you set a 4-digit PIN, you can restore your streak anytime under Returning Student login.";
+        replyText = "Your Ubb ID is completely anonymous. If you set a 4-digit PIN, you can restore your anonymous account anytime under Returning Student login.";
       } else if (query.includes('delete') || query.includes('privacy') || query.includes('data')) {
         replyText = "Ubb is 100% Zero-PII. You can permanently wipe all local data anytime in 'My Journey' -> 'Reset All Data'.";
       }

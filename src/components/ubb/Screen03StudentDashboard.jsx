@@ -22,7 +22,6 @@ export function Screen03StudentDashboard({
 }) {
   const t = getTranslation(selectedLanguage);
   const anonId = userProfile?.anonymous_tag || userProfile?.anonymousId || 'UBB-7K4P-29';
-  const streak = userProfile?.current_streak || 3;
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
@@ -53,8 +52,8 @@ export function Screen03StudentDashboard({
               <Sparkles className="w-3 h-3 text-[#526140]" />
               <span>Safe Sanctuary</span>
             </div>
-            <span className="font-mono text-[9.5px] text-[#815505] font-bold bg-white/80 px-2 py-0.5 rounded-full border border-[#815505]/20">
-              🔥 {streak} Day Streak
+            <span className="font-mono text-[9.5px] text-[#526140] font-bold bg-white/80 px-2 py-0.5 rounded-full border border-[#c5c8bc]/60">
+              Zero Judgment
             </span>
           </div>
 

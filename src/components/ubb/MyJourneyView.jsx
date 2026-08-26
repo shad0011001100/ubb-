@@ -68,7 +68,7 @@ export function MyJourneyView({
               Check-In Continuity
             </span>
             <span className="font-mono text-[9px] text-[#526140] font-bold bg-[#f3f5e6] px-2.5 py-0.5 rounded-full border border-[#c5c8bc]/40">
-              3 Day Streak 🔥
+              Weekly Overview
             </span>
           </div>
 
