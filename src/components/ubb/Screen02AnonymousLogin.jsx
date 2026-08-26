@@ -3,14 +3,25 @@ import { Shield, KeyRound, Copy, Check, ArrowRight, RefreshCw, Lock, UserCheck, 
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
 
+// Cryptographically secure Ubb ID generator
 const generateUbbId = () => {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let middle = '';
-  for (let i = 0; i < 4; i++) {
-    middle += chars.charAt(Math.floor(Math.random() * chars.length));
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    const array = new Uint32Array(5);
+    crypto.getRandomValues(array);
+    for (let i = 0; i < 4; i++) {
+      middle += chars.charAt(array[i] % chars.length);
+    }
+    const end = 10 + (array[4] % 90);
+    return `UBB-${middle}-${end}`;
+  } else {
+    for (let i = 0; i < 4; i++) {
+      middle += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const end = Math.floor(10 + Math.random() * 90);
+    return `UBB-${middle}-${end}`;
   }
-  const end = Math.floor(10 + Math.random() * 90);
-  return `UBB-${middle}-${end}`;
 };
 
 export function Screen02AnonymousLogin({

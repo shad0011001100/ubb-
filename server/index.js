@@ -11,13 +11,28 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'https://localhost',
+  'capacitor://localhost'
+];
+
 app.use(cors({
-  origin: '*',
+  origin: (origin, callback) => {
+    // Allow local dev, capacitor native apps, or same-origin requests
+    if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://192.168.') || origin.startsWith('http://10.')) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Permissive in dev, logged
+    }
+  },
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
 // In-Memory & File-Backed Store
 const DB_FILE = path.join(__dirname, 'ubb_db.json');

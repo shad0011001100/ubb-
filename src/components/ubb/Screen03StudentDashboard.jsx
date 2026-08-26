@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
   Flame,
@@ -11,7 +11,12 @@ import {
   ShieldCheck,
   ChevronRight,
   ArrowRight,
-  Globe
+  Globe,
+  CalendarCheck,
+  Zap,
+  Moon,
+  Sun,
+  Coffee
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
@@ -25,6 +30,80 @@ export function Screen03StudentDashboard({
 }) {
   const t = getTranslation(selectedLanguage);
   const anonId = userProfile?.anonymous_tag || userProfile?.anonymousId || 'UBB-7K4P-29';
+
+  // Compute smart on-device recommendation based on time & user profile
+  const [recommendation, setRecommendation] = useState({
+    toolId: 'mood_tunes',
+    title: 'MoodTunes · Theta Calm',
+    reason: 'A gentle 5-minute acoustic soundscape to quiet racing thoughts and restore focus.',
+    tab: 'mood_tunes',
+    icon: 'music',
+    accent: '#526140',
+    tag: 'Acoustic Grounding'
+  });
+
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour >= 22 || currentHour < 5) {
+      // Late Night
+      setRecommendation({
+        toolId: 'mood_tunes',
+        title: 'MoodTunes · Deep Sleep Theta (6Hz)',
+        reason: 'Late Night Relief: Eases overthinking and prepares your mind for restful sleep without screens.',
+        tab: 'mood_tunes',
+        icon: 'moon',
+        accent: '#815505',
+        tag: 'Late Night Rest'
+      });
+    } else if (currentHour >= 5 && currentHour < 12) {
+      // Morning
+      setRecommendation({
+        toolId: 'journal',
+        title: 'Private Journal · Mindful Focus',
+        reason: 'Morning Clarity: Take 2 minutes to write down whatever is on your mind today.',
+        tab: 'journal',
+        icon: 'sun',
+        accent: '#526140',
+        tag: 'Morning Intention'
+      });
+    } else if (currentHour >= 12 && currentHour < 18) {
+      // Afternoon Study
+      setRecommendation({
+        toolId: 'let_it_out',
+        title: 'Let It Out · Quick Audio Vent',
+        reason: 'Midday Reset: Speak your frustrations freely into private auto-deleted audio.',
+        tab: 'let_it_out',
+        icon: 'flame',
+        accent: '#ba1a1a',
+        tag: 'Instant De-stress'
+      });
+    } else {
+      // Evening
+      setRecommendation({
+        toolId: 'peer',
+        title: 'Talk to Someone · Peer Support',
+        reason: 'Evening Wind-Down: Connect with a trained student volunteer for confidential listening.',
+        tab: 'peer',
+        icon: 'users',
+        accent: '#526140',
+        tag: 'Human Connection'
+      });
+    }
+  }, []);
+
+  const handleOpenRecommendation = () => {
+    if (recommendation.toolId === 'mood_tunes') {
+      onNavigate('level1_express', { defaultTab: 'mood_tunes' });
+    } else if (recommendation.toolId === 'let_it_out') {
+      onNavigate('level1_express', { defaultTab: 'let_it_out' });
+    } else if (recommendation.toolId === 'journal') {
+      onNavigate('level1_express', { defaultTab: 'journal' });
+    } else if (recommendation.toolId === 'peer') {
+      onNavigate('level2_peer');
+    } else {
+      onNavigate('level1_express');
+    }
+  };
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
@@ -48,43 +127,56 @@ export function Screen03StudentDashboard({
 
       {/* Main Content Scrollable Area */}
       <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-20">
-        {/* Grounding Quote Card from Stitch */}
-        <section className="bg-[#f3f5e6] rounded-3xl p-4 md:p-5 flex items-center justify-center text-center shadow-xs border border-[#c5c8bc]/60 relative overflow-hidden">
-          <div className="space-y-1">
-            <span className="font-mono text-[9px] text-[#815505] uppercase tracking-wider font-bold block">
-              {t.screen3.welcome} · {anonId}
+        {/* Top Reassurance & Freedom Notice */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-[#5e5c52] px-1">
+          <span className="flex items-center gap-1 text-[#526140] font-bold">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            Direct Action Sanctuary
+          </span>
+          <span>Zero Questionnaires · 100% Private</span>
+        </div>
+
+        {/* ================= HERO: DYNAMIC AI RECOMMENDED OPTION ================= */}
+        <section className="bg-gradient-to-br from-[#fdc16d]/25 via-[#f9fbeb] to-[#edefe0] border-2 border-[#815505] rounded-3xl p-4 md:p-5 shadow-sm relative overflow-hidden space-y-3 animate-fadeIn">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 bg-[#815505] text-[#ffddb3] px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold shadow-2xs">
+              <Sparkles className="w-3 h-3 text-[#ffddb3]" />
+              <span>AI Recommends for You</span>
+            </div>
+            <span className="font-mono text-[9.5px] text-[#815505] font-bold bg-white/80 px-2 py-0.5 rounded-full border border-[#815505]/20">
+              {recommendation.tag}
             </span>
-            <h2 className="font-fraunces text-xs md:text-sm font-semibold text-[#1a1d14] leading-snug max-w-xs mx-auto">
-              "{t.screen3.quote}"
-            </h2>
           </div>
+
+          <div>
+            <h2 className="font-fraunces text-base md:text-lg font-bold text-[#1a1d14] leading-snug">
+              {recommendation.title}
+            </h2>
+            <p className="text-xs text-[#5e5c52] mt-0.5 leading-relaxed">
+              "{recommendation.reason}"
+            </p>
+          </div>
+
+          <button
+            onClick={handleOpenRecommendation}
+            className="w-full py-3 rounded-full bg-[#526140] hover:bg-[#435034] text-white font-bold text-xs transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+          >
+            <span>Open Recommended Tool</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </section>
 
-        {/* 7 Interactive Cards */}
+        {/* Section Header: All Sanctuary Options */}
+        <div className="pt-1 flex items-center justify-between px-1">
+          <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
+            All Sanctuary Tools (Direct 1-Tap Access)
+          </span>
+          <span className="text-[10px] text-[#815505] font-semibold">Choose freely</span>
+        </div>
+
+        {/* Bento Grid of All 6 Core Sanctuary Tools */}
         <div className="space-y-2.5">
-          {/* 1. UbbPulse (Highlighted Primary Bento Card) */}
-          <div
-            onClick={() => onNavigate('mood_checkin')}
-            className="bg-[#6a7a56] text-[#f9ffeb] rounded-3xl p-4 shadow-sm hover:scale-101 transition-all cursor-pointer flex flex-col justify-between gap-3 group active:scale-99"
-          >
-            <div className="flex items-start justify-between">
-              <div className="bg-[#f9ffeb]/15 p-2.5 rounded-2xl w-fit group-hover:scale-105 transition-transform text-[#f9ffeb]">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <span className="bg-[#f9ffeb] text-[#526140] font-bold text-[10px] px-3 py-1 rounded-full flex items-center gap-1 shadow-xs">
-                Check-in <ArrowRight className="w-3 h-3" />
-              </span>
-            </div>
-
-            <div>
-              <h3 className="font-fraunces font-bold text-sm text-[#f9ffeb] mb-0.5">{t.screen3.pulseTitle}</h3>
-              <p className="text-[11px] text-[#f9ffeb]/90 leading-snug">
-                {t.screen3.pulseDesc}
-              </p>
-            </div>
-          </div>
-
-          {/* 2. Let It Out (Temporary Voice Vent) */}
+          {/* 1. Let It Out (Temporary Voice Vent) */}
           <div
             onClick={() => onNavigate('level1_express', { defaultTab: 'let_it_out' })}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -106,7 +198,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 3. MoodTunes (Acoustic Relaxation) */}
+          {/* 2. MoodTunes (Acoustic Relaxation) */}
           <div
             onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
             className="bg-[#e8e9db] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e2e4d5] active:scale-99"
@@ -118,7 +210,7 @@ export function Screen03StudentDashboard({
               <div className="flex items-center justify-between">
                 <b className="text-xs text-[#1a1d14]">{t.screen3.moodTunesTitle}</b>
                 <span className="font-mono text-[8.5px] bg-[#526140]/15 text-[#526140] px-1.5 py-0.2 rounded-full font-bold">
-                  Binaural
+                  Web Audio · 0ms
                 </span>
               </div>
               <span className="text-[10.5px] text-[#5e5c52] block truncate">
@@ -128,7 +220,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 4. Private Journal */}
+          {/* 3. Private Journal */}
           <div
             onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -140,7 +232,7 @@ export function Screen03StudentDashboard({
               <div className="flex items-center justify-between">
                 <b className="text-xs text-[#1a1d14]">{t.screen3.journalTitle}</b>
                 <span className="font-mono text-[8.5px] bg-white text-[#5e5c52] px-1.5 py-0.2 rounded-full font-medium">
-                  Local
+                  Local Encrypted
                 </span>
               </div>
               <span className="text-[10.5px] text-[#5e5c52] block truncate">
@@ -148,6 +240,28 @@ export function Screen03StudentDashboard({
               </span>
             </div>
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
+          </div>
+
+          {/* 4. Talk to Someone (Peer Support) */}
+          <div
+            onClick={() => onNavigate('level2_peer')}
+            className="bg-[#f3f5e6] border-2 border-[#526140] rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-sm active:scale-99"
+          >
+            <div className="w-10 h-10 rounded-2xl bg-[#526140] text-white flex items-center justify-center flex-shrink-0">
+              <Users className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <b className="text-xs text-[#1a1d14]">{t.screen3.talkTitle}</b>
+                <span className="font-mono text-[8.5px] bg-[#526140] text-white px-2 py-0.2 rounded-full font-bold">
+                  Human Care
+                </span>
+              </div>
+              <span className="text-[10.5px] text-[#5e5c52] block truncate">
+                {t.screen3.talkDesc}
+              </span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#526140]" />
           </div>
 
           {/* 5. Wall of Thoughts */}
@@ -172,29 +286,29 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 6. Talk to Someone */}
+          {/* 6. Professional Care (Counsellor Booking) */}
           <div
-            onClick={() => onNavigate('level2_peer')}
-            className="bg-[#f3f5e6] border-2 border-[#526140] rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-sm active:scale-99"
+            onClick={() => onNavigate('level3_care')}
+            className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
           >
-            <div className="w-10 h-10 rounded-2xl bg-[#526140] text-white flex items-center justify-center flex-shrink-0">
-              <Users className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-red-100 text-red-700 flex items-center justify-center flex-shrink-0">
+              <CalendarCheck className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">{t.screen3.talkTitle}</b>
-                <span className="font-mono text-[8.5px] bg-[#526140] text-white px-2 py-0.2 rounded-full font-bold">
-                  Human Care
+                <b className="text-xs text-[#1a1d14]">Professional Clinical Care</b>
+                <span className="font-mono text-[8.5px] bg-red-100 text-red-800 px-1.5 py-0.2 rounded-full font-bold">
+                  Level 3
                 </span>
               </div>
               <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                {t.screen3.talkDesc}
+                Book confidential appointments with licensed campus counsellors
               </span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#526140]" />
+            <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 7. My Journey */}
+          {/* 7. My Journey Trends */}
           <div
             onClick={() => onNavigate('my_journey')}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -244,11 +358,11 @@ export function Screen03StudentDashboard({
         </button>
 
         <button
-          onClick={() => onNavigate('mood_checkin')}
+          onClick={() => onNavigate('level1_express', { defaultTab: 'let_it_out' })}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C7 2 3 6 3 11c0 5 4.5 9 9 11 4.5-2 9-6 9-11 0-5-4-9-9-9z" stroke="currentColor" strokeWidth="1.8"/></svg>
-          <span className="text-[9.5px]">Pulse</span>
+          <Flame className="w-5 h-5 text-[#815505]" />
+          <span className="text-[9.5px]">Vent</span>
         </button>
 
         <button
@@ -260,11 +374,11 @@ export function Screen03StudentDashboard({
         </button>
 
         <button
-          onClick={() => onNavigate('level1_express')}
+          onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3c1 3-2 4-2 7a4 4 0 008 0c0-2-1-3-1-3s2 2 2 5a7 7 0 11-13-4c0-3 2-4 2-4s1 2 4-1z" stroke="currentColor" strokeWidth="1.8"/></svg>
-          <span className="text-[9.5px]">{t.common.selfCare}</span>
+          <Music className="w-5 h-5 text-[#526140]" />
+          <span className="text-[9.5px]">Relax</span>
         </button>
       </div>
     </div>
