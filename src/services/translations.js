@@ -154,12 +154,12 @@ export const TRANSLATIONS = {
       guidanceTitle: "Ubb Support Guidance",
       guidanceSub: "Based on your check-in, Ubb suggests starting with:",
       levels: {
-        level1Title: "Level 1 — Space to Express or Relax",
-        level1Desc: "Take a quiet moment with private voice venting, calming soundscapes, or personal journaling.",
-        level2Title: "Level 2 — I Could Use Some Support",
-        level2Desc: "Connect privately with a trained psychology student volunteer who understands campus life.",
-        level3Title: "Level 3 — I Need Help Urgently",
-        level3Desc: "Book the earliest available licensed counsellor appointment or access crisis support."
+        level1Title: "Support 1 — Self-Help Tools",
+        level1Desc: "Let It Out (record voice note, deleted immediately), Private Journal, or MoodTunes music therapy.",
+        level2Title: "Support 2 — Talk to a Volunteer",
+        level2Desc: "Connect in a 1-on-1 private chat with psychology peers from college. Escalated further if needed.",
+        level3Title: "Support 3 — Meet a Counsellor",
+        level3Desc: "Licensed college-level clinical support (e.g., Manas Counselling Centre) with ongoing care follow-up."
       },
       exploreBtn: "Open Suggested Level →"
     },
@@ -368,12 +368,12 @@ export const TRANSLATIONS = {
       guidanceTitle: "ऊब मदत मार्गदर्शन",
       guidanceSub: "तुमच्या चेक-इननुसार, ऊब सुचवते की येथून सुरुवात करा:",
       levels: {
-        level1Title: "पातळी १ — व्यक्त होण्याची किंवा शांत राहण्याची जागा",
-        level1Desc: "मनातील सल बोलून मोकळे व्हा, संगीत ऐका किंवा डायरीत लिहा.",
-        level2Title: "पातळी २ — मला थोड्या मार्गदर्शनाची गरज आहे",
-        level2Desc: "कॉलेजचा ताण समजणाऱ्या प्रशिक्षित सायकोलॉजी पीअर व्हॉलंटिअरशी बोला.",
-        level3Title: "पातळी ३ — मला तात्काळ समुपदेशकाची गरज आहे",
-        level3Desc: "परवानाधारक क्लिनिकल कौन्सिलरची भेट बुक करा किंवा हेल्पलाईनवर कॉल करा."
+        level1Title: "सपोर्ट १ — सेल्फ-हेल्प टूल्स",
+        level1Desc: "मनातील सल बोलून मोकळे व्हा (लगेच नष्ट), खाजगी डायरी, किंवा मूडट्यून्स संगीत.",
+        level2Title: "सपोर्ट २ — व्हॉलंटिअरशी बोला",
+        level2Desc: "सायकोलॉजी विभागातील विद्यार्थ्यांशी १-ऑन-१ खाजगी चॅट. आवश्यकतेनुसार पुढील मदत.",
+        level3Title: "सपोर्ट ३ — समुपदेशकांना भेटा",
+        level3Desc: "कॉलेज-स्तरीय परवानाधारक समुपदेशन (उदा. मानस सेंटर) व पुढील काळजी."
       },
       exploreBtn: "सुचवलेली पातळी उघडा →"
     },
@@ -582,12 +582,12 @@ export const TRANSLATIONS = {
       guidanceTitle: "ऊब सहायता मार्गदर्शन",
       guidanceSub: "आपके चेक-इन के आधार पर, ऊब सुझाव देती है कि यहाँ से शुरुआत करें:",
       levels: {
-        level1Title: "स्तर 1 — खुद को व्यक्त करने या शांत होने का स्थान",
-        level1Desc: "अस्थायी वॉयस वेंटिंग, शांत संगीत या निजी डायरी लेखन का उपयोग करें।",
-        level2Title: "स्तर 2 — मुझे थोड़े मार्गदर्शन की आवश्यकता है",
-        level2Desc: "कॉलेज के माहौल को समझने वाले प्रशिक्षित मनोविज्ञान वॉलंटियर से बात करें।",
-        level3Title: "स्तर 3 — मुझे तुरंत काउंसलर की आवश्यकता है",
-        level3Desc: "लाइसेंस प्राप्त क्लिनिकल काउंसलर के साथ अपॉइंटमेंट बुक करें।"
+        level1Title: "सपोर्ट १ — सेल्फ-हेल्प टूल्स",
+        level1Desc: "ऑडियो वेंट (तुरंत नष्ट), निजी डायरी, या मूडट्यून्स संगीत चिकित्सा।",
+        level2Title: "सपोर्ट २ — स्वयंसेवक से बात करें",
+        level2Desc: "मनोविज्ञान विभाग के सहपाठियों से 1-ऑन-1 निजी चैट। आवश्यकता पड़ने पर आगे मार्गदर्शन।",
+        level3Title: "सपोर्ट ३ — काउंसलर से मिलें",
+        level3Desc: "लाइसेंस प्राप्त कॉलेज-स्तरीय सहायता (उदा. मानस काउंसलिंग सेंटर) और निरंतर देखभाल।"
       },
       exploreBtn: "सुझाए गए स्तर पर जाएं →"
     },

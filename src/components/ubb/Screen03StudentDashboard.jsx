@@ -158,7 +158,7 @@ export function Screen03StudentDashboard({
                 <div className="flex items-center gap-1.5">
                   <b className="text-xs text-[#1a1d14]">Book Campus Counsellor</b>
                   <span className="font-mono text-[8px] bg-red-100 text-red-800 px-1.5 py-0.2 rounded-full font-bold">
-                    Level 3
+                    Support 3
                   </span>
                 </div>
                 <span className="text-[10.5px] text-[#5e5c52] block">

@@ -20,12 +20,16 @@ export function Screen07SupportGuidance({
       return {
         level: 3,
         tool: 'counsellor',
-        badge: 'Level 3 · Professional Care',
+        badge: 'Support 3 · Meet a Counsellor',
         icon: 'counsellor',
-        title: selectedLanguage === 'mr' ? 'परवानाधारक कॉलेज समुपदेशक' : selectedLanguage === 'hi' ? 'लाइसेंस प्राप्त कॉलेज काउंसलर' : 'Licensed Campus Counsellor',
+        title: selectedLanguage === 'mr' ? 'सपोर्ट ३ : समुपदेशकांना भेटा' : selectedLanguage === 'hi' ? 'सपोर्ट ३ : काउंसलर से मिलें' : 'Support 3 : Meet a Counsellor',
         actionLabel: selectedLanguage === 'mr' ? 'समुपदेशकाची भेट बुक करा' : selectedLanguage === 'hi' ? 'काउंसलर से अपॉइंटमेंट लें' : 'Book Confidential Session',
-        highlight: 'Confidential 1-on-1 Clinical Care',
-        bullets: ['RCI Licensed Experts', 'Private & Confidential', 'Same-Week Slots'],
+        highlight: 'Licensed Support · Ongoing Care Follow-Up',
+        bullets: [
+          '★ Licensed Support',
+          '★ College-Level (e.g. Manas Counselling Centre)',
+          '★ Ongoing Care Follow-Up'
+        ],
         targetTab: null
       };
     }
@@ -34,12 +38,16 @@ export function Screen07SupportGuidance({
       return {
         level: 2,
         tool: 'peer',
-        badge: 'Level 2 · Peer Connection',
+        badge: 'Support 2 · Talk to a Volunteer',
         icon: 'peer',
-        title: selectedLanguage === 'mr' ? 'प्रशिक्षित विद्यार्थी स्वयंसेवक' : selectedLanguage === 'hi' ? 'प्रशिक्षित सहपाठी स्वयंसेवक' : 'Peer Psychology Volunteer',
+        title: selectedLanguage === 'mr' ? 'सपोर्ट २ : व्हॉलंटिअरशी बोला' : selectedLanguage === 'hi' ? 'सपोर्ट २ : स्वयंसेवक से बात करें' : 'Support 2 : Talk to a Volunteer',
         actionLabel: selectedLanguage === 'mr' ? 'स्वयंसेवकाशी मोकळेपणाने बोला' : selectedLanguage === 'hi' ? 'सहपाठी से बात करें' : 'Connect with Peer Volunteer',
-        highlight: 'Supervised Student Psychology Peers',
-        bullets: ['Zero Judgment', 'Marathi / Hindi / English', 'Anonymous & Safe'],
+        highlight: 'Psychology Peers · 1-on-1 Private Chat',
+        bullets: [
+          '★ Peers from Psychology Dept',
+          '★ 1-on-1 Private Chat',
+          '★ Escalated Further If Needed'
+        ],
         targetTab: null
       };
     }
@@ -48,12 +56,16 @@ export function Screen07SupportGuidance({
       return {
         level: 1,
         tool: 'let_it_out',
-        badge: 'Level 1 · Instant Relief',
+        badge: 'Support 1 · Self Help Tools',
         icon: 'flame',
-        title: selectedLanguage === 'mr' ? 'लेट इट आउट · खाजगी ऑडिओ वेंट' : selectedLanguage === 'hi' ? 'लेट इट आउट · निजी ऑडियो वेंट' : 'Let It Out · Audio Vent',
+        title: selectedLanguage === 'mr' ? 'सपोर्ट १ : लेट इट आउट (व्हॉइस वेंट)' : selectedLanguage === 'hi' ? 'सपोर्ट १ : लेट इट आउट (वॉइस वेंट)' : 'Support 1 : Let It Out',
         actionLabel: selectedLanguage === 'mr' ? 'ऑडिओ वेंट सुरू करा' : selectedLanguage === 'hi' ? 'ऑडियो वेंट शुरू करें' : 'Start Private Audio Vent',
-        highlight: 'Ephemeral Voice Vent · Auto-Deleted',
-        bullets: ['Zero Bytes Logged', 'Burn-on-Delete Animation', 'Instant Release'],
+        highlight: 'Record Voice Note · Immediate Delete · 0 Data Transfer',
+        bullets: [
+          '★ Let It Out (Deleted Immediately, 0 Transfer)',
+          '★ Journal (Write Feelings)',
+          '★ MoodTunes (Music Therapy)'
+        ],
         targetTab: 'let_it_out'
       };
     }
@@ -62,12 +74,16 @@ export function Screen07SupportGuidance({
       return {
         level: 1,
         tool: 'journal',
-        badge: 'Level 1 · Mindful Reflection',
+        badge: 'Support 1 · Self Help Tools',
         icon: 'journal',
-        title: selectedLanguage === 'mr' ? 'खाजगी डायरी आणि विचार' : selectedLanguage === 'hi' ? 'निजी डायरी और विचार' : 'Private Journal Canvas',
+        title: selectedLanguage === 'mr' ? 'सपोर्ट १ : खाजगी डायरी' : selectedLanguage === 'hi' ? 'सपोर्ट १ : निजी डायरी' : 'Support 1 : Private Journal',
         actionLabel: selectedLanguage === 'mr' ? 'डायरी उघडा' : selectedLanguage === 'hi' ? 'डायरी खोलें' : 'Open Private Journal',
-        highlight: 'Encrypted Local Writing Space',
-        bullets: ['Device-Only Storage', 'Zero Cloud Transmission', 'Track Insights'],
+        highlight: 'Write Out What You Are Feeling',
+        bullets: [
+          '★ Journal (Write Feelings)',
+          '★ MoodTunes (Music Therapy)',
+          '★ Let It Out (Voice Vent)'
+        ],
         targetTab: 'journal'
       };
     }
@@ -76,12 +92,16 @@ export function Screen07SupportGuidance({
     return {
       level: 1,
       tool: 'mood_tunes',
-      badge: 'Level 1 · Acoustic Grounding',
+      badge: 'Support 1 · Self Help Tools',
       icon: 'music',
-      title: selectedLanguage === 'mr' ? 'मूडट्यून्स · थिटा साऊंडस्केप्स' : selectedLanguage === 'hi' ? 'मूडट्यून्स · थिटा संगीत' : 'MoodTunes · Theta Waves',
-      actionLabel: selectedLanguage === 'mr' ? 'ध्वनी सुरू करा' : selectedLanguage === 'hi' ? 'संगीत शुरू करें' : 'Start Acoustic Grounding',
-      highlight: '5-Minute Web Audio Binaural Beats',
-      bullets: ['0ms Latency', 'Theta 6Hz Calm', 'Works 100% Offline'],
+      title: selectedLanguage === 'mr' ? 'सपोर्ट १ : मूडट्यून्स (म्युझिक थेरपी)' : selectedLanguage === 'hi' ? 'सपोर्ट १ : मूडट्यून्स (म्यूजिक थेरेपी)' : 'Support 1 : MoodTunes (Music Therapy)',
+      actionLabel: selectedLanguage === 'mr' ? 'ध्वनी सुरू करा' : selectedLanguage === 'hi' ? 'संगीत शुरू करें' : 'Start Music Therapy',
+      highlight: 'Acoustic Soundscapes & Brainwave Grounding',
+      bullets: [
+        '★ MoodTunes (Music Therapy)',
+        '★ Let It Out (Voice Vent)',
+        '★ Journal (Write Feelings)'
+      ],
       targetTab: 'mood_tunes'
     };
   };
@@ -150,10 +170,10 @@ export function Screen07SupportGuidance({
           </div>
 
           {/* Visual Benefit Checkmark Chips */}
-          <div className="grid grid-cols-3 gap-1 pt-1">
+          <div className="space-y-1 pt-1">
             {rec.bullets.map((b, idx) => (
-              <div key={idx} className="bg-white/80 border border-[#c5c8bc]/50 rounded-xl p-1.5 text-center shadow-2xs">
-                <span className="text-[9.5px] font-medium text-[#1a1d14] leading-tight block">
+              <div key={idx} className="bg-white/85 border border-[#c5c8bc]/50 rounded-xl px-2.5 py-1.5 shadow-2xs text-left">
+                <span className="text-[10px] font-medium text-[#1a1d14] leading-tight block">
                   {b}
                 </span>
               </div>
@@ -172,16 +192,16 @@ export function Screen07SupportGuidance({
         {/* Section Header */}
         <div className="pt-1 flex items-center justify-between px-1">
           <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-            All 3 Support Levels (Choose Freely)
+            All 3 Support Options (Choose Freely)
           </span>
         </div>
 
-        {/* 3 Visual Level Cards */}
+        {/* 3 Support Cards */}
         <div className="space-y-2">
-          {/* Level 1 Card */}
+          {/* Support 1 Card */}
           <div
             onClick={() => onSelectLevel(1)}
-            className={`rounded-3xl p-3 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
+            className={`rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
               rec.level === 1
                 ? 'border-2 border-[#526140] bg-[#f3f5e6] shadow-sm'
                 : 'border border-[#c5c8bc]/60 bg-white hover:bg-[#f3f5e6]'
@@ -191,25 +211,25 @@ export function Screen07SupportGuidance({
               <div className="w-9 h-9 rounded-2xl bg-[#526140]/15 flex items-center justify-center text-[#526140]">
                 <Wind className="w-4.5 h-4.5" />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">{t.screen7.levels.level1Title}</b>
+                  <b className="text-xs text-[#1a1d14]">Support 1 : Self Help Tools</b>
                   <span className="font-mono text-[8px] bg-[#526140]/15 text-[#526140] px-1.5 py-0.2 rounded-full font-bold">
-                    Self-Care
+                    Instant
                   </span>
                 </div>
-                <span className="text-[10px] text-[#5e5c52] block">
-                  MoodTunes · Voice Vent · Journal
+                <span className="text-[10px] text-[#5e5c52] block leading-tight mt-0.5">
+                  ★ Let It Out · ★ Journal · ★ MoodTunes
                 </span>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
+            <ChevronRight className="w-4 h-4 text-[#75786e] flex-shrink-0" />
           </div>
 
-          {/* Level 2 Card */}
+          {/* Support 2 Card */}
           <div
             onClick={() => onSelectLevel(2)}
-            className={`rounded-3xl p-3 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
+            className={`rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
               rec.level === 2
                 ? 'border-2 border-[#526140] bg-[#f3f5e6] shadow-sm'
                 : 'border border-[#c5c8bc]/60 bg-white hover:bg-[#f3f5e6]'
@@ -219,25 +239,25 @@ export function Screen07SupportGuidance({
               <div className="w-9 h-9 rounded-2xl bg-[#526140]/15 flex items-center justify-center text-[#526140]">
                 <Users className="w-4.5 h-4.5" />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">{t.screen7.levels.level2Title}</b>
+                  <b className="text-xs text-[#1a1d14]">Support 2 : Talk to a Volunteer</b>
                   <span className="font-mono text-[8px] bg-[#526140] text-white px-1.5 py-0.2 rounded-full font-bold">
-                    Peer Chat
+                    Peers
                   </span>
                 </div>
-                <span className="text-[10px] text-[#5e5c52] block">
-                  Trained psychology student volunteers
+                <span className="text-[10px] text-[#5e5c52] block leading-tight mt-0.5">
+                  ★ Psychology Peers · ★ 1-on-1 Pvt Chat · ★ Escalated If Needed
                 </span>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
+            <ChevronRight className="w-4 h-4 text-[#75786e] flex-shrink-0" />
           </div>
 
-          {/* Level 3 Card */}
+          {/* Support 3 Card */}
           <div
             onClick={() => onSelectLevel(3)}
-            className={`rounded-3xl p-3 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
+            className={`rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
               rec.level === 3
                 ? 'border-2 border-red-700 bg-red-50/50 shadow-sm'
                 : 'border border-[#c5c8bc]/60 bg-white hover:bg-red-50/30'
@@ -247,19 +267,19 @@ export function Screen07SupportGuidance({
               <div className="w-9 h-9 rounded-2xl bg-red-100 flex items-center justify-center text-red-800">
                 <CalendarCheck className="w-4.5 h-4.5" />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">{t.screen7.levels.level3Title}</b>
+                  <b className="text-xs text-[#1a1d14]">Support 3 : Meet a Counsellor</b>
                   <span className="font-mono text-[8px] bg-red-700 text-white px-1.5 py-0.2 rounded-full font-bold">
                     Clinical
                   </span>
                 </div>
-                <span className="text-[10px] text-[#5e5c52] block">
-                  Licensed campus counsellors
+                <span className="text-[10px] text-[#5e5c52] block leading-tight mt-0.5">
+                  ★ Licensed Support · ★ College Level (e.g. Manas) · ★ Ongoing Care
                 </span>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
+            <ChevronRight className="w-4 h-4 text-[#75786e] flex-shrink-0" />
           </div>
         </div>
       </div>

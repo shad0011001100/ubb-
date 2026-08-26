@@ -157,7 +157,7 @@ export function Screen08Level1Express({
           </button>
           <div>
             <span className="font-mono text-[9px] uppercase tracking-wider text-[#815505] font-bold block">
-              Level 1 · Express & Self-Care
+              Support 1 · Self Help Tools
             </span>
             <h2 className="font-fraunces text-base font-bold text-[#1a1d14]">
               {activeSubTab === 'let_it_out' ? 'Let It Out' : activeSubTab === 'mood_tunes' ? 'MoodTunes' : 'Private Journal'}
