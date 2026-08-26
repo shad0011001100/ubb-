@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Screen00AnimatedShowcase } from './Screen00AnimatedShowcase';
 import { Screen01LoginSelection } from './Screen01LoginSelection';
 import { Screen02AnonymousLogin } from './Screen02AnonymousLogin';
 import { Screen03StudentDashboard } from './Screen03StudentDashboard';
@@ -16,15 +17,15 @@ import { VolunteerDashboardView } from './VolunteerDashboardView';
 import { CounsellorDashboardView } from './CounsellorDashboardView';
 import { WallOfThoughtsView } from './WallOfThoughtsView';
 import { MyJourneyView } from './MyJourneyView';
-import { PhoneCall, ShieldAlert, X } from 'lucide-react';
+import { PhoneCall, ShieldAlert, X, Sparkles } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 
 export function PureUserApp({ onOpenDevPortal }) {
   // Navigation stack:
-  // 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'positive_flow' | 'concern_flow' |
+  // 'showcase' | 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'positive_flow' | 'concern_flow' |
   // 'support_guidance' | 'safety_check' | 'level1_express' | 'level2_peer' | 'level3_care' |
   // 'feedback' | 'wall_of_thoughts' | 'my_journey' | 'volunteer_auth' | 'volunteer_dashboard' | 'counsellor_dashboard'
-  const [currentScreen, setCurrentScreen] = useState('login_selection');
+  const [currentScreen, setCurrentScreen] = useState('showcase');
   const [screenParams, setScreenParams] = useState({});
 
   // Language state: 'en' | 'mr' | 'hi'
@@ -122,14 +123,25 @@ export function PureUserApp({ onOpenDevPortal }) {
   return (
     <div className="min-h-screen bg-[#0E1E20] flex items-center justify-center p-0 sm:p-4 font-work selection:bg-[#E3A06F] selection:text-[#241208]">
       {/* Top Floating Gateway Switcher for SIH Evaluators */}
-      <div className="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 shadow-lg text-[10px] text-white">
-        <span className="font-mono text-[#E3A06F]">Ubb SIH System:</span>
+      <div className="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 shadow-xl text-[10px] text-white">
+        <button
+          onClick={() => setCurrentScreen('showcase')}
+          className={`flex items-center gap-1 px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+            currentScreen === 'showcase'
+              ? 'bg-[#815505] text-[#ffddb3] font-bold'
+              : 'text-amber-300 hover:text-amber-100'
+          }`}
+        >
+          <Sparkles className="w-3 h-3" />
+          <span>Showcase</span>
+        </button>
+        <span>|</span>
         <button
           onClick={() => setCurrentScreen('login_selection')}
           className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
-            currentScreen !== 'volunteer_dashboard' && currentScreen !== 'counsellor_dashboard'
-              ? 'bg-[#E3A06F] text-[#241208] font-bold'
-              : 'hover:text-[#E3A06F]'
+            currentScreen !== 'showcase' && currentScreen !== 'volunteer_dashboard' && currentScreen !== 'counsellor_dashboard'
+              ? 'bg-[#526140] text-white font-bold'
+              : 'hover:text-[#ffddb3]'
           }`}
         >
           Student View
@@ -175,12 +187,21 @@ export function PureUserApp({ onOpenDevPortal }) {
       {/* Main Mobile App Frame */}
       <div className="w-full max-w-sm h-screen sm:h-[660px] bg-[#f9fbeb] sm:rounded-[36px] shadow-2xl overflow-hidden border-0 sm:border-8 sm:border-[#1E3A3D] relative flex flex-col pt-6 sm:pt-0">
         {/* Render Active Screen */}
+        {currentScreen === 'showcase' && (
+          <Screen00AnimatedShowcase
+            selectedLanguage={selectedLanguage}
+            onSelectLanguage={(lang) => setSelectedLanguage(lang)}
+            onEnterApp={() => setCurrentScreen('login_selection')}
+          />
+        )}
+
         {currentScreen === 'login_selection' && (
           <Screen01LoginSelection
             selectedLanguage={selectedLanguage}
             onSelectLanguage={(lang) => setSelectedLanguage(lang)}
             onContinueAsStudent={() => setCurrentScreen('anon_login')}
             onVolunteerLogin={() => setCurrentScreen('volunteer_auth')}
+            onBackToShowcase={() => setCurrentScreen('showcase')}
           />
         )}
 

@@ -1,12 +1,15 @@
 import React from 'react';
-import { UserCheck, Shield, HeartHandshake, Sparkles, Database, Globe, ArrowRight } from 'lucide-react';
+import { UserCheck, Shield, HeartHandshake, Sparkles, Database, Globe, ArrowRight, ArrowLeft } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
+import ubbLogoLight from '../../assets/ubb-logo-light.png';
+import ubbIcon from '../../assets/ubb-icon.png';
 
 export function Screen01LoginSelection({
   selectedLanguage = 'en',
   onSelectLanguage,
   onContinueAsStudent,
-  onVolunteerLogin
+  onVolunteerLogin,
+  onBackToShowcase
 }) {
   const t = getTranslation(selectedLanguage);
 
@@ -20,14 +23,26 @@ export function Screen01LoginSelection({
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between p-5 select-none overflow-y-auto font-sans">
       {/* Top Bar with Language Switcher */}
       <div className="pt-2">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
+          {onBackToShowcase ? (
+            <button
+              onClick={onBackToShowcase}
+              className="p-1.5 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer flex items-center gap-1 text-[10.5px] font-semibold"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Showcase</span>
+            </button>
+          ) : (
+            <div className="w-4" />
+          )}
+
           <div className="flex items-center gap-1 bg-[#edefe0] border border-[#c5c8bc]/50 px-2 py-1 rounded-full">
             <Globe className="w-3.5 h-3.5 text-[#526140]" />
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => onSelectLanguage(lang.code)}
-                className={`text-[10.5px] px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                className={`text-[10px] px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
                   selectedLanguage === lang.code
                     ? 'bg-[#526140] text-white font-bold shadow-xs'
                     : 'text-[#5e5c52] hover:text-[#1a1d14]'
@@ -43,12 +58,14 @@ export function Screen01LoginSelection({
           </span>
         </div>
 
-        {/* Brand Emblem */}
+        {/* Brand Emblem with Uploaded Stitch Logo */}
         <div className="text-center mb-3">
-          <div className="w-14 h-14 rounded-3xl bg-[#6a7a56]/15 border border-[#526140]/30 flex items-center justify-center mx-auto mb-2 shadow-xs">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" className="text-[#526140]">
-              <path d="M12 2C7 2 3 6 3 11c0 5 4.5 9 9 11 4.5-2 9-6 9-11 0-5-4-9-9-9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <div className="w-16 h-16 rounded-3xl bg-white border border-[#c5c8bc]/60 p-2 flex items-center justify-center mx-auto mb-2 shadow-xs">
+            <img
+              src={ubbLogoLight || ubbIcon}
+              alt="Ubb Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
 
           <h1 className="font-fraunces text-3xl font-bold tracking-tight text-[#526140] mb-0.5">

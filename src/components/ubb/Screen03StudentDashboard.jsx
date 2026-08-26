@@ -14,6 +14,8 @@ import {
   Globe
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
+import ubbLogoLight from '../../assets/ubb-logo-light.png';
+import ubbIcon from '../../assets/ubb-icon.png';
 
 export function Screen03StudentDashboard({
   userProfile,
@@ -29,10 +31,8 @@ export function Screen03StudentDashboard({
       {/* Top App Bar from Stitch */}
       <div className="px-5 pt-3.5 pb-2.5 flex items-center justify-between bg-[#f9fbeb] border-b border-[#c5c8bc]/50">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-xl bg-[#526140] flex items-center justify-center text-white shadow-xs">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C7 2 3 6 3 11c0 5 4.5 9 9 11 4.5-2 9-6 9-11 0-5-4-9-9-9z" stroke="currentColor" strokeWidth="2"/>
-            </svg>
+          <div className="w-8 h-8 rounded-xl bg-white border border-[#c5c8bc]/60 p-1 flex items-center justify-center shadow-xs">
+            <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain" />
           </div>
           <span className="font-fraunces font-bold text-lg tracking-tight text-[#526140]">
             {t.common.appName}
