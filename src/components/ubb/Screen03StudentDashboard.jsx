@@ -11,7 +11,10 @@ import {
   ShieldCheck,
   ChevronRight,
   ArrowRight,
-  Globe,
+  Headphones,
+  Mic,
+  Lock,
+  Heart,
   CalendarCheck
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
@@ -29,8 +32,8 @@ export function Screen03StudentDashboard({
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
-      {/* Top App Bar from Stitch */}
-      <div className="px-5 pt-3.5 pb-2.5 flex items-center justify-between bg-[#f9fbeb] border-b border-[#c5c8bc]/50">
+      {/* Top Visual App Bar */}
+      <div className="px-5 pt-3.5 pb-2.5 flex items-center justify-between bg-[#f9fbeb] border-b border-[#c5c8bc]/40">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-xl bg-white border border-[#c5c8bc]/60 p-1 flex items-center justify-center shadow-xs">
             <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain" />
@@ -40,215 +43,191 @@ export function Screen03StudentDashboard({
           </span>
         </div>
 
-        {/* User Identity Pill */}
+        {/* User Identity Pill with Visual Pulse */}
         <div className="flex items-center gap-1.5 bg-[#edefe0] border border-[#c5c8bc]/60 px-3 py-1 rounded-full shadow-2xs">
           <div className="w-2 h-2 rounded-full bg-[#526140] animate-pulse" />
           <span className="font-mono text-[10.5px] text-[#526140] font-bold">{anonId}</span>
         </div>
       </div>
 
-      {/* Main Content Scrollable Area */}
+      {/* Main Visual Scrollable Content */}
       <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-20">
-        {/* Grounding Quote Card from Stitch */}
-        <section className="bg-[#f3f5e6] rounded-3xl p-4 md:p-5 flex items-center justify-center text-center shadow-xs border border-[#c5c8bc]/60 relative overflow-hidden">
-          <div className="space-y-1">
-            <span className="font-mono text-[9px] text-[#815505] uppercase tracking-wider font-bold block">
-              {t.screen3.welcome} · {anonId}
+        {/* ================= 1. VISUAL HERO: UBBPULSE CHECK-IN ================= */}
+        <section
+          onClick={() => onNavigate('mood_checkin')}
+          className="bg-gradient-to-br from-[#526140] via-[#435034] to-[#2d3822] text-white rounded-3xl p-4 md:p-5 shadow-sm hover:scale-101 transition-all cursor-pointer relative overflow-hidden group active:scale-99 border border-[#526140]"
+        >
+          {/* Visual Ambient Halo */}
+          <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform" />
+
+          <div className="flex items-center justify-between mb-3 relative z-10">
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
+                <Sparkles className="w-4.5 h-4.5 text-[#ffddb3]" />
+              </div>
+              <div>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[#ffddb3] font-bold block">
+                  Daily Check-in
+                </span>
+                <h3 className="font-fraunces font-bold text-base text-white leading-tight">
+                  UbbPulse
+                </h3>
+              </div>
+            </div>
+
+            <span className="bg-[#ffddb3] text-[#435034] font-bold text-[10px] px-3 py-1 rounded-full flex items-center gap-1 shadow-xs">
+              <span>Start</span>
+              <ArrowRight className="w-3 h-3" />
             </span>
-            <h2 className="font-fraunces text-xs md:text-sm font-semibold text-[#1a1d14] leading-snug max-w-xs mx-auto">
-              "{t.screen3.quote}"
-            </h2>
           </div>
+
+          <p className="text-xs text-white/90 leading-snug relative z-10">
+            "{t.screen3.quote}"
+          </p>
         </section>
 
-        {/* 1. UbbPulse (Primary Mood Check-in Card) */}
-        <div
-          onClick={() => onNavigate('mood_checkin')}
-          className="bg-[#6a7a56] text-[#f9ffeb] rounded-3xl p-4 shadow-sm hover:scale-101 transition-all cursor-pointer flex flex-col justify-between gap-3 group active:scale-99"
-        >
-          <div className="flex items-start justify-between">
-            <div className="bg-[#f9ffeb]/15 p-2.5 rounded-2xl w-fit group-hover:scale-105 transition-transform text-[#f9ffeb]">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <span className="bg-[#f9ffeb] text-[#526140] font-bold text-[10px] px-3 py-1 rounded-full flex items-center gap-1 shadow-xs">
-              Check-in <ArrowRight className="w-3 h-3" />
+        {/* ================= 2. 4-UP QUICK VISUAL TOOL TILES ================= */}
+        <div>
+          <div className="flex items-center justify-between px-1 mb-2">
+            <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
+              Instant Relief Tools
+            </span>
+            <span className="font-mono text-[9px] text-[#526140] bg-[#edefe0] px-2 py-0.5 rounded-full font-bold">
+              1-Tap
             </span>
           </div>
 
-          <div>
-            <h3 className="font-fraunces font-bold text-sm text-[#f9ffeb] mb-0.5">{t.screen3.pulseTitle}</h3>
-            <p className="text-[11px] text-[#f9ffeb]/90 leading-snug">
-              {t.screen3.pulseDesc}
-            </p>
-          </div>
-        </div>
-
-        {/* Section Header */}
-        <div className="pt-1 flex items-center justify-between px-1">
-          <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-            Sanctuary Tools
-          </span>
-          <span className="text-[10px] text-[#815505] font-semibold">100% Zero-PII</span>
-        </div>
-
-        {/* Bento Grid of All Sanctuary Tools */}
-        <div className="space-y-2.5">
-          {/* Let It Out (Temporary Voice Vent) */}
-          <div
-            onClick={() => onNavigate('level1_express', { defaultTab: 'let_it_out' })}
-            className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
-          >
-            <div className="w-10 h-10 rounded-2xl bg-amber-100 text-[#815505] flex items-center justify-center flex-shrink-0">
-              <Flame className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
+          <div className="grid grid-cols-2 gap-2.5">
+            {/* Tile 1: Voice Vent */}
+            <div
+              onClick={() => onNavigate('level1_express', { defaultTab: 'let_it_out' })}
+              className="bg-[#f3f5e6] hover:bg-[#ebefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
+            >
               <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">{t.screen3.letItOutTitle}</b>
-                <span className="font-mono text-[8.5px] bg-red-100 text-red-800 px-1.5 py-0.2 rounded-full font-bold">
+                <div className="w-9 h-9 rounded-2xl bg-amber-100 text-[#815505] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                  <Flame className="w-4.5 h-4.5" />
+                </div>
+                <span className="font-mono text-[8px] bg-red-100 text-red-800 px-1.5 py-0.5 rounded-full font-bold">
                   Zero Logs
                 </span>
               </div>
-              <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                {t.screen3.letItOutDesc}
-              </span>
+              <div>
+                <b className="text-xs text-[#1a1d14] block">Let It Out</b>
+                <span className="text-[10px] text-[#5e5c52] block truncate">Voice & text vent</span>
+              </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
-          </div>
 
-          {/* MoodTunes (Acoustic Relaxation) */}
-          <div
-            onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
-            className="bg-[#e8e9db] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e2e4d5] active:scale-99"
-          >
-            <div className="w-10 h-10 rounded-2xl bg-[#526140]/15 text-[#526140] flex items-center justify-center flex-shrink-0">
-              <Music className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
+            {/* Tile 2: MoodTunes */}
+            <div
+              onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
+              className="bg-[#e8e9db] hover:bg-[#e2e4d5] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
+            >
               <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">{t.screen3.moodTunesTitle}</b>
-                <span className="font-mono text-[8.5px] bg-[#526140]/15 text-[#526140] px-1.5 py-0.2 rounded-full font-bold">
-                  Web Audio · 0ms
+                <div className="w-9 h-9 rounded-2xl bg-[#526140]/15 text-[#526140] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                  <Music className="w-4.5 h-4.5" />
+                </div>
+                <span className="font-mono text-[8px] bg-[#526140]/15 text-[#526140] px-1.5 py-0.5 rounded-full font-bold">
+                  Binaural
                 </span>
               </div>
-              <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                {t.screen3.moodTunesDesc}
-              </span>
+              <div>
+                <b className="text-xs text-[#1a1d14] block">MoodTunes</b>
+                <span className="text-[10px] text-[#5e5c52] block truncate">Acoustic waves</span>
+              </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
-          </div>
 
-          {/* Private Journal */}
-          <div
-            onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
-            className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
-          >
-            <div className="w-10 h-10 rounded-2xl bg-[#5e5c52]/15 text-[#5e5c52] flex items-center justify-center flex-shrink-0">
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
+            {/* Tile 3: Private Journal */}
+            <div
+              onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
+              className="bg-[#edefe0] hover:bg-[#e8e9db] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
+            >
               <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">{t.screen3.journalTitle}</b>
-                <span className="font-mono text-[8.5px] bg-white text-[#5e5c52] px-1.5 py-0.2 rounded-full font-medium">
-                  Local Encrypted
+                <div className="w-9 h-9 rounded-2xl bg-[#5e5c52]/15 text-[#5e5c52] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                  <BookOpen className="w-4.5 h-4.5" />
+                </div>
+                <span className="font-mono text-[8px] bg-white text-[#5e5c52] px-1.5 py-0.5 rounded-full font-medium">
+                  Encrypted
                 </span>
               </div>
-              <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                {t.screen3.journalDesc}
-              </span>
+              <div>
+                <b className="text-xs text-[#1a1d14] block">Private Journal</b>
+                <span className="text-[10px] text-[#5e5c52] block truncate">Local canvas</span>
+              </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
-          </div>
 
-          {/* Talk to Someone (Peer Support) */}
+            {/* Tile 4: Wall of Thoughts */}
+            <div
+              onClick={() => onNavigate('wall_of_thoughts')}
+              className="bg-[#f3f5e6] hover:bg-[#ebefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
+            >
+              <div className="flex items-center justify-between">
+                <div className="w-9 h-9 rounded-2xl bg-amber-100 text-[#815505] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                  <MessageSquare className="w-4.5 h-4.5" />
+                </div>
+                <span className="font-mono text-[8px] bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded-full font-bold">
+                  Peers
+                </span>
+              </div>
+              <div>
+                <b className="text-xs text-[#1a1d14] block">Wall of Thoughts</b>
+                <span className="text-[10px] text-[#5e5c52] block truncate">Community notes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ================= 3. HUMAN CARE BANNER TILES ================= */}
+        <div className="space-y-2 pt-1">
+          {/* Peer Talk Card */}
           <div
             onClick={() => onNavigate('level2_peer')}
-            className="bg-[#f3f5e6] border-2 border-[#526140] rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-sm active:scale-99"
+            className="bg-white border-2 border-[#526140] rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-xs hover:bg-[#f3f5e6] active:scale-99"
           >
-            <div className="w-10 h-10 rounded-2xl bg-[#526140] text-white flex items-center justify-center flex-shrink-0">
-              <Users className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">{t.screen3.talkTitle}</b>
-                <span className="font-mono text-[8.5px] bg-[#526140] text-white px-2 py-0.2 rounded-full font-bold">
-                  Human Care
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-[#526140] text-white flex items-center justify-center shadow-2xs">
+                <Users className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <b className="text-xs text-[#1a1d14]">Talk to a Peer Volunteer</b>
+                  <span className="font-mono text-[8px] bg-[#526140] text-white px-1.5 py-0.2 rounded-full font-bold">
+                    Online
+                  </span>
+                </div>
+                <span className="text-[10.5px] text-[#5e5c52] block">
+                  Trained psychology seniors · 100% Confidential
                 </span>
               </div>
-              <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                {t.screen3.talkDesc}
-              </span>
             </div>
             <ChevronRight className="w-4 h-4 text-[#526140]" />
           </div>
 
-          {/* Wall of Thoughts */}
-          <div
-            onClick={() => onNavigate('wall_of_thoughts')}
-            className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
-          >
-            <div className="w-10 h-10 rounded-2xl bg-amber-100 text-[#815505] flex items-center justify-center flex-shrink-0">
-              <MessageSquare className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">{t.screen3.wallTitle}</b>
-                <span className="font-mono text-[8.5px] bg-amber-200 text-amber-900 px-1.5 py-0.2 rounded-full font-bold">
-                  Moderated
-                </span>
-              </div>
-              <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                {t.screen3.wallDesc}
-              </span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
-          </div>
-
-          {/* Professional Care */}
+          {/* Counsellor Clinical Booking */}
           <div
             onClick={() => onNavigate('level3_care')}
-            className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
+            className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:bg-red-50/30 active:scale-99"
           >
-            <div className="w-10 h-10 rounded-2xl bg-red-100 text-red-700 flex items-center justify-center flex-shrink-0">
-              <CalendarCheck className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">Professional Clinical Care</b>
-                <span className="font-mono text-[8.5px] bg-red-100 text-red-800 px-1.5 py-0.2 rounded-full font-bold">
-                  Level 3
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-red-100 text-red-700 flex items-center justify-center shadow-2xs">
+                <CalendarCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <b className="text-xs text-[#1a1d14]">Book Campus Counsellor</b>
+                  <span className="font-mono text-[8px] bg-red-100 text-red-800 px-1.5 py-0.2 rounded-full font-bold">
+                    Level 3
+                  </span>
+                </div>
+                <span className="text-[10.5px] text-[#5e5c52] block">
+                  Licensed clinical consultations
                 </span>
               </div>
-              <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                Book confidential appointments with licensed campus counsellors
-              </span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
-          </div>
-
-          {/* My Journey Trends */}
-          <div
-            onClick={() => onNavigate('my_journey')}
-            className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
-          >
-            <div className="w-10 h-10 rounded-2xl bg-[#5e5c52]/15 text-[#5e5c52] flex items-center justify-center flex-shrink-0">
-              <TrendingUp className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <b className="text-xs text-[#1a1d14]">{t.screen3.journeyTitle}</b>
-                <span className="font-mono text-[8.5px] bg-white text-[#5e5c52] px-1.5 py-0.2 rounded-full font-medium">
-                  Trends
-                </span>
-              </div>
-              <span className="text-[10.5px] text-[#5e5c52] block truncate">
-                {t.screen3.journeyDesc}
-              </span>
             </div>
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
         </div>
 
-        {/* Emergency SOS Strip */}
+        {/* ================= 4. EMERGENCY SOS STRIP ================= */}
         <button
           onClick={onOpenSOS}
           className="w-full bg-[#ba1a1a] hover:bg-[#93000a] text-white rounded-3xl p-3 flex items-center gap-3 text-left transition-all cursor-pointer shadow-sm active:scale-98"
@@ -258,7 +237,7 @@ export function Screen03StudentDashboard({
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-xs leading-tight">{t.common.emergencySOS}</div>
-            <span className="text-[10px] text-white/80 block truncate">{t.common.emergencySub}</span>
+            <span className="text-[10px] text-white/80 block truncate">24x7 Campus Crisis & Tele-MANAS 14416</span>
           </div>
           <span className="text-xs font-bold text-white/90">→</span>
         </button>
