@@ -1,34 +1,62 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Shield, Lock, Mail, KeyRound, HeartHandshake, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Shield, Lock, Mail, KeyRound, HeartHandshake, Sparkles, CheckCircle2, UserCheck, AlertCircle } from 'lucide-react';
+import ubbLogoLight from '../../assets/ubb-logo-light.png';
+import ubbIcon from '../../assets/ubb-icon.png';
 
 export function VolunteerAuthScreen({
   onLoginSuccess,
   onBack,
   selectedLanguage = 'en'
 }) {
-  const [role, setRole] = useState('volunteer');
+  const [role, setRole] = useState('volunteer'); // 'volunteer' | 'counsellor'
   const [email, setEmail] = useState('kunal.joshi@campus.edu.in');
-  const [password, setPassword] = useState('••••••••');
+  const [password, setPassword] = useState('volunteer123');
   const [twoFactor, setTwoFactor] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSelectRole = (newRole) => {
+    setRole(newRole);
+    setErrorMsg('');
+    if (newRole === 'volunteer') {
+      setEmail('kunal.joshi@campus.edu.in');
+      setPassword('volunteer123');
+    } else {
+      setEmail('dr.pratibha@campus.edu.in');
+      setPassword('counsellor123');
+    }
+  };
+
+  const handleQuickDemoFill = (targetRole) => {
+    handleSelectRole(targetRole);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setErrorMsg('');
     setIsLoading(true);
+
+    if (!email.trim() || !password.trim()) {
+      setIsLoading(false);
+      setErrorMsg('Please enter both email and password.');
+      return;
+    }
+
     setTimeout(() => {
       setIsLoading(false);
+      const isVolunteer = role === 'volunteer';
       onLoginSuccess({
-        id: role === 'volunteer' ? 'vol-kunal-01' : 'counsellor-pratibha-01',
-        name: role === 'volunteer' ? 'Kunal Joshi (Psychology Volunteer)' : 'Dr. Pratibha Deshmukh (Licensed Counsellor)',
+        id: isVolunteer ? 'vol-kunal-01' : 'counsellor-pratibha-01',
+        name: isVolunteer ? (email.includes('kunal') ? 'Kunal Joshi (Peer Volunteer)' : `${email.split('@')[0]} (Volunteer)`) : (email.includes('pratibha') ? 'Dr. Pratibha Deshmukh (Licensed Counsellor)' : `${email.split('@')[0]} (Counsellor)`),
         role: role,
-        email: email
+        email: email.trim()
       });
-    }, 600);
+    }, 500);
   };
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between p-5 select-none overflow-y-auto font-sans">
-      {/* Header */}
+      {/* Top Header */}
       <div className="pt-2 text-center">
         <div className="flex items-center justify-between mb-3">
           <button
@@ -43,20 +71,20 @@ export function VolunteerAuthScreen({
           <div className="w-6" />
         </div>
 
-        <div className="w-14 h-14 rounded-3xl bg-[#6a7a56]/15 border border-[#526140]/30 flex items-center justify-center mx-auto mb-2.5 shadow-xs">
-          <HeartHandshake className="w-7 h-7 text-[#526140]" />
+        <div className="w-14 h-14 rounded-3xl bg-white border border-[#c5c8bc]/60 p-2 flex items-center justify-center mx-auto mb-2 shadow-xs">
+          <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain" />
         </div>
 
-        <h2 className="font-fraunces text-2xl font-bold text-[#1a1d14] mb-1">
+        <h2 className="font-fraunces text-2xl font-bold text-[#1a1d14] mb-0.5">
           Support Staff Portal
         </h2>
         <p className="text-xs text-[#5e5c52] max-w-xs mx-auto">
-          Access your assigned queue, moderation tasks, and appointments.
+          Role-based portal for assigned peer requests and clinical consultations.
         </p>
       </div>
 
       {/* Role Switcher & Form */}
-      <form onSubmit={handleLogin} className="bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-3xl p-5 my-auto space-y-3.5 shadow-sm">
+      <form onSubmit={handleLogin} className="bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-3xl p-4.5 my-auto space-y-3 shadow-sm">
         {/* Role Toggle */}
         <div>
           <label className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold block mb-1.5">
@@ -65,10 +93,7 @@ export function VolunteerAuthScreen({
           <div className="grid grid-cols-2 gap-1.5 p-1 bg-[#edefe0] rounded-2xl">
             <button
               type="button"
-              onClick={() => {
-                setRole('volunteer');
-                setEmail('kunal.joshi@campus.edu.in');
-              }}
+              onClick={() => handleSelectRole('volunteer')}
               className={`py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
                 role === 'volunteer'
                   ? 'bg-[#526140] text-white font-bold shadow-xs'
@@ -80,10 +105,7 @@ export function VolunteerAuthScreen({
 
             <button
               type="button"
-              onClick={() => {
-                setRole('counsellor');
-                setEmail('dr.pratibha@campus.edu.in');
-              }}
+              onClick={() => handleSelectRole('counsellor')}
               className={`py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
                 role === 'counsellor'
                   ? 'bg-red-800 text-white font-bold shadow-xs'
@@ -95,10 +117,38 @@ export function VolunteerAuthScreen({
           </div>
         </div>
 
+        {/* 1-Click Quick Demo Credentials Pill for Evaluators */}
+        <div className="bg-white/80 border border-[#c5c8bc]/70 rounded-2xl p-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-[10px] text-[#5e5c52] font-medium">
+            <Sparkles className="w-3.5 h-3.5 text-[#815505]" />
+            <span>Quick Test:</span>
+          </div>
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onClick={() => handleQuickDemoFill('volunteer')}
+              className={`text-[9.5px] px-2 py-0.5 rounded-full font-mono font-bold cursor-pointer transition-all ${
+                role === 'volunteer' ? 'bg-[#526140] text-white' : 'bg-[#edefe0] text-[#526140]'
+              }`}
+            >
+              Fill Volunteer
+            </button>
+            <button
+              type="button"
+              onClick={() => handleQuickDemoFill('counsellor')}
+              className={`text-[9.5px] px-2 py-0.5 rounded-full font-mono font-bold cursor-pointer transition-all ${
+                role === 'counsellor' ? 'bg-red-800 text-white' : 'bg-[#edefe0] text-red-800'
+              }`}
+            >
+              Fill Counsellor
+            </button>
+          </div>
+        </div>
+
         {/* Email */}
         <div>
           <label className="font-mono text-[9px] uppercase tracking-wider text-[#5e5c52] font-semibold block mb-1">
-            Institutional Email or ID
+            Institutional Email or Staff ID
           </label>
           <div className="relative">
             <input
@@ -106,6 +156,7 @@ export function VolunteerAuthScreen({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@campus.edu.in"
               className="w-full bg-white border border-[#c5c8bc] rounded-2xl px-3.5 py-2 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140]"
             />
             <Mail className="w-3.5 h-3.5 absolute right-3.5 top-2.5 text-[#75786e]" />
@@ -123,6 +174,7 @@ export function VolunteerAuthScreen({
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
               className="w-full bg-white border border-[#c5c8bc] rounded-2xl px-3.5 py-2 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140]"
             />
             <Lock className="w-3.5 h-3.5 absolute right-3.5 top-2.5 text-[#75786e]" />
@@ -146,6 +198,13 @@ export function VolunteerAuthScreen({
             <KeyRound className="w-3.5 h-3.5 absolute right-3.5 top-2.5 text-[#75786e]" />
           </div>
         </div>
+
+        {errorMsg && (
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-2.5 text-[11px] text-red-800 flex items-center gap-1.5">
+            <AlertCircle className="w-3.5 h-3.5 text-red-600 flex-shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
 
         <button
           type="submit"
