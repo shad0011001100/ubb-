@@ -16,6 +16,7 @@ import { VolunteerDashboardView } from './VolunteerDashboardView';
 import { CounsellorDashboardView } from './CounsellorDashboardView';
 import { WallOfThoughtsView } from './WallOfThoughtsView';
 import { MyJourneyView } from './MyJourneyView';
+import { CustomerSupportView } from './CustomerSupportView';
 import { PhoneCall, ShieldAlert, X, Sparkles } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 
@@ -314,6 +315,14 @@ export function PureUserApp({ onOpenDevPortal }) {
             selectedLanguage={selectedLanguage}
             onNavigate={handleNavigate}
             onResetAllData={handleResetData}
+          />
+        )}
+
+        {currentScreen === 'customer_support' && (
+          <CustomerSupportView
+            userProfile={userProfile}
+            selectedLanguage={selectedLanguage}
+            onBack={() => setCurrentScreen('dashboard')}
           />
         )}
 

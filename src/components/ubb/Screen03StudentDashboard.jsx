@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Sparkles,
-  Flame,
   Music,
   BookOpen,
   MessageSquare,
@@ -12,10 +11,10 @@ import {
   ChevronRight,
   ArrowRight,
   Headphones,
-  Mic,
-  Lock,
-  Heart,
-  CalendarCheck
+  LifeBuoy,
+  CalendarCheck,
+  Headset,
+  Heart
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
@@ -29,6 +28,7 @@ export function Screen03StudentDashboard({
 }) {
   const t = getTranslation(selectedLanguage);
   const anonId = userProfile?.anonymous_tag || userProfile?.anonymousId || 'UBB-7K4P-29';
+  const streak = userProfile?.current_streak || 3;
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
@@ -52,45 +52,33 @@ export function Screen03StudentDashboard({
 
       {/* Main Visual Scrollable Content */}
       <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-20">
-        {/* ================= 1. VISUAL HERO: UBBPULSE CHECK-IN ================= */}
-        <section
-          onClick={() => onNavigate('mood_checkin')}
-          className="bg-gradient-to-br from-[#526140] via-[#435034] to-[#2d3822] text-white rounded-3xl p-4 md:p-5 shadow-sm hover:scale-101 transition-all cursor-pointer relative overflow-hidden group active:scale-99 border border-[#526140]"
-        >
-          {/* Visual Ambient Halo */}
-          <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform" />
-
-          <div className="flex items-center justify-between mb-3 relative z-10">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
-                <Sparkles className="w-4.5 h-4.5 text-[#ffddb3]" />
-              </div>
-              <div>
-                <span className="font-mono text-[9px] uppercase tracking-wider text-[#ffddb3] font-bold block">
-                  Daily Check-in
-                </span>
-                <h3 className="font-fraunces font-bold text-base text-white leading-tight">
-                  UbbPulse
-                </h3>
-              </div>
+        {/* ================= 1. SANCTUARY WELCOME & GROUNDING HERO ================= */}
+        <section className="bg-gradient-to-br from-[#f3f5e6] via-[#f9fbeb] to-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-4 shadow-xs relative overflow-hidden space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 bg-[#526140]/10 text-[#526140] px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border border-[#526140]/20">
+              <Sparkles className="w-3 h-3 text-[#526140]" />
+              <span>Safe Sanctuary</span>
             </div>
-
-            <span className="bg-[#ffddb3] text-[#435034] font-bold text-[10px] px-3 py-1 rounded-full flex items-center gap-1 shadow-xs">
-              <span>Start</span>
-              <ArrowRight className="w-3 h-3" />
+            <span className="font-mono text-[9.5px] text-[#815505] font-bold bg-white/80 px-2 py-0.5 rounded-full border border-[#815505]/20">
+              🔥 {streak} Day Streak
             </span>
           </div>
 
-          <p className="text-xs text-white/90 leading-snug relative z-10">
-            "{t.screen3.quote}"
-          </p>
+          <div>
+            <h2 className="font-fraunces text-base font-bold text-[#1a1d14] leading-snug">
+              Welcome back, {anonId}
+            </h2>
+            <p className="text-xs text-[#5e5c52] mt-0.5 leading-relaxed">
+              "{t.screen3.quote}"
+            </p>
+          </div>
         </section>
 
         {/* ================= 2. 4-UP QUICK VISUAL TOOL TILES ================= */}
         <div>
           <div className="flex items-center justify-between px-1 mb-2">
             <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-              Instant Relief Tools
+              Sanctuary Tools & Support
             </span>
             <span className="font-mono text-[9px] text-[#526140] bg-[#edefe0] px-2 py-0.5 rounded-full font-bold">
               1-Tap
@@ -98,22 +86,22 @@ export function Screen03StudentDashboard({
           </div>
 
           <div className="grid grid-cols-2 gap-2.5">
-            {/* Tile 1: Voice Vent */}
+            {/* Tile 1: Customer Support & Helpdesk */}
             <div
-              onClick={() => onNavigate('level1_express', { defaultTab: 'let_it_out' })}
-              className="bg-[#f3f5e6] hover:bg-[#ebefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
+              onClick={() => onNavigate('customer_support')}
+              className="bg-[#f3f5e6] hover:bg-[#ebefe0] border-2 border-[#526140] rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-xs transition-all active:scale-98 relative overflow-hidden group"
             >
               <div className="flex items-center justify-between">
-                <div className="w-9 h-9 rounded-2xl bg-amber-100 text-[#815505] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <Flame className="w-4.5 h-4.5" />
+                <div className="w-9 h-9 rounded-2xl bg-[#526140] text-white flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                  <Headset className="w-4.5 h-4.5" />
                 </div>
-                <span className="font-mono text-[8px] bg-red-100 text-red-800 px-1.5 py-0.5 rounded-full font-bold">
-                  Zero Logs
+                <span className="font-mono text-[8px] bg-[#526140] text-white px-1.5 py-0.5 rounded-full font-bold">
+                  24x7 Desk
                 </span>
               </div>
               <div>
-                <b className="text-xs text-[#1a1d14] block">Let It Out</b>
-                <span className="text-[10px] text-[#5e5c52] block truncate">Voice & text vent</span>
+                <b className="text-xs text-[#1a1d14] block">Customer Support</b>
+                <span className="text-[10px] text-[#5e5c52] block truncate">Help & live chat</span>
               </div>
             </div>
 
@@ -181,10 +169,10 @@ export function Screen03StudentDashboard({
           {/* Peer Talk Card */}
           <div
             onClick={() => onNavigate('level2_peer')}
-            className="bg-white border-2 border-[#526140] rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-xs hover:bg-[#f3f5e6] active:scale-99"
+            className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:bg-[#f3f5e6] active:scale-99"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#526140] text-white flex items-center justify-center shadow-2xs">
+              <div className="w-10 h-10 rounded-2xl bg-[#526140]/15 text-[#526140] flex items-center justify-center shadow-2xs">
                 <Users className="w-5 h-5" />
               </div>
               <div>
@@ -254,19 +242,11 @@ export function Screen03StudentDashboard({
         </button>
 
         <button
-          onClick={() => onNavigate('mood_checkin')}
-          className="flex flex-col items-center gap-0.5 text-[#815505] hover:text-[#526140] cursor-pointer"
-        >
-          <Sparkles className="w-5 h-5 text-[#815505]" />
-          <span className="text-[9.5px]">Pulse</span>
-        </button>
-
-        <button
-          onClick={() => onNavigate('level1_express', { defaultTab: 'let_it_out' })}
+          onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer"
         >
-          <Flame className="w-5 h-5 text-[#815505]" />
-          <span className="text-[9.5px]">Vent</span>
+          <Music className="w-5 h-5 text-[#526140]" />
+          <span className="text-[9.5px]">Relax</span>
         </button>
 
         <button
@@ -278,11 +258,19 @@ export function Screen03StudentDashboard({
         </button>
 
         <button
-          onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
+          onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer"
         >
-          <Music className="w-5 h-5 text-[#526140]" />
-          <span className="text-[9.5px]">Relax</span>
+          <BookOpen className="w-5 h-5 text-[#5e5c52]" />
+          <span className="text-[9.5px]">Journal</span>
+        </button>
+
+        <button
+          onClick={() => onNavigate('customer_support')}
+          className="flex flex-col items-center gap-0.5 text-[#815505] hover:text-[#526140] cursor-pointer"
+        >
+          <Headset className="w-5 h-5 text-[#815505]" />
+          <span className="text-[9.5px]">Support</span>
         </button>
       </div>
     </div>
