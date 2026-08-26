@@ -4,8 +4,7 @@ import { Screen01LoginSelection } from './Screen01LoginSelection';
 import { Screen02AnonymousLogin } from './Screen02AnonymousLogin';
 import { Screen03StudentDashboard } from './Screen03StudentDashboard';
 import { Screen04MoodCheckIn } from './Screen04MoodCheckIn';
-import { Screen05APositiveFlow } from './Screen05APositiveFlow';
-import { Screen05BConcernFlow } from './Screen05BConcernFlow';
+import { Screen05ReasonAssessment } from './Screen05ReasonAssessment';
 import { Screen06SafetyCheck } from './Screen06SafetyCheck';
 import { Screen07SupportGuidance } from './Screen07SupportGuidance';
 import { Screen08Level1Express } from './Screen08Level1Express';
@@ -22,7 +21,7 @@ import { getTranslation } from '../../services/translations';
 
 export function PureUserApp({ onOpenDevPortal }) {
   // Navigation stack:
-  // 'showcase' | 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'positive_flow' | 'concern_flow' |
+  // 'showcase' | 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'reason_assessment' |
   // 'support_guidance' | 'safety_check' | 'level1_express' | 'level2_peer' | 'level3_care' |
   // 'feedback' | 'wall_of_thoughts' | 'my_journey' | 'volunteer_auth' | 'volunteer_dashboard' | 'counsellor_dashboard'
   const [currentScreen, setCurrentScreen] = useState('showcase');
@@ -73,17 +72,14 @@ export function PureUserApp({ onOpenDevPortal }) {
     setCurrentScreen(screen);
   };
 
+  // Direct mood selection -> Always navigate straight to Reason Assessment!
   const handleMoodSelect = (checkInData) => {
     setCurrentCheckIn(checkInData);
-    if (checkInData.type === 'positive') {
-      setCurrentScreen('positive_flow');
-    } else {
-      setCurrentScreen('concern_flow');
-    }
+    setCurrentScreen('reason_assessment');
   };
 
-  // From Concern flow (Screen 5B) -> Go directly to Support Guidance (Screen 7)
-  const handleConcernProceed = (updatedCheckIn) => {
+  // From Reason Assessment -> Go straight to Support Guidance (Screen 7)
+  const handleReasonProceed = (updatedCheckIn) => {
     setCurrentCheckIn(updatedCheckIn);
     setCurrentScreen('support_guidance');
   };
@@ -210,6 +206,7 @@ export function PureUserApp({ onOpenDevPortal }) {
             userProfile={userProfile}
             setUserProfile={setUserProfile}
             selectedLanguage={selectedLanguage}
+            onBack={() => setCurrentScreen('login_selection')}
             onContinue={() => setCurrentScreen('dashboard')}
           />
         )}
@@ -231,20 +228,11 @@ export function PureUserApp({ onOpenDevPortal }) {
           />
         )}
 
-        {currentScreen === 'positive_flow' && (
-          <Screen05APositiveFlow
-            userProfile={userProfile}
+        {currentScreen === 'reason_assessment' && (
+          <Screen05ReasonAssessment
             checkInData={currentCheckIn}
             selectedLanguage={selectedLanguage}
-            onNavigate={handleNavigate}
-          />
-        )}
-
-        {currentScreen === 'concern_flow' && (
-          <Screen05BConcernFlow
-            checkInData={currentCheckIn}
-            selectedLanguage={selectedLanguage}
-            onProceedToSafety={handleConcernProceed}
+            onProceedToGuidance={handleReasonProceed}
             onNavigate={handleNavigate}
           />
         )}
