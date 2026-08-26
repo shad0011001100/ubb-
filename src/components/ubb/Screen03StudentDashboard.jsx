@@ -8,7 +8,8 @@ import {
   ShieldCheck,
   ChevronRight,
   CalendarCheck,
-  Headset
+  Headset,
+  Wrench
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
@@ -170,18 +171,27 @@ export function Screen03StudentDashboard({
         </button>
       </div>
 
-      {/* ================= BOTTOM NAVIGATION OPTIONS: HOME, WALL, TALK, SUPPORT ================= */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-[#c5c8bc]/60 flex items-center justify-around px-3 z-10 shadow-lg">
+      {/* ================= BOTTOM NAVIGATION OPTIONS: HOME, TOOLS, WALL, TALK, SUPPORT ================= */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-[#c5c8bc]/60 flex items-center justify-around px-2 z-10 shadow-lg">
         {/* 1. Home */}
         <button
           onClick={() => onNavigate('dashboard')}
           className="flex flex-col items-center gap-0.5 text-[#526140] font-bold cursor-pointer py-1"
         >
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2.2"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2.2"/></svg>
           <span className="text-[10px]">{t.common.home}</span>
         </button>
 
-        {/* 2. Wall of Thoughts */}
+        {/* 2. Tools (Support 1) */}
+        <button
+          onClick={() => onNavigate('level1_express')}
+          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
+        >
+          <Wrench className="w-5 h-5 text-[#526140]" />
+          <span className="text-[10px]">Tools</span>
+        </button>
+
+        {/* 3. Wall of Thoughts */}
         <button
           onClick={() => onNavigate('wall_of_thoughts')}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
@@ -190,16 +200,16 @@ export function Screen03StudentDashboard({
           <span className="text-[10px]">Wall</span>
         </button>
 
-        {/* 3. Talk */}
+        {/* 4. Talk */}
         <button
           onClick={() => onNavigate('level2_peer')}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
         >
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" strokeWidth="2"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" strokeWidth="2"/></svg>
           <span className="text-[10px]">{t.common.talk}</span>
         </button>
 
-        {/* 4. Support */}
+        {/* 5. Support */}
         <button
           onClick={() => onNavigate('customer_support')}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
