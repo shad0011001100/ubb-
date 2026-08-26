@@ -1,20 +1,14 @@
 import React from 'react';
 import {
   Sparkles,
-  Music,
   BookOpen,
   MessageSquare,
   Users,
-  TrendingUp,
   AlertCircle,
   ShieldCheck,
   ChevronRight,
-  ArrowRight,
-  Headphones,
-  LifeBuoy,
   CalendarCheck,
-  Headset,
-  Heart
+  Headset
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
@@ -51,7 +45,7 @@ export function Screen03StudentDashboard({
       </div>
 
       {/* Main Visual Scrollable Content */}
-      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-20">
+      <div className="flex-1 px-4 py-3.5 overflow-y-auto space-y-3.5 pb-20">
         {/* ================= 1. SANCTUARY WELCOME & GROUNDING HERO ================= */}
         <section className="bg-gradient-to-br from-[#f3f5e6] via-[#f9fbeb] to-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-4 shadow-xs relative overflow-hidden space-y-2">
           <div className="flex items-center justify-between">
@@ -74,57 +68,19 @@ export function Screen03StudentDashboard({
           </div>
         </section>
 
-        {/* ================= 2. 4-UP QUICK VISUAL TOOL TILES ================= */}
+        {/* ================= 2. SANCTUARY TOOLS (2-UP GRID) ================= */}
         <div>
           <div className="flex items-center justify-between px-1 mb-2">
             <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-              Sanctuary Tools & Support
+              Sanctuary Spaces
             </span>
             <span className="font-mono text-[9px] text-[#526140] bg-[#edefe0] px-2 py-0.5 rounded-full font-bold">
-              1-Tap
+              Private
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-2.5">
-            {/* Tile 1: Customer Support & Helpdesk */}
-            <div
-              onClick={() => onNavigate('customer_support')}
-              className="bg-[#f3f5e6] hover:bg-[#ebefe0] border-2 border-[#526140] rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-xs transition-all active:scale-98 relative overflow-hidden group"
-            >
-              <div className="flex items-center justify-between">
-                <div className="w-9 h-9 rounded-2xl bg-[#526140] text-white flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <Headset className="w-4.5 h-4.5" />
-                </div>
-                <span className="font-mono text-[8px] bg-[#526140] text-white px-1.5 py-0.5 rounded-full font-bold">
-                  24x7 Desk
-                </span>
-              </div>
-              <div>
-                <b className="text-xs text-[#1a1d14] block">Customer Support</b>
-                <span className="text-[10px] text-[#5e5c52] block truncate">Help & live chat</span>
-              </div>
-            </div>
-
-            {/* Tile 2: MoodTunes */}
-            <div
-              onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
-              className="bg-[#e8e9db] hover:bg-[#e2e4d5] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
-            >
-              <div className="flex items-center justify-between">
-                <div className="w-9 h-9 rounded-2xl bg-[#526140]/15 text-[#526140] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <Music className="w-4.5 h-4.5" />
-                </div>
-                <span className="font-mono text-[8px] bg-[#526140]/15 text-[#526140] px-1.5 py-0.5 rounded-full font-bold">
-                  Binaural
-                </span>
-              </div>
-              <div>
-                <b className="text-xs text-[#1a1d14] block">MoodTunes</b>
-                <span className="text-[10px] text-[#5e5c52] block truncate">Acoustic waves</span>
-              </div>
-            </div>
-
-            {/* Tile 3: Private Journal */}
+            {/* Tile 1: Private Journal */}
             <div
               onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
               className="bg-[#edefe0] hover:bg-[#e8e9db] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
@@ -143,7 +99,7 @@ export function Screen03StudentDashboard({
               </div>
             </div>
 
-            {/* Tile 4: Wall of Thoughts */}
+            {/* Tile 2: Wall of Thoughts */}
             <div
               onClick={() => onNavigate('wall_of_thoughts')}
               className="bg-[#f3f5e6] hover:bg-[#ebefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
@@ -169,10 +125,10 @@ export function Screen03StudentDashboard({
           {/* Peer Talk Card */}
           <div
             onClick={() => onNavigate('level2_peer')}
-            className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:bg-[#f3f5e6] active:scale-99"
+            className="bg-white border-2 border-[#526140] rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-xs hover:bg-[#f3f5e6] active:scale-99"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#526140]/15 text-[#526140] flex items-center justify-center shadow-2xs">
+              <div className="w-10 h-10 rounded-2xl bg-[#526140] text-white flex items-center justify-center shadow-2xs">
                 <Users className="w-5 h-5" />
               </div>
               <div>
@@ -231,46 +187,33 @@ export function Screen03StudentDashboard({
         </button>
       </div>
 
-      {/* Bottom Nav Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-[#c5c8bc]/60 flex items-center justify-around px-2 z-10 shadow-lg">
+      {/* ================= ONLY 3 BOTTOM NAVIGATION OPTIONS: HOME, TALK, SUPPORT ================= */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-[#c5c8bc]/60 flex items-center justify-around px-6 z-10 shadow-lg">
+        {/* 1. Home */}
         <button
           onClick={() => onNavigate('dashboard')}
-          className="flex flex-col items-center gap-0.5 text-[#526140] font-bold cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#526140] font-bold cursor-pointer py-1"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2"/></svg>
-          <span className="text-[9.5px]">{t.common.home}</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2.2"/></svg>
+          <span className="text-[10.5px]">{t.common.home}</span>
         </button>
 
-        <button
-          onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
-          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer"
-        >
-          <Music className="w-5 h-5 text-[#526140]" />
-          <span className="text-[9.5px]">Relax</span>
-        </button>
-
+        {/* 2. Talk */}
         <button
           onClick={() => onNavigate('level2_peer')}
-          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" strokeWidth="1.8"/></svg>
-          <span className="text-[9.5px]">{t.common.talk}</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" strokeWidth="2"/></svg>
+          <span className="text-[10.5px]">{t.common.talk}</span>
         </button>
 
-        <button
-          onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
-          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer"
-        >
-          <BookOpen className="w-5 h-5 text-[#5e5c52]" />
-          <span className="text-[9.5px]">Journal</span>
-        </button>
-
+        {/* 3. Support */}
         <button
           onClick={() => onNavigate('customer_support')}
-          className="flex flex-col items-center gap-0.5 text-[#815505] hover:text-[#526140] cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
         >
-          <Headset className="w-5 h-5 text-[#815505]" />
-          <span className="text-[9.5px]">Support</span>
+          <Headset className="w-5.5 h-5.5 text-[#815505]" />
+          <span className="text-[10.5px]">Support</span>
         </button>
       </div>
     </div>
