@@ -117,12 +117,12 @@ export function PureUserApp({ onOpenDevPortal }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0E1E20] flex items-center justify-center p-0 sm:p-4 font-work selection:bg-[#E3A06F] selection:text-[#241208]">
-      {/* Top Floating Gateway Switcher for SIH Evaluators */}
-      <div className="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 shadow-xl text-[10px] text-white">
+    <div className="min-h-[100dvh] w-full bg-[#f9fbeb] sm:bg-[#0E1E20] flex items-center justify-center p-0 sm:p-4 font-work selection:bg-[#E3A06F] selection:text-[#241208]">
+      {/* Top Floating Gateway Switcher for SIH Evaluators (Desktop / Tablet) */}
+      <div className="hidden sm:flex fixed top-3 left-1/2 -translate-x-1/2 z-50 items-center gap-2 bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 shadow-xl text-[10.5px] text-white">
         <button
           onClick={() => setCurrentScreen('showcase')}
-          className={`flex items-center gap-1 px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+          className={`flex items-center gap-1 px-2.5 py-0.5 rounded-full cursor-pointer transition-all ${
             currentScreen === 'showcase'
               ? 'bg-[#815505] text-[#ffddb3] font-bold'
               : 'text-amber-300 hover:text-amber-100'
@@ -134,7 +134,7 @@ export function PureUserApp({ onOpenDevPortal }) {
         <span>|</span>
         <button
           onClick={() => setCurrentScreen('login_selection')}
-          className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+          className={`px-2.5 py-0.5 rounded-full cursor-pointer transition-all ${
             currentScreen !== 'showcase' && currentScreen !== 'volunteer_dashboard' && currentScreen !== 'counsellor_dashboard'
               ? 'bg-[#526140] text-white font-bold'
               : 'hover:text-[#ffddb3]'
@@ -152,7 +152,7 @@ export function PureUserApp({ onOpenDevPortal }) {
             });
             setCurrentScreen('volunteer_dashboard');
           }}
-          className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+          className={`px-2.5 py-0.5 rounded-full cursor-pointer transition-all ${
             currentScreen === 'volunteer_dashboard'
               ? 'bg-[#4E7C63] text-white font-bold'
               : 'hover:text-[#A3D1B9]'
@@ -170,7 +170,7 @@ export function PureUserApp({ onOpenDevPortal }) {
             });
             setCurrentScreen('counsellor_dashboard');
           }}
-          className={`px-2 py-0.5 rounded-full cursor-pointer transition-all ${
+          className={`px-2.5 py-0.5 rounded-full cursor-pointer transition-all ${
             currentScreen === 'counsellor_dashboard'
               ? 'bg-red-800 text-white font-bold'
               : 'hover:text-red-300'
@@ -181,7 +181,7 @@ export function PureUserApp({ onOpenDevPortal }) {
       </div>
 
       {/* Main Mobile App Frame */}
-      <div className="w-full max-w-sm h-screen sm:h-[660px] bg-[#f9fbeb] sm:rounded-[36px] shadow-2xl overflow-hidden border-0 sm:border-8 sm:border-[#1E3A3D] relative flex flex-col pt-6 sm:pt-0">
+      <div className="w-full max-w-full sm:max-w-md h-[100dvh] sm:h-[844px] bg-[#f9fbeb] sm:rounded-[44px] shadow-none sm:shadow-2xl overflow-hidden border-0 sm:border-[8px] sm:border-[#1E3A3D] relative flex flex-col">
         {/* Render Active Screen */}
         {currentScreen === 'showcase' && (
           <Screen00AnimatedShowcase
