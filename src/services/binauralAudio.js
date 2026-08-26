@@ -116,9 +116,10 @@ class BinauralBeatsEngine {
 
       setTimeout(() => {
         try {
-          if (this.leftOsc) { this.leftOsc.stop(); this.leftOsc.disconnect(); }
-          if (this.rightOsc) { this.rightOsc.stop(); this.rightOsc.disconnect(); }
-          if (this.droneOsc) { this.droneOsc.stop(); this.droneOsc.disconnect(); }
+          if (this.leftOsc) { this.leftOsc.stop(); this.leftOsc.disconnect(); this.leftOsc = null; }
+          if (this.rightOsc) { this.rightOsc.stop(); this.rightOsc.disconnect(); this.rightOsc = null; }
+          if (this.droneOsc) { this.droneOsc.stop(); this.droneOsc.disconnect(); this.droneOsc = null; }
+          if (this.masterGain) { this.masterGain.disconnect(); this.masterGain = null; }
         } catch {}
         this.isPlaying = false;
       }, fadeDuration * 1000 + 50);
