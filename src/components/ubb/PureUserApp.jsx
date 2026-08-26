@@ -331,6 +331,7 @@ export function PureUserApp({ onOpenDevPortal }) {
             userProfile={userProfile}
             selectedLanguage={selectedLanguage}
             onBack={() => setCurrentScreen('dashboard')}
+            onNavigate={handleNavigate}
           />
         )}
 
