@@ -68,35 +68,35 @@ export function Screen03StudentDashboard({
           </div>
         </section>
 
-        {/* ================= 2. SANCTUARY SPACES ================= */}
+        {/* ================= 2. SANCTUARY TOOLS (SUPPORT 1) ================= */}
         <div className="space-y-2.5">
           <div className="flex items-center justify-between px-1">
             <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-              Sanctuary Spaces
+              Sanctuary Tools
             </span>
             <span className="font-mono text-[9px] text-[#526140] bg-[#edefe0] px-2 py-0.5 rounded-full font-bold">
-              Private
+              Support 1
             </span>
           </div>
 
-          {/* Mood Check-In Card inside Sanctuary Spaces */}
+          {/* Tools Card navigating to Support 1 */}
           <div
-            onClick={() => onNavigate('mood_checkin')}
+            onClick={() => onNavigate('level1_express')}
             className="bg-gradient-to-r from-[#526140] to-[#435034] text-white rounded-3xl p-3.5 flex items-center justify-between cursor-pointer shadow-xs hover:scale-101 transition-all active:scale-99"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-xl shadow-2xs">
-                😊
+              <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-white shadow-2xs">
+                <Wrench className="w-5 h-5" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-white">Mood Check-in</b>
+                  <b className="text-xs text-white">Self-Help Tools</b>
                   <span className="font-mono text-[8px] bg-[#ffddb3] text-[#435034] px-1.5 py-0.2 rounded-full font-bold">
-                    Check-in
+                    Instant
                   </span>
                 </div>
                 <span className="text-[10.5px] text-white/80 block">
-                  Express how you are feeling right now
+                  Let It Out · Private Journal · MoodTunes
                 </span>
               </div>
             </div>
@@ -171,27 +171,18 @@ export function Screen03StudentDashboard({
         </button>
       </div>
 
-      {/* ================= BOTTOM NAVIGATION OPTIONS: HOME, TOOLS, WALL, TALK, SUPPORT ================= */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-[#c5c8bc]/60 flex items-center justify-around px-2 z-10 shadow-lg">
+      {/* ================= BOTTOM NAVIGATION OPTIONS: HOME, WALL, TALK, SUPPORT ================= */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-[#c5c8bc]/60 flex items-center justify-around px-3 z-10 shadow-lg">
         {/* 1. Home */}
         <button
           onClick={() => onNavigate('dashboard')}
           className="flex flex-col items-center gap-0.5 text-[#526140] font-bold cursor-pointer py-1"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2.2"/></svg>
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2.2"/></svg>
           <span className="text-[10px]">{t.common.home}</span>
         </button>
 
-        {/* 2. Tools (Support 1) */}
-        <button
-          onClick={() => onNavigate('level1_express')}
-          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
-        >
-          <Wrench className="w-5 h-5 text-[#526140]" />
-          <span className="text-[10px]">Tools</span>
-        </button>
-
-        {/* 3. Wall of Thoughts */}
+        {/* 2. Wall of Thoughts */}
         <button
           onClick={() => onNavigate('wall_of_thoughts')}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
@@ -200,16 +191,16 @@ export function Screen03StudentDashboard({
           <span className="text-[10px]">Wall</span>
         </button>
 
-        {/* 4. Talk */}
+        {/* 3. Talk */}
         <button
           onClick={() => onNavigate('level2_peer')}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" strokeWidth="2"/></svg>
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" strokeWidth="2"/></svg>
           <span className="text-[10px]">{t.common.talk}</span>
         </button>
 
-        {/* 5. Support */}
+        {/* 4. Support */}
         <button
           onClick={() => onNavigate('customer_support')}
           className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
