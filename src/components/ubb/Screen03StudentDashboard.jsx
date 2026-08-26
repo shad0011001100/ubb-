@@ -101,46 +101,6 @@ export function Screen03StudentDashboard({
             </div>
             <ChevronRight className="w-4 h-4 text-white/80" />
           </div>
-
-          <div className="grid grid-cols-2 gap-2.5">
-            {/* Tile 1: Private Journal */}
-            <div
-              onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
-              className="bg-[#edefe0] hover:bg-[#e8e9db] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
-            >
-              <div className="flex items-center justify-between">
-                <div className="w-9 h-9 rounded-2xl bg-[#5e5c52]/15 text-[#5e5c52] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <BookOpen className="w-4.5 h-4.5" />
-                </div>
-                <span className="font-mono text-[8px] bg-white text-[#5e5c52] px-1.5 py-0.5 rounded-full font-medium">
-                  Encrypted
-                </span>
-              </div>
-              <div>
-                <b className="text-xs text-[#1a1d14] block">Private Journal</b>
-                <span className="text-[10px] text-[#5e5c52] block truncate">Local canvas</span>
-              </div>
-            </div>
-
-            {/* Tile 2: Wall of Thoughts */}
-            <div
-              onClick={() => onNavigate('wall_of_thoughts')}
-              className="bg-[#f3f5e6] hover:bg-[#ebefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex flex-col justify-between h-28 cursor-pointer shadow-2xs transition-all active:scale-98 relative overflow-hidden group"
-            >
-              <div className="flex items-center justify-between">
-                <div className="w-9 h-9 rounded-2xl bg-amber-100 text-[#815505] flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <MessageSquare className="w-4.5 h-4.5" />
-                </div>
-                <span className="font-mono text-[8px] bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded-full font-bold">
-                  Peers
-                </span>
-              </div>
-              <div>
-                <b className="text-xs text-[#1a1d14] block">Wall of Thoughts</b>
-                <span className="text-[10px] text-[#5e5c52] block truncate">Community notes</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* ================= 3. HUMAN CARE BANNER TILES ================= */}
