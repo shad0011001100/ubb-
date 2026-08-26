@@ -207,7 +207,15 @@ export function PureUserApp({ onOpenDevPortal }) {
             setUserProfile={setUserProfile}
             selectedLanguage={selectedLanguage}
             onBack={() => setCurrentScreen('login_selection')}
-            onContinue={() => setCurrentScreen('dashboard')}
+            onContinue={(authMode) => {
+              if (authMode === 'new') {
+                // New users do their initial mood check-up immediately upon sign up
+                setCurrentScreen('mood_checkin');
+              } else {
+                // Returning users go directly to their dashboard
+                setCurrentScreen('dashboard');
+              }
+            }}
           />
         )}
 

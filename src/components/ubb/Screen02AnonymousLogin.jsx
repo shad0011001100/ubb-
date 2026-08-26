@@ -82,7 +82,7 @@ export function Screen02AnonymousLogin({
 
     setUserProfile(profile);
     setIsVerifying(false);
-    if (onContinue) onContinue();
+    if (onContinue) onContinue('new');
   };
 
   // Handle Returning Student Login
@@ -137,7 +137,7 @@ export function Screen02AnonymousLogin({
 
     setUserProfile(finalProfile);
     setIsVerifying(false);
-    if (onContinue) onContinue();
+    if (onContinue) onContinue('returning');
   };
 
   const handleStartFreshForgot = () => {
