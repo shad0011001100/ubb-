@@ -250,16 +250,19 @@ const CRISIS_PATTERNS = [
 app.post('/api/nlp/analyze', (req, res) => {
   const { text, anonymousId = 'Anonymous_User', language = 'en', userState = {} } = req.body;
 
-  if (!text) {
-    return res.status(400).json({ error: 'Text is required for NLP sentiment and crisis analysis.' });
+  if (!text || typeof text !== 'string') {
+    return res.status(400).json({ error: 'Valid text string is required for NLP sentiment and crisis analysis.' });
   }
+
+  // Security Hardening: Clamp input text length to 4,000 characters to prevent ReDoS / CPU exhaustion
+  const sanitizedText = text.trim().slice(0, 4000);
 
   let maxWeight = 0;
   let matchedRule = null;
   const matchedKeywords = [];
 
   for (const pattern of CRISIS_PATTERNS) {
-    if (pattern.regex.test(text)) {
+    if (pattern.regex.test(sanitizedText)) {
       matchedKeywords.push(pattern.category);
       if (pattern.weight > maxWeight) {
         maxWeight = pattern.weight;
@@ -272,7 +275,7 @@ app.post('/api/nlp/analyze', (req, res) => {
   let sentiment = 'neutral';
   let isCrisis = false;
   let triggerAction = 'none'; // 'none' | 'supervisor_review' | 'auto_lock'
-  const confidence = maxWeight > 0 ? maxWeight : (text.toLowerCase().includes('sad') || text.toLowerCase().includes('depressed') ? 0.45 : 0.15);
+  const confidence = maxWeight > 0 ? maxWeight : (sanitizedText.toLowerCase().includes('sad') || sanitizedText.toLowerCase().includes('depressed') ? 0.45 : 0.15);
 
   if (confidence >= 0.85) {
     isCrisis = true;
