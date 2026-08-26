@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Sparkles,
   Flame,
@@ -12,11 +12,7 @@ import {
   ChevronRight,
   ArrowRight,
   Globe,
-  CalendarCheck,
-  Zap,
-  Moon,
-  Sun,
-  Coffee
+  CalendarCheck
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
@@ -30,80 +26,6 @@ export function Screen03StudentDashboard({
 }) {
   const t = getTranslation(selectedLanguage);
   const anonId = userProfile?.anonymous_tag || userProfile?.anonymousId || 'UBB-7K4P-29';
-
-  // Compute smart on-device recommendation based on time & user profile
-  const [recommendation, setRecommendation] = useState({
-    toolId: 'mood_tunes',
-    title: 'MoodTunes · Theta Calm',
-    reason: 'A gentle 5-minute acoustic soundscape to quiet racing thoughts and restore focus.',
-    tab: 'mood_tunes',
-    icon: 'music',
-    accent: '#526140',
-    tag: 'Acoustic Grounding'
-  });
-
-  useEffect(() => {
-    const currentHour = new Date().getHours();
-    if (currentHour >= 22 || currentHour < 5) {
-      // Late Night
-      setRecommendation({
-        toolId: 'mood_tunes',
-        title: 'MoodTunes · Deep Sleep Theta (6Hz)',
-        reason: 'Late Night Relief: Eases overthinking and prepares your mind for restful sleep without screens.',
-        tab: 'mood_tunes',
-        icon: 'moon',
-        accent: '#815505',
-        tag: 'Late Night Rest'
-      });
-    } else if (currentHour >= 5 && currentHour < 12) {
-      // Morning
-      setRecommendation({
-        toolId: 'journal',
-        title: 'Private Journal · Mindful Focus',
-        reason: 'Morning Clarity: Take 2 minutes to write down whatever is on your mind today.',
-        tab: 'journal',
-        icon: 'sun',
-        accent: '#526140',
-        tag: 'Morning Intention'
-      });
-    } else if (currentHour >= 12 && currentHour < 18) {
-      // Afternoon Study
-      setRecommendation({
-        toolId: 'let_it_out',
-        title: 'Let It Out · Quick Audio Vent',
-        reason: 'Midday Reset: Speak your frustrations freely into private auto-deleted audio.',
-        tab: 'let_it_out',
-        icon: 'flame',
-        accent: '#ba1a1a',
-        tag: 'Instant De-stress'
-      });
-    } else {
-      // Evening
-      setRecommendation({
-        toolId: 'peer',
-        title: 'Talk to Someone · Peer Support',
-        reason: 'Evening Wind-Down: Connect with a trained student volunteer for confidential listening.',
-        tab: 'peer',
-        icon: 'users',
-        accent: '#526140',
-        tag: 'Human Connection'
-      });
-    }
-  }, []);
-
-  const handleOpenRecommendation = () => {
-    if (recommendation.toolId === 'mood_tunes') {
-      onNavigate('level1_express', { defaultTab: 'mood_tunes' });
-    } else if (recommendation.toolId === 'let_it_out') {
-      onNavigate('level1_express', { defaultTab: 'let_it_out' });
-    } else if (recommendation.toolId === 'journal') {
-      onNavigate('level1_express', { defaultTab: 'journal' });
-    } else if (recommendation.toolId === 'peer') {
-      onNavigate('level2_peer');
-    } else {
-      onNavigate('level1_express');
-    }
-  };
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
@@ -127,56 +49,51 @@ export function Screen03StudentDashboard({
 
       {/* Main Content Scrollable Area */}
       <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-20">
-        {/* Top Reassurance & Freedom Notice */}
-        <div className="flex items-center justify-between text-[10px] font-mono text-[#5e5c52] px-1">
-          <span className="flex items-center gap-1 text-[#526140] font-bold">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            Direct Action Sanctuary
-          </span>
-          <span>Zero Questionnaires · 100% Private</span>
-        </div>
+        {/* Grounding Quote Card from Stitch */}
+        <section className="bg-[#f3f5e6] rounded-3xl p-4 md:p-5 flex items-center justify-center text-center shadow-xs border border-[#c5c8bc]/60 relative overflow-hidden">
+          <div className="space-y-1">
+            <span className="font-mono text-[9px] text-[#815505] uppercase tracking-wider font-bold block">
+              {t.screen3.welcome} · {anonId}
+            </span>
+            <h2 className="font-fraunces text-xs md:text-sm font-semibold text-[#1a1d14] leading-snug max-w-xs mx-auto">
+              "{t.screen3.quote}"
+            </h2>
+          </div>
+        </section>
 
-        {/* ================= HERO: DYNAMIC AI RECOMMENDED OPTION ================= */}
-        <section className="bg-gradient-to-br from-[#fdc16d]/25 via-[#f9fbeb] to-[#edefe0] border-2 border-[#815505] rounded-3xl p-4 md:p-5 shadow-sm relative overflow-hidden space-y-3 animate-fadeIn">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 bg-[#815505] text-[#ffddb3] px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold shadow-2xs">
-              <Sparkles className="w-3 h-3 text-[#ffddb3]" />
-              <span>AI Recommends for You</span>
+        {/* 1. UbbPulse (Primary Mood Check-in Card) */}
+        <div
+          onClick={() => onNavigate('mood_checkin')}
+          className="bg-[#6a7a56] text-[#f9ffeb] rounded-3xl p-4 shadow-sm hover:scale-101 transition-all cursor-pointer flex flex-col justify-between gap-3 group active:scale-99"
+        >
+          <div className="flex items-start justify-between">
+            <div className="bg-[#f9ffeb]/15 p-2.5 rounded-2xl w-fit group-hover:scale-105 transition-transform text-[#f9ffeb]">
+              <Sparkles className="w-5 h-5" />
             </div>
-            <span className="font-mono text-[9.5px] text-[#815505] font-bold bg-white/80 px-2 py-0.5 rounded-full border border-[#815505]/20">
-              {recommendation.tag}
+            <span className="bg-[#f9ffeb] text-[#526140] font-bold text-[10px] px-3 py-1 rounded-full flex items-center gap-1 shadow-xs">
+              Check-in <ArrowRight className="w-3 h-3" />
             </span>
           </div>
 
           <div>
-            <h2 className="font-fraunces text-base md:text-lg font-bold text-[#1a1d14] leading-snug">
-              {recommendation.title}
-            </h2>
-            <p className="text-xs text-[#5e5c52] mt-0.5 leading-relaxed">
-              "{recommendation.reason}"
+            <h3 className="font-fraunces font-bold text-sm text-[#f9ffeb] mb-0.5">{t.screen3.pulseTitle}</h3>
+            <p className="text-[11px] text-[#f9ffeb]/90 leading-snug">
+              {t.screen3.pulseDesc}
             </p>
           </div>
-
-          <button
-            onClick={handleOpenRecommendation}
-            className="w-full py-3 rounded-full bg-[#526140] hover:bg-[#435034] text-white font-bold text-xs transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2"
-          >
-            <span>Open Recommended Tool</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </section>
-
-        {/* Section Header: All Sanctuary Options */}
-        <div className="pt-1 flex items-center justify-between px-1">
-          <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-            All Sanctuary Tools (Direct 1-Tap Access)
-          </span>
-          <span className="text-[10px] text-[#815505] font-semibold">Choose freely</span>
         </div>
 
-        {/* Bento Grid of All 6 Core Sanctuary Tools */}
+        {/* Section Header */}
+        <div className="pt-1 flex items-center justify-between px-1">
+          <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
+            Sanctuary Tools
+          </span>
+          <span className="text-[10px] text-[#815505] font-semibold">100% Zero-PII</span>
+        </div>
+
+        {/* Bento Grid of All Sanctuary Tools */}
         <div className="space-y-2.5">
-          {/* 1. Let It Out (Temporary Voice Vent) */}
+          {/* Let It Out (Temporary Voice Vent) */}
           <div
             onClick={() => onNavigate('level1_express', { defaultTab: 'let_it_out' })}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -198,7 +115,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 2. MoodTunes (Acoustic Relaxation) */}
+          {/* MoodTunes (Acoustic Relaxation) */}
           <div
             onClick={() => onNavigate('level1_express', { defaultTab: 'mood_tunes' })}
             className="bg-[#e8e9db] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e2e4d5] active:scale-99"
@@ -220,7 +137,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 3. Private Journal */}
+          {/* Private Journal */}
           <div
             onClick={() => onNavigate('level1_express', { defaultTab: 'journal' })}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -242,7 +159,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 4. Talk to Someone (Peer Support) */}
+          {/* Talk to Someone (Peer Support) */}
           <div
             onClick={() => onNavigate('level2_peer')}
             className="bg-[#f3f5e6] border-2 border-[#526140] rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-sm active:scale-99"
@@ -264,7 +181,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#526140]" />
           </div>
 
-          {/* 5. Wall of Thoughts */}
+          {/* Wall of Thoughts */}
           <div
             onClick={() => onNavigate('wall_of_thoughts')}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -286,7 +203,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 6. Professional Care (Counsellor Booking) */}
+          {/* Professional Care */}
           <div
             onClick={() => onNavigate('level3_care')}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -308,7 +225,7 @@ export function Screen03StudentDashboard({
             <ChevronRight className="w-4 h-4 text-[#75786e]" />
           </div>
 
-          {/* 7. My Journey Trends */}
+          {/* My Journey Trends */}
           <div
             onClick={() => onNavigate('my_journey')}
             className="bg-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center gap-3 transition-all cursor-pointer shadow-2xs hover:bg-[#e8e9db] active:scale-99"
@@ -355,6 +272,14 @@ export function Screen03StudentDashboard({
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2"/></svg>
           <span className="text-[9.5px]">{t.common.home}</span>
+        </button>
+
+        <button
+          onClick={() => onNavigate('mood_checkin')}
+          className="flex flex-col items-center gap-0.5 text-[#815505] hover:text-[#526140] cursor-pointer"
+        >
+          <Sparkles className="w-5 h-5 text-[#815505]" />
+          <span className="text-[9.5px]">Pulse</span>
         </button>
 
         <button
