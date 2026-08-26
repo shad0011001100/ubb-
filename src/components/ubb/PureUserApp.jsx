@@ -4,7 +4,7 @@ import { Screen01LoginSelection } from './Screen01LoginSelection';
 import { Screen02AnonymousLogin } from './Screen02AnonymousLogin';
 import { Screen03StudentDashboard } from './Screen03StudentDashboard';
 import { Screen04MoodCheckIn } from './Screen04MoodCheckIn';
-import { Screen05ReasonAssessment } from './Screen05ReasonAssessment';
+import { Screen05AdaptiveFollowUp } from './Screen05AdaptiveFollowUp';
 import { Screen06SafetyCheck } from './Screen06SafetyCheck';
 import { Screen07SupportGuidance } from './Screen07SupportGuidance';
 import { Screen08Level1Express } from './Screen08Level1Express';
@@ -21,7 +21,7 @@ import { getTranslation } from '../../services/translations';
 
 export function PureUserApp({ onOpenDevPortal }) {
   // Navigation stack:
-  // 'showcase' | 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'reason_assessment' |
+  // 'showcase' | 'login_selection' | 'anon_login' | 'dashboard' | 'mood_checkin' | 'adaptive_followup' |
   // 'support_guidance' | 'safety_check' | 'level1_express' | 'level2_peer' | 'level3_care' |
   // 'feedback' | 'wall_of_thoughts' | 'my_journey' | 'volunteer_auth' | 'volunteer_dashboard' | 'counsellor_dashboard'
   const [currentScreen, setCurrentScreen] = useState('showcase');
@@ -72,14 +72,14 @@ export function PureUserApp({ onOpenDevPortal }) {
     setCurrentScreen(screen);
   };
 
-  // Direct mood selection -> Always navigate straight to Reason Assessment!
+  // When student selects mood on Screen 4 -> Immediately navigate to the Adaptive Follow-up Scenario Screen!
   const handleMoodSelect = (checkInData) => {
     setCurrentCheckIn(checkInData);
-    setCurrentScreen('reason_assessment');
+    setCurrentScreen('adaptive_followup');
   };
 
-  // From Reason Assessment -> Go straight to Support Guidance (Screen 7)
-  const handleReasonProceed = (updatedCheckIn) => {
+  // From Adaptive Follow-up -> Go to Support Guidance (Screen 7)
+  const handleFollowUpProceed = (updatedCheckIn) => {
     setCurrentCheckIn(updatedCheckIn);
     setCurrentScreen('support_guidance');
   };
@@ -228,11 +228,11 @@ export function PureUserApp({ onOpenDevPortal }) {
           />
         )}
 
-        {currentScreen === 'reason_assessment' && (
-          <Screen05ReasonAssessment
+        {currentScreen === 'adaptive_followup' && (
+          <Screen05AdaptiveFollowUp
             checkInData={currentCheckIn}
             selectedLanguage={selectedLanguage}
-            onProceedToGuidance={handleReasonProceed}
+            onProceedToGuidance={handleFollowUpProceed}
             onNavigate={handleNavigate}
           />
         )}
