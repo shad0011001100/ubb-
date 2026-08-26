@@ -67,15 +67,39 @@ export function Screen03StudentDashboard({
           </div>
         </section>
 
-        {/* ================= 2. SANCTUARY TOOLS (2-UP GRID) ================= */}
-        <div>
-          <div className="flex items-center justify-between px-1 mb-2">
+        {/* ================= 2. SANCTUARY SPACES ================= */}
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between px-1">
             <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
               Sanctuary Spaces
             </span>
             <span className="font-mono text-[9px] text-[#526140] bg-[#edefe0] px-2 py-0.5 rounded-full font-bold">
               Private
             </span>
+          </div>
+
+          {/* Mood Check-In Card inside Sanctuary Spaces */}
+          <div
+            onClick={() => onNavigate('mood_checkin')}
+            className="bg-gradient-to-r from-[#526140] to-[#435034] text-white rounded-3xl p-3.5 flex items-center justify-between cursor-pointer shadow-xs hover:scale-101 transition-all active:scale-99"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-xl shadow-2xs">
+                😊
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <b className="text-xs text-white">Mood Check-in</b>
+                  <span className="font-mono text-[8px] bg-[#ffddb3] text-[#435034] px-1.5 py-0.2 rounded-full font-bold">
+                    Check-in
+                  </span>
+                </div>
+                <span className="text-[10.5px] text-white/80 block">
+                  Express how you are feeling right now
+                </span>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-white/80" />
           </div>
 
           <div className="grid grid-cols-2 gap-2.5">
