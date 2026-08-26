@@ -10,13 +10,16 @@ export function Screen07SupportGuidance({
 }) {
   const t = getTranslation(selectedLanguage);
 
-  // Compute recommendation
+  // Compute recommendation based on mood, impact, duration, and root cause
   const computeRecommendation = () => {
     const mood = checkInData?.moodId || 'anxious';
     const cause = checkInData?.clarifiedRootCause || '';
     const intensity = checkInData?.intensity || 'moderate';
+    const impact = checkInData?.impact || '';
+    const duration = checkInData?.duration || '';
 
-    if (mood === 'very_low' || intensity === 'very_strong' || checkInData?.safetyAnswer === 'yes') {
+    // Severe impact, long duration, or safety trigger -> Support 3 (Meet a Counsellor)
+    if (mood === 'very_low' || intensity === 'very_strong' || checkInData?.safetyAnswer === 'yes' || (impact.toLowerCase().includes('a lot') && duration.toLowerCase().includes('longer'))) {
       return {
         level: 3,
         tool: 'counsellor',
@@ -34,7 +37,8 @@ export function Screen07SupportGuidance({
       };
     }
 
-    if (mood === 'sad' || mood === 'irritated' || mood === 'anxious' && (cause.includes('family') || cause.includes('talk') || cause.includes('friend'))) {
+    // Moderate impact, sad, anxious, family issues, or loneliness -> Support 2 (Talk to a Volunteer)
+    if (impact.toLowerCase().includes('moderate') || impact.toLowerCase().includes('a lot') || mood === 'sad' || mood === 'irritated' || mood === 'anxious' || cause.includes('family') || cause.includes('loneliness')) {
       return {
         level: 2,
         tool: 'peer',

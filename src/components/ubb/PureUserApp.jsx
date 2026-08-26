@@ -241,7 +241,15 @@ export function PureUserApp({ onOpenDevPortal }) {
           <Screen05AdaptiveFollowUp
             checkInData={currentCheckIn}
             selectedLanguage={selectedLanguage}
-            onProceedToGuidance={handleFollowUpProceed}
+            onProceedToSupport={(enrichedData) => {
+              setCurrentCheckIn(enrichedData);
+              setCurrentScreen('support_guidance');
+            }}
+            onProceedToGuidance={(enrichedData) => {
+              setCurrentCheckIn(enrichedData);
+              setCurrentScreen('support_guidance');
+            }}
+            onBack={() => setCurrentScreen('mood_checkin')}
             onNavigate={handleNavigate}
           />
         )}
