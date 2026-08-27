@@ -12,8 +12,12 @@ import {
   ChevronRight,
   LogOut,
   X,
-  PhoneCall
+  PhoneCall,
+  Heart,
+  Plus,
+  Edit3
 } from 'lucide-react';
+import { ubbSupabase } from '../../services/supabase';
 
 const INITIAL_REQUESTS = [
   {
@@ -66,6 +70,25 @@ const ESCALATION_REASONS = [
   'Student requires institutional support'
 ];
 
+const SAMPLE_VOLUNTEER_POSTS = [
+  {
+    id: 'vp-1',
+    author: 'Kunal Joshi (Peer Guide)',
+    text: 'To everyone studying through the night: taking a 10-minute water & stretch break actually boosts your cognitive recall. You have got this!',
+    tag: '#StudyEncouragement',
+    warmthCount: 34,
+    date: 'Today'
+  },
+  {
+    id: 'vp-2',
+    author: 'Amber_17 (Psychology Dept)',
+    text: 'Exam results do not define your human worth. Be gentle with your mind today.',
+    tag: '#SelfCompassion',
+    warmthCount: 52,
+    date: 'Yesterday'
+  }
+];
+
 export function VolunteerDashboardView({
   volunteerProfile,
   onLogout,
@@ -80,6 +103,12 @@ export function VolunteerDashboardView({
   const [escalateNote, setEscalateNote] = useState('');
   const [escalationSuccess, setEscalationSuccess] = useState(false);
 
+  // Volunteer Wall of Thoughts Post State
+  const [volunteerPosts, setVolunteerPosts] = useState(SAMPLE_VOLUNTEER_POSTS);
+  const [newWallThought, setNewWallThought] = useState('');
+  const [selectedTag, setSelectedTag] = useState('#StudyEncouragement');
+  const [postSuccess, setPostSuccess] = useState(false);
+
   const [chatMessages, setChatMessages] = useState([
     {
       id: 1,
@@ -89,6 +118,8 @@ export function VolunteerDashboardView({
     }
   ]);
   const [replyText, setReplyText] = useState('');
+
+  const volunteerName = volunteerProfile?.name || 'Kunal Joshi';
 
   const filteredRequests = requests.filter((r) => {
     if (activeTab === 'new') return r.status === 'new';
@@ -139,6 +170,35 @@ export function VolunteerDashboardView({
     setReplyText('');
   };
 
+  const handlePostWallThought = async (e) => {
+    e.preventDefault();
+    if (!newWallThought.trim()) return;
+
+    const newPost = {
+      id: `vp-${Date.now()}`,
+      author: `${volunteerName} (Peer Guide)`,
+      text: newWallThought.trim(),
+      tag: selectedTag,
+      warmthCount: 1,
+      date: 'Just now'
+    };
+
+    setVolunteerPosts([newPost, ...volunteerPosts]);
+    setNewWallThought('');
+    setPostSuccess(true);
+
+    try {
+      await ubbSupabase.createCommunityLetter({
+        content: newPost.text,
+        author_tag: newPost.author
+      });
+    } catch {}
+
+    setTimeout(() => {
+      setPostSuccess(false);
+    }, 2500);
+  };
+
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
       {/* Top Header */}
@@ -148,7 +208,7 @@ export function VolunteerDashboardView({
             V
           </div>
           <div>
-            <b className="text-xs text-[#1a1d14] block">{volunteerProfile?.name || 'Kunal Joshi'}</b>
+            <b className="text-xs text-[#1a1d14] block">{volunteerName}</b>
             <span className="font-mono text-[9px] text-[#526140] block font-bold">Active Peer Volunteer</span>
           </div>
         </div>
@@ -169,7 +229,8 @@ export function VolunteerDashboardView({
           { id: 'active', label: 'Active Chats' },
           { id: 'waiting', label: 'Waiting' },
           { id: 'escalated', label: 'Escalated' },
-          { id: 'closed', label: 'Closed' }
+          { id: 'closed', label: 'Closed' },
+          { id: 'wall', label: 'Wall of Thoughts ✍️' }
         ].map((tab) => (
           <button
             key={tab.id}
@@ -188,9 +249,115 @@ export function VolunteerDashboardView({
         ))}
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3">
-        {!selectedRequest ? (
+      {/* Main Content Area */}
+      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-6">
+        {/* ================= TAB: VOLUNTEER WALL OF THOUGHTS COMPOSER ================= */}
+        {activeTab === 'wall' && (
+          <div className="space-y-3.5 animate-fadeIn">
+            <div className="bg-gradient-to-br from-[#f3f5e6] to-[#edefe0] border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-2.5 shadow-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#526140]" />
+                  <span>Post Verified Peer Encouragement</span>
+                </span>
+                <span className="font-mono text-[8.5px] bg-[#526140]/15 text-[#526140] px-2 py-0.5 rounded-full font-bold">
+                  🌟 Verified Guide
+                </span>
+              </div>
+
+              <p className="text-xs text-[#5e5c52] leading-relaxed">
+                As a psychology peer guide, your words offer tremendous comfort to students reading the <b>Wall of Thoughts</b> on the Home Screen.
+              </p>
+
+              <form onSubmit={handlePostWallThought} className="space-y-2.5 pt-1">
+                <textarea
+                  rows={3}
+                  value={newWallThought}
+                  onChange={(e) => setNewWallThought(e.target.value)}
+                  placeholder="Write an uplifting message, study grounding tip, or reminder for students today..."
+                  className="w-full bg-white border border-[#c5c8bc]/70 rounded-2xl p-3 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140] resize-none shadow-2xs"
+                />
+
+                {/* Tag Selection */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    '#StudyEncouragement',
+                    '#ExamRelief',
+                    '#SelfCompassion',
+                    '#PeerGuideTip',
+                    '#HostelLife'
+                  ].map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => setSelectedTag(tag)}
+                      className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                        selectedTag === tag
+                          ? 'bg-[#526140] text-white font-bold'
+                          : 'bg-white border border-[#c5c8bc]/60 text-[#5e5c52]'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={!newWallThought.trim()}
+                  className={`w-full py-2.5 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all ${
+                    newWallThought.trim()
+                      ? 'bg-[#526140] hover:bg-[#435034] text-white cursor-pointer'
+                      : 'bg-[#c5c8bc]/50 text-[#75786e] cursor-not-allowed'
+                  }`}
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Publish to Student Wall of Thoughts</span>
+                </button>
+              </form>
+
+              {postSuccess && (
+                <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-2.5 text-center text-xs font-bold text-emerald-950 animate-fadeIn">
+                  ✨ Published! Your message is now live on the Student Home Wall.
+                </div>
+              )}
+            </div>
+
+            {/* Volunteer Posts Feed */}
+            <div className="space-y-2">
+              <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold block px-1">
+                Recent Thoughts from Peer Guides
+              </span>
+
+              {volunteerPosts.map((post) => (
+                <div
+                  key={post.id}
+                  className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-3.5 space-y-2 shadow-2xs"
+                >
+                  <div className="flex items-center justify-between text-[9.5px] font-mono">
+                    <span className="font-bold text-[#526140]">{post.author}</span>
+                    <span className="text-[#75786e]">{post.date}</span>
+                  </div>
+                  <p className="text-xs text-[#1a1d14] leading-relaxed">
+                    "{post.text}"
+                  </p>
+                  <div className="flex items-center justify-between pt-1 border-t border-[#f3f5e6]">
+                    <span className="font-mono text-[9px] bg-[#ffddb3]/30 text-[#815505] px-2 py-0.5 rounded-full font-semibold">
+                      {post.tag}
+                    </span>
+                    <span className="text-[10px] font-mono text-[#5e5c52] flex items-center gap-1">
+                      <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
+                      {post.warmthCount} Warmth
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ================= TABS: PEER REQUESTS & LIVE CHAT ================= */}
+        {activeTab !== 'wall' && !selectedRequest && (
           <div className="space-y-2.5">
             {filteredRequests.length === 0 ? (
               <div className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-6 text-center text-xs text-[#5e5c52]">
@@ -200,157 +367,133 @@ export function VolunteerDashboardView({
               filteredRequests.map((req) => (
                 <div
                   key={req.id}
-                  className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-4 space-y-2.5 shadow-2xs hover:border-[#526140] transition-all"
+                  className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-2.5 shadow-2xs"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-[#526140]" />
-                      <span className="font-mono font-bold text-xs text-[#1a1d14]">{req.anonId}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[10px] bg-[#edefe0] text-[#526140] font-bold px-2 py-0.5 rounded-md">
+                        {req.anonId}
+                      </span>
+                      <span className="font-mono text-[9px] text-[#75786e]">{req.requestedAt}</span>
                     </div>
-                    <span className="font-mono text-[9px] bg-[#f3f5e6] px-2.5 py-0.5 rounded-full text-[#526140] font-bold">
-                      {req.requestedAt}
+
+                    <span
+                      className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                        req.urgency === 'High'
+                          ? 'bg-red-100 text-red-800'
+                          : req.urgency === 'Moderate'
+                          ? 'bg-amber-100 text-amber-800'
+                          : 'bg-emerald-100 text-emerald-800'
+                      }`}
+                    >
+                      {req.urgency} Urgency
                     </span>
                   </div>
 
-                  <div className="space-y-1 text-xs">
-                    <div className="text-[11px] text-[#5e5c52]">
-                      <b>Areas:</b> {req.concernAreas.join(', ')}
-                    </div>
-                    <div className="flex items-center gap-2 text-[10.5px] text-[#5e5c52]">
-                      <span><b>Lang:</b> {req.preferredLanguage}</span>
-                      <span>•</span>
-                      <span><b>Mode:</b> {req.preferredMode}</span>
-                      <span>•</span>
-                      <span className="text-[#815505] font-bold"><b>Urgency:</b> {req.urgency}</span>
-                    </div>
-                  </div>
+                  <p className="text-xs text-[#1a1d14] leading-relaxed">
+                    "{req.message}"
+                  </p>
 
-                  {/* Actions */}
-                  <div className="flex gap-2 pt-1">
-                    {req.status === 'new' && (
-                      <>
+                  <div className="flex items-center justify-between pt-1 border-t border-[#f3f5e6]">
+                    <div className="flex gap-1">
+                      {req.concernAreas.map((c) => (
+                        <span key={c} className="text-[9px] bg-[#f3f5e6] text-[#5e5c52] px-2 py-0.5 rounded-full font-medium">
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+
+                    {req.status === 'new' ? (
+                      <div className="flex gap-1.5">
                         <button
                           onClick={() => handleAcceptRequest(req)}
-                          className="flex-1 py-2 rounded-2xl bg-[#526140] hover:bg-[#435034] text-white font-bold text-xs cursor-pointer shadow-xs"
+                          className="px-3 py-1.5 rounded-full bg-[#526140] hover:bg-[#435034] text-white text-[10.5px] font-bold cursor-pointer shadow-2xs"
                         >
-                          Accept Request
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedRequest(req);
-                            setShowEscalateModal(true);
-                          }}
-                          className="px-3.5 py-2 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs cursor-pointer"
-                        >
-                          Escalate
+                          Accept Chat
                         </button>
                         <button
                           onClick={() => handleDeclineRequest(req.id)}
-                          className="px-3 py-2 rounded-2xl bg-[#edefe0] hover:bg-[#e8e9db] text-[#5e5c52] text-xs font-semibold cursor-pointer"
+                          className="px-2.5 py-1.5 rounded-full bg-[#edefe0] hover:bg-[#e0e2d3] text-[#5e5c52] text-[10.5px] font-semibold cursor-pointer"
                         >
                           Decline
                         </button>
-                      </>
-                    )}
-
-                    {req.status === 'active' && (
+                      </div>
+                    ) : (
                       <button
                         onClick={() => setSelectedRequest(req)}
-                        className="w-full py-2.5 rounded-2xl bg-[#526140] text-white font-bold text-xs cursor-pointer"
+                        className="px-3.5 py-1.5 rounded-full bg-[#526140] text-white text-[10.5px] font-bold cursor-pointer shadow-2xs flex items-center gap-1"
                       >
-                        Open Active Conversation →
+                        <span>Open Chat</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
                       </button>
-                    )}
-
-                    {req.status === 'escalated' && (
-                      <span className="text-[10.5px] text-amber-800 font-mono font-semibold">
-                        Escalated to Supervising Counsellor (Dr. Pratibha)
-                      </span>
                     )}
                   </div>
                 </div>
               ))
             )}
           </div>
-        ) : (
-          /* Request Detail & Conversation */
-          <div className="space-y-3 animate-fadeIn">
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => setSelectedRequest(null)}
-                className="text-xs text-[#5e5c52] flex items-center gap-1 cursor-pointer hover:underline font-semibold"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" /> Back to Queue
-              </button>
+        )}
+
+        {/* Selected Request Chat View */}
+        {activeTab !== 'wall' && selectedRequest && (
+          <div className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-3 shadow-xs animate-fadeIn">
+            <div className="flex items-center justify-between pb-2 border-b border-[#f3f5e6]">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setSelectedRequest(null)}
+                  className="p-1 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+                <div>
+                  <b className="text-xs text-[#1a1d14] block">Chatting with {selectedRequest.anonId}</b>
+                  <span className="font-mono text-[9px] text-[#526140]">Confidential Peer Session</span>
+                </div>
+              </div>
 
               <button
                 onClick={() => setShowEscalateModal(true)}
-                className="px-3 py-1 rounded-full bg-amber-100 text-amber-900 font-bold text-[10px] cursor-pointer"
+                className="px-2.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 text-[10px] font-bold cursor-pointer flex items-center gap-1"
               >
-                Escalate to Counsellor
+                <AlertTriangle className="w-3 h-3 text-amber-700" />
+                <span>Escalate to Counsellor</span>
               </button>
             </div>
 
-            {/* Consented Info Banner */}
-            <div className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-4 space-y-2 text-xs shadow-2xs">
-              <div className="flex items-center justify-between">
-                <span className="font-mono font-bold text-[#1a1d14]">{selectedRequest.anonId}</span>
-                <span className="font-mono text-[9px] bg-[#f3f5e6] text-[#526140] px-2.5 py-0.5 rounded-full font-bold">
-                  Consented Data Only
-                </span>
-              </div>
-              <div className="text-[11px] text-[#5e5c52] space-y-0.5">
-                <div><b>Mood Check:</b> {selectedRequest.mood} ({selectedRequest.intensity})</div>
-                <div><b>Student Message:</b> "{selectedRequest.message}"</div>
-              </div>
-            </div>
-
-            {/* 5-Step Structure */}
-            <div className="bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-2xl p-2.5 text-[10px] text-[#526140] flex items-center justify-between font-medium">
-              <span className="font-bold">Structure:</span>
-              <span>1. Acknowledge</span>
-              <span>→</span>
-              <span>2. Listen</span>
-              <span>→</span>
-              <span>3. Clarify</span>
-              <span>→</span>
-              <span>4. Support</span>
-              <span>→</span>
-              <span>5. Close</span>
-            </div>
-
-            {/* Live Chat Window */}
-            <div className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex-1 overflow-y-auto space-y-2 min-h-[180px]">
+            {/* Chat Messages */}
+            <div className="space-y-2 max-h-64 overflow-y-auto p-1">
               {chatMessages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex flex-col ${msg.sender === 'volunteer' ? 'items-end' : 'items-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
+                    className={`max-w-[80%] p-2.5 rounded-2xl text-xs ${
                       msg.sender === 'volunteer'
-                        ? 'bg-[#526140] text-white rounded-br-xs'
-                        : 'bg-[#f3f5e6] text-[#1a1d14] rounded-bl-xs border border-[#c5c8bc]/50'
+                        ? 'bg-[#526140] text-white rounded-br-none'
+                        : 'bg-[#f3f5e6] text-[#1a1d14] rounded-bl-none border border-[#c5c8bc]/50'
                     }`}
                   >
                     {msg.text}
                   </div>
-                  <span className="text-[8.5px] text-[#75786e] px-1 font-mono mt-0.5">{msg.time}</span>
+                  <span className="text-[8.5px] font-mono text-[#75786e] mt-0.5 px-1">{msg.time}</span>
                 </div>
               ))}
             </div>
 
-            <form onSubmit={handleSendVolunteerReply} className="flex gap-1.5">
+            {/* Reply Box */}
+            <form onSubmit={handleSendVolunteerReply} className="flex gap-2 pt-1 border-t border-[#f3f5e6]">
               <input
                 type="text"
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
-                placeholder="Type your empathetic response..."
-                className="flex-1 bg-white border border-[#c5c8bc] rounded-2xl px-3.5 py-2.5 text-xs text-[#1a1d14] focus:outline-none focus:border-[#526140]"
+                placeholder="Type an empathetic reply..."
+                className="flex-1 bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-2xl px-3 py-2 text-xs text-[#1a1d14] focus:outline-none focus:border-[#526140]"
               />
               <button
                 type="submit"
-                className="px-4 rounded-2xl bg-[#526140] text-white font-bold text-xs cursor-pointer hover:bg-[#435034]"
+                disabled={!replyText.trim()}
+                className="p-2 rounded-2xl bg-[#526140] text-white hover:bg-[#435034] disabled:opacity-50 cursor-pointer"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -359,18 +502,18 @@ export function VolunteerDashboardView({
         )}
       </div>
 
-      {/* Escalate Modal */}
+      {/* Escalation Modal */}
       {showEscalateModal && (
-        <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-5 w-full max-w-xs space-y-3.5 shadow-2xl animate-fadeIn">
-            <div className="flex items-center justify-between border-b pb-2">
-              <div className="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
-                <AlertTriangle className="w-4 h-4 text-amber-600" />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 p-4 flex items-center justify-center animate-fadeIn">
+          <div className="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3.5 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-amber-700 font-bold text-sm">
+                <AlertTriangle className="w-5 h-5" />
                 <span>Escalate to Licensed Counsellor</span>
               </div>
               <button
                 onClick={() => setShowEscalateModal(false)}
-                className="p-1 rounded-full text-slate-400 hover:text-slate-600"
+                className="p-1 rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
