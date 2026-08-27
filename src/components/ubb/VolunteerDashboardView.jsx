@@ -105,6 +105,7 @@ export function VolunteerDashboardView({
 
   // Volunteer Wall of Thoughts Post State
   const [volunteerPosts, setVolunteerPosts] = useState(SAMPLE_VOLUNTEER_POSTS);
+  const [showWallComposerModal, setShowWallComposerModal] = useState(false);
   const [newWallThought, setNewWallThought] = useState('');
   const [selectedTag, setSelectedTag] = useState('#StudyEncouragement');
   const [postSuccess, setPostSuccess] = useState(false);
@@ -196,41 +197,53 @@ export function VolunteerDashboardView({
 
     setTimeout(() => {
       setPostSuccess(false);
-    }, 2500);
+      setShowWallComposerModal(false);
+    }, 2000);
   };
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
-      {/* Top Header */}
-      <div className="px-5 pt-3.5 pb-2.5 bg-[#f9fbeb] border-b border-[#c5c8bc]/50 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
+      {/* Top Header with Direct Wall of Thoughts Button */}
+      <div className="px-4 pt-3.5 pb-2.5 bg-[#f9fbeb] border-b border-[#c5c8bc]/50 flex items-center justify-between">
+        <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-2xl bg-[#526140] text-white flex items-center justify-center font-bold text-xs shadow-xs">
             V
           </div>
           <div>
-            <b className="text-xs text-[#1a1d14] block">{volunteerName}</b>
-            <span className="font-mono text-[9px] text-[#526140] block font-bold">Active Peer Volunteer</span>
+            <b className="text-xs text-[#1a1d14] block leading-tight">{volunteerName}</b>
+            <span className="font-mono text-[8.5px] text-[#526140] block font-bold">Active Peer Volunteer</span>
           </div>
         </div>
 
-        <button
-          onClick={onLogout}
-          className="px-2.5 py-1.5 rounded-full bg-[#edefe0] hover:bg-[#e8e9db] text-[#5e5c52] cursor-pointer flex items-center gap-1 text-[10px] font-semibold"
-        >
-          <LogOut className="w-3.5 h-3.5" />
-          <span>Exit</span>
-        </button>
+        <div className="flex items-center gap-1.5">
+          {/* Unmistakable Direct Header Action */}
+          <button
+            onClick={() => setShowWallComposerModal(true)}
+            className="px-2.5 py-1.5 rounded-full bg-[#526140] hover:bg-[#435034] text-white cursor-pointer flex items-center gap-1 text-[10px] font-bold shadow-2xs"
+          >
+            <Sparkles className="w-3 h-3 text-[#ffddb3]" />
+            <span>Post on Wall</span>
+          </button>
+
+          <button
+            onClick={onLogout}
+            className="p-1.5 rounded-full bg-[#edefe0] hover:bg-[#e8e9db] text-[#5e5c52] cursor-pointer"
+            title="Exit"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
-      {/* Tabs Row */}
-      <div className="px-4 pt-2.5 pb-1 bg-[#f9fbeb] border-b border-[#c5c8bc]/50 overflow-x-auto flex gap-1.5 scrollbar-none">
+      {/* Tabs Row (Wall of Thoughts is Placed 2nd for Instant Visibility!) */}
+      <div className="px-4 pt-2 pb-1 bg-[#f9fbeb] border-b border-[#c5c8bc]/50 overflow-x-auto flex gap-1.5 scrollbar-none">
         {[
           { id: 'new', label: 'New Requests' },
+          { id: 'wall', label: '🌟 Wall of Thoughts' },
           { id: 'active', label: 'Active Chats' },
           { id: 'waiting', label: 'Waiting' },
           { id: 'escalated', label: 'Escalated' },
-          { id: 'closed', label: 'Closed' },
-          { id: 'wall', label: 'Wall of Thoughts ✍️' }
+          { id: 'closed', label: 'Closed' }
         ].map((tab) => (
           <button
             key={tab.id}
@@ -238,7 +251,7 @@ export function VolunteerDashboardView({
               setActiveTab(tab.id);
               setSelectedRequest(null);
             }}
-            className={`px-3.5 py-1.5 rounded-full text-[10.5px] font-semibold whitespace-nowrap cursor-pointer transition-all ${
+            className={`px-3 py-1.5 rounded-full text-[10.5px] font-semibold whitespace-nowrap cursor-pointer transition-all ${
               activeTab === tab.id
                 ? 'bg-[#526140] text-white shadow-xs'
                 : 'bg-[#edefe0] text-[#5e5c52] hover:text-[#1a1d14]'
@@ -251,10 +264,11 @@ export function VolunteerDashboardView({
 
       {/* Main Content Area */}
       <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-6">
-        {/* ================= TAB: VOLUNTEER WALL OF THOUGHTS COMPOSER ================= */}
+        {/* ================= TAB 2: WALL OF THOUGHTS COMPOSER & FEED ================= */}
         {activeTab === 'wall' && (
           <div className="space-y-3.5 animate-fadeIn">
-            <div className="bg-gradient-to-br from-[#f3f5e6] to-[#edefe0] border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-2.5 shadow-xs">
+            {/* Direct Publisher Card */}
+            <div className="bg-gradient-to-br from-[#f3f5e6] to-[#edefe0] border border-[#526140]/40 rounded-3xl p-4 space-y-2.5 shadow-xs">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-[#526140]" />
@@ -359,6 +373,22 @@ export function VolunteerDashboardView({
         {/* ================= TABS: PEER REQUESTS & LIVE CHAT ================= */}
         {activeTab !== 'wall' && !selectedRequest && (
           <div className="space-y-2.5">
+            {/* Quick-Prompt Banner on New Requests Tab */}
+            {activeTab === 'new' && (
+              <div className="bg-[#f3f5e6] border border-[#526140]/30 rounded-3xl p-3 flex items-center justify-between shadow-2xs mb-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#526140]" />
+                  <span className="text-xs font-semibold text-[#1a1d14]">Want to post peer encouragement?</span>
+                </div>
+                <button
+                  onClick={() => setShowWallComposerModal(true)}
+                  className="px-2.5 py-1 rounded-full bg-[#526140] text-white text-[10px] font-bold cursor-pointer"
+                >
+                  Post Thought ✍️
+                </button>
+              </div>
+            )}
+
             {filteredRequests.length === 0 ? (
               <div className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-6 text-center text-xs text-[#5e5c52]">
                 No requests in this queue right now.
@@ -501,6 +531,86 @@ export function VolunteerDashboardView({
           </div>
         )}
       </div>
+
+      {/* POPUP MODAL: WALL OF THOUGHTS COMPOSER */}
+      {showWallComposerModal && (
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 p-4 flex items-center justify-center animate-fadeIn">
+          <div className="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3 shadow-2xl">
+            <div className="flex items-center justify-between pb-1 border-b border-[#f3f5e6]">
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#526140]" />
+                <b className="text-xs text-[#1a1d14]">Post to Student Wall of Thoughts</b>
+              </div>
+              <button
+                onClick={() => setShowWallComposerModal(false)}
+                className="p-1 rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {postSuccess ? (
+              <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-4 text-center space-y-1 animate-fadeIn">
+                <CheckCircle2 className="w-7 h-7 text-emerald-600 mx-auto" />
+                <b className="text-xs text-emerald-950 block">Published to Sanctuary Wall!</b>
+                <p className="text-[10.5px] text-emerald-800">
+                  Your encouragement is now visible to all students.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handlePostWallThought} className="space-y-2.5">
+                <textarea
+                  rows={3}
+                  value={newWallThought}
+                  onChange={(e) => setNewWallThought(e.target.value)}
+                  placeholder="Share a gentle thought, study reminder, or words of encouragement for students..."
+                  className="w-full bg-[#f3f5e6] border border-[#c5c8bc]/70 rounded-2xl p-3 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140] resize-none"
+                />
+
+                {/* Tag Selection */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    '#StudyEncouragement',
+                    '#ExamRelief',
+                    '#SelfCompassion',
+                    '#PeerGuideTip'
+                  ].map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => setSelectedTag(tag)}
+                      className={`text-[9.5px] font-mono px-2 py-0.5 rounded-full transition-all cursor-pointer ${
+                        selectedTag === tag
+                          ? 'bg-[#526140] text-white font-bold'
+                          : 'bg-[#edefe0] text-[#5e5c52]'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex gap-2 pt-1">
+                  <button
+                    type="submit"
+                    disabled={!newWallThought.trim()}
+                    className="flex-1 py-2.5 rounded-full bg-[#526140] hover:bg-[#435034] text-white font-bold text-xs cursor-pointer shadow-xs disabled:opacity-50"
+                  >
+                    Publish Thought
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowWallComposerModal(false)}
+                    className="px-4 py-2.5 rounded-full bg-[#edefe0] text-[#5e5c52] text-xs font-semibold cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Escalation Modal */}
       {showEscalateModal && (
