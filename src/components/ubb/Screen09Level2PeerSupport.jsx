@@ -135,6 +135,23 @@ export function Screen09Level2PeerSupport({
         {/* VIEW 1: REQUEST FORM */}
         {requestStatus === 'form' && (
           <div className="space-y-3 animate-fadeIn">
+            {/* Live Volunteer Queue Status */}
+            <div className="bg-emerald-50 border border-emerald-300 rounded-3xl p-3.5 flex items-center justify-between shadow-2xs">
+              <div className="flex items-center gap-2.5">
+                <div className="relative flex items-center justify-center">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping absolute" />
+                </div>
+                <div>
+                  <b className="text-xs text-emerald-950 block">3 Psychology Seniors Online Now</b>
+                  <span className="text-[10px] text-emerald-800">Supervised by Dr. Rao (Reg 4521)</span>
+                </div>
+              </div>
+              <span className="font-mono text-[9px] bg-emerald-200/70 text-emerald-900 px-2.5 py-0.5 rounded-full font-bold">
+                Wait: ~1 min
+              </span>
+            </div>
+
             <div className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-4 space-y-3 shadow-2xs">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#526140] font-bold flex items-center gap-1">
