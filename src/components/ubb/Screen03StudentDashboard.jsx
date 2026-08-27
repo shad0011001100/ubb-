@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
+import { safetySentinel } from '../../services/safetySentinel';
 import { BottomNavBar } from './BottomNavBar';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
 import ubbIcon from '../../assets/ubb-icon.png';
@@ -67,6 +68,7 @@ export function Screen03StudentDashboard({
   const [showComposer, setShowComposer] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
   const [postSuccess, setPostSuccess] = useState(false);
+  const [crisisAlert, setCrisisAlert] = useState(false);
 
   useEffect(() => {
     const loadCommunityPosts = async () => {
@@ -99,8 +101,18 @@ export function Screen03StudentDashboard({
     } catch {}
   };
 
+  const handleNoteTextChange = (text) => {
+    setNewNoteText(text);
+    const analysis = safetySentinel.analyzeText(text);
+    if (analysis.isCrisis) {
+      setCrisisAlert(true);
+    } else {
+      setCrisisAlert(false);
+    }
+  };
+
   const handlePostNote = async () => {
-    if (!newNoteText.trim()) return;
+    if (!newNoteText.trim() || crisisAlert) return;
 
     const newPost = {
       id: Date.now(),
@@ -194,14 +206,44 @@ export function Screen03StudentDashboard({
             <textarea
               rows={3}
               value={newNoteText}
-              onChange={(e) => setNewNoteText(e.target.value)}
+              onChange={(e) => handleNoteTextChange(e.target.value)}
               placeholder="Share a gentle thought, words of encouragement, or how you got through today..."
               className="w-full bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-2xl p-3 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140] resize-none"
             />
 
+            {/* Acute Crisis Interception Banner */}
+            {crisisAlert && (
+              <div className="bg-red-50 border border-red-300 rounded-2xl p-3 space-y-2 animate-fadeIn text-left">
+                <div className="flex items-center gap-1.5 text-red-700 font-bold text-xs">
+                  <Heart className="w-4 h-4 fill-red-600 text-red-600" />
+                  <span>You Are Not Alone · Confidential Help Right Now</span>
+                </div>
+                <p className="text-[11px] text-red-900 leading-snug">
+                  We noticed you might be in intense distress. Please connect with our free 24x7 national support lifelines:
+                </p>
+                <div className="flex gap-2 pt-1">
+                  <a
+                    href="tel:14416"
+                    className="py-2 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <span>Call Tele-MANAS (14416)</span>
+                  </a>
+                  <a
+                    href="tel:18005990019"
+                    className="py-2 px-3 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-[11px] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <span>KIRAN (1800-599-0019)</span>
+                  </a>
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center justify-between pt-1">
               <button
-                onClick={() => setShowComposer(false)}
+                onClick={() => {
+                  setShowComposer(false);
+                  setCrisisAlert(false);
+                }}
                 className="text-xs text-[#5e5c52] hover:text-[#1a1d14] font-semibold cursor-pointer px-2"
               >
                 Cancel
@@ -209,9 +251,9 @@ export function Screen03StudentDashboard({
 
               <button
                 onClick={handlePostNote}
-                disabled={!newNoteText.trim()}
+                disabled={!newNoteText.trim() || crisisAlert}
                 className={`px-4 py-2 rounded-full font-bold text-xs flex items-center gap-1.5 shadow-xs transition-all ${
-                  newNoteText.trim()
+                  newNoteText.trim() && !crisisAlert
                     ? 'bg-[#526140] hover:bg-[#435034] text-white cursor-pointer'
                     : 'bg-[#c5c8bc]/50 text-[#75786e] cursor-not-allowed'
                 }`}

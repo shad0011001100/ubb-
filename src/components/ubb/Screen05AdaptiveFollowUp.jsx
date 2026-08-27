@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
+import { safetySentinel } from '../../services/safetySentinel';
 import { SproutCompanion } from './SproutCompanion';
 import { BottomNavBar } from './BottomNavBar';
 
@@ -246,9 +247,8 @@ export function Screen05AdaptiveFollowUp({
   // Real-Time Safety Sentinel keyword scan
   const handleCustomNoteChange = (text) => {
     setCustomNotes(text);
-    const lower = text.toLowerCase();
-    const isCrisis = CRISIS_KEYWORDS.some((kw) => lower.includes(kw));
-    if (isCrisis) {
+    const analysis = safetySentinel.analyzeText(text);
+    if (analysis.isCrisis) {
       setShowSosModal(true);
     }
   };
