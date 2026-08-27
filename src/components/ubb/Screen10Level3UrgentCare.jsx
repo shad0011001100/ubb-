@@ -39,7 +39,7 @@ export function Screen10Level3UrgentCare({
           </button>
           <div>
             <div className="font-mono text-[9px] uppercase tracking-wider text-red-700 font-bold">
-              Level 3 · Professional Care
+              Support 3 · Meet a Counsellor
             </div>
             <h2 className="font-fraunces text-base font-semibold text-[#1a1d14]">
               {t.level3.title}

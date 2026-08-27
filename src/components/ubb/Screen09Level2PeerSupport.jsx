@@ -114,7 +114,7 @@ export function Screen09Level2PeerSupport({
           </button>
           <div>
             <div className="font-mono text-[9px] uppercase tracking-wider text-[#815505] font-bold">
-              Level 2 · Peer Support
+              Support 2 · Talk to a Volunteer
             </div>
             <h2 className="font-fraunces text-base font-semibold text-[#1a1d14]">
               {t.level2.title}
