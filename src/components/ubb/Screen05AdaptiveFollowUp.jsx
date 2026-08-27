@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
+import { SproutCompanion } from './SproutCompanion';
 
 // =======================================================================
 // 10 RESEARCH-BACKED PSYCHOMETRIC QUESTIONS (WHO-5, GAD-7, PSS-10, PSQI, SCS)
@@ -387,7 +388,23 @@ export function Screen05AdaptiveFollowUp({
       </div>
 
       {/* Question Card Body */}
-      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3.5">
+      <div className="flex-1 px-4 py-2.5 overflow-y-auto space-y-3">
+        {/* Expressive Companion (Listening Mode) */}
+        <div className="flex justify-center pt-1">
+          <SproutCompanion
+            emotion="listening"
+            size="sm"
+            message={
+              currentStep === 0
+                ? "Let's check in gently. Take your time."
+                : currentStep === 9
+                ? "Last step! You did wonderful reflecting today."
+                : `Question ${currentStep + 1} of 10: I am listening with an open heart.`
+            }
+            showSpeech={true}
+          />
+        </div>
+
         <div className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-4 shadow-xs space-y-3 animate-fadeIn">
           <p className="text-sm font-semibold text-[#1a1d14] leading-relaxed">
             {currentQ?.text[langKey] || currentQ?.text.en}

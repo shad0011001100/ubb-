@@ -25,6 +25,7 @@ import {
 import { getTranslation } from '../../services/translations';
 import { binauralEngine, BRAINWAVE_PRESETS } from '../../services/binauralAudio';
 import { BottomNavBar } from './BottomNavBar';
+import { SproutCompanion } from './SproutCompanion';
 
 export function Screen08Level1Express({
   defaultTab = 'let_it_out',
@@ -400,7 +401,25 @@ export function Screen08Level1Express({
 
         {/* ================= TAB 2: GUIDED BREATHING (4-7-8 ORB) ================= */}
         {activeSubTab === 'breathe' && (
-          <div className="space-y-3.5 animate-fadeIn text-center">
+          <div className="space-y-3 animate-fadeIn text-center">
+            {/* Expressive Breathing Companion */}
+            <div className="flex justify-center mb-1">
+              <SproutCompanion
+                emotion="breathing"
+                size="sm"
+                message={
+                  breathPhase === 'inhale'
+                    ? 'Inhale deep tranquility... 4s'
+                    : breathPhase === 'hold' || breathPhase === 'hold_post'
+                    ? 'Hold gently... feeling the peace'
+                    : breathPhase === 'exhale'
+                    ? 'Slowly exhale all tension...'
+                    : 'Ready to breathe together?'
+                }
+                showSpeech={true}
+              />
+            </div>
+
             {/* Pattern Switcher */}
             <div className="flex justify-center gap-2">
               <button
