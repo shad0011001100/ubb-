@@ -135,9 +135,14 @@ export function Screen03StudentDashboard({
           <div className="w-8 h-8 flex items-center justify-center">
             <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain" />
           </div>
-          <span className="font-fraunces font-bold text-lg tracking-tight text-[#526140]">
-            {t.common.appName}
-          </span>
+          <div className="flex items-baseline gap-1">
+            <span className="font-fraunces font-bold text-lg tracking-tight text-[#526140]">
+              ऊब
+            </span>
+            <span className="font-fraunces font-medium text-sm text-[#815505]">
+              (Ubb)
+            </span>
+          </div>
         </div>
 
         {/* User Identity Pill */}

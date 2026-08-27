@@ -123,11 +123,11 @@ export function Screen00AnimatedShowcase({
           }`}
         >
           <div className="flex items-center justify-center gap-2">
-            <h1 className="font-fraunces text-4xl sm:text-5xl font-bold tracking-tight text-[#526140]">
-              {currentText.title}
+            <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight text-[#526140]">
+              ऊब
             </h1>
-            <span className="font-serif text-2xl sm:text-3xl font-semibold text-[#815505] bg-[#815505]/10 px-2.5 py-0.5 rounded-2xl border border-[#815505]/20">
-              ({currentText.devanagari})
+            <span className="font-fraunces text-2xl sm:text-3xl font-semibold text-[#815505] bg-[#815505]/10 px-2.5 py-0.5 rounded-2xl border border-[#815505]/20">
+              (Ubb)
             </span>
           </div>
 

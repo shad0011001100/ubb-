@@ -68,8 +68,9 @@ export function Screen01LoginSelection({
             />
           </div>
 
-          <h1 className="font-fraunces text-3xl font-bold tracking-tight text-[#526140] mb-0.5">
-            {t.common.appName}
+          <h1 className="font-fraunces text-3xl font-bold tracking-tight text-[#526140] mb-0.5 flex items-center justify-center gap-1.5">
+            <span>ऊब</span>
+            <span className="text-[#815505] font-semibold text-2xl">(Ubb)</span>
           </h1>
           <p className="text-xs text-[#5e5c52] font-medium leading-relaxed max-w-[260px] mx-auto">
             {t.screen1.subtitle}
