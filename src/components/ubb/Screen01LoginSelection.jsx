@@ -58,9 +58,9 @@ export function Screen01LoginSelection({
           </span>
         </div>
 
-        {/* Brand Emblem with Uploaded Stitch Logo */}
+        {/* Brand Emblem with Clean Logo */}
         <div className="text-center mb-3">
-          <div className="w-16 h-16 flex items-center justify-center mx-auto mb-2">
+          <div className="w-14 h-14 flex items-center justify-center mx-auto mb-1">
             <img
               src={ubbLogoLight || ubbIcon}
               alt="Ubb Logo"

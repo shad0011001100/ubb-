@@ -95,14 +95,13 @@ export function Screen00AnimatedShowcase({
 
       {/* Center Showcase: Animated Glowing Logo & Tagline */}
       <div className="my-auto flex flex-col items-center text-center z-10 space-y-6">
-        {/* Animated Glowing Logo Container */}
+        {/* Clean Minimalist Logo Mark */}
         <div className="relative flex items-center justify-center">
-          {/* Seamless Floating Logo */}
           <div
-            className={`w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center transition-all duration-1000 transform relative ${
+            className={`w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center transition-all duration-1000 transform ${
               phase >= 1
                 ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 translate-y-8 scale-90'
+                : 'opacity-0 translate-y-6 scale-95'
             }`}
           >
             <img
