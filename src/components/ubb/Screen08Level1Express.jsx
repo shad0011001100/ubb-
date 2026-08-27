@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { binauralEngine, BRAINWAVE_PRESETS } from '../../services/binauralAudio';
+import { BottomNavBar } from './BottomNavBar';
 
 export function Screen08Level1Express({
   defaultTab = 'let_it_out',
@@ -577,6 +578,9 @@ export function Screen08Level1Express({
           </div>
         )}
       </div>
+
+      {/* 4-Tab Bottom Navigation Bar */}
+      <BottomNavBar currentTab="level1_express" onNavigate={onNavigate} />
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
+import { BottomNavBar } from './BottomNavBar';
 
 export const ARTICLES_DATA = [
   {
@@ -186,6 +187,9 @@ export function ArticlesEmergencyView({
           </div>
         </section>
       </div>
+
+      {/* 4-Tab Bottom Navigation Bar */}
+      <BottomNavBar currentTab="articles_emergency" onNavigate={onNavigate} />
     </div>
   );
 }

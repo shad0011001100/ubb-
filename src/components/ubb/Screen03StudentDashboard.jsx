@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
+import { BottomNavBar } from './BottomNavBar';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
 import ubbIcon from '../../assets/ubb-icon.png';
 
@@ -270,45 +271,7 @@ export function Screen03StudentDashboard({
       </div>
 
       {/* ================= STRICT SINGLE-LOCATION 4-TAB BOTTOM NAVIGATION ================= */}
-      <nav className="absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-[#c5c8bc]/60 px-3 py-2 z-30 shadow-lg">
-        <div className="grid grid-cols-4 gap-1 max-w-md mx-auto">
-          {/* TAB 1: ARTICLES / EMERGENCY */}
-          <button
-            onClick={() => onNavigate('articles_emergency')}
-            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-red-700 hover:bg-red-50/50 transition-all cursor-pointer"
-          >
-            <BookOpen className="w-4 h-4 text-red-600" />
-            <span className="text-[9px] font-bold font-mono mt-1 text-center">Articles/SOS</span>
-          </button>
-
-          {/* TAB 2: MOOD CHECK-IN & TOOLS */}
-          <button
-            onClick={() => onNavigate('mood_checkin')}
-            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-[#526140] hover:bg-[#f3f5e6] transition-all cursor-pointer"
-          >
-            <Smile className="w-4 h-4 text-[#526140]" />
-            <span className="text-[9px] font-bold font-mono mt-1 text-center">Mood & Tools</span>
-          </button>
-
-          {/* TAB 3: PROGRESS TRACKER */}
-          <button
-            onClick={() => onNavigate('progress_tracker')}
-            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-[#526140] hover:bg-[#f3f5e6] transition-all cursor-pointer"
-          >
-            <TrendingUp className="w-4 h-4 text-[#526140]" />
-            <span className="text-[9px] font-bold font-mono mt-1 text-center">Progress</span>
-          </button>
-
-          {/* TAB 4: QUESTIONS & FLOW */}
-          <button
-            onClick={() => onNavigate('questions_flow')}
-            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-[#815505] hover:bg-[#ffddb3]/30 transition-all cursor-pointer"
-          >
-            <HelpCircle className="w-4 h-4 text-[#815505]" />
-            <span className="text-[9px] font-bold font-mono mt-1 text-center">10-Q Flow</span>
-          </button>
-        </div>
-      </nav>
+      <BottomNavBar currentTab="home" onNavigate={onNavigate} />
     </div>
   );
 }

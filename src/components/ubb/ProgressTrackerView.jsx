@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
+import { BottomNavBar } from './BottomNavBar';
 
 // Mindful Milestone Badges Matrix (Option 2)
 export const MILESTONE_BADGES = [
@@ -192,6 +193,9 @@ export function ProgressTrackerView({
           </div>
         </section>
       </div>
+
+      {/* 4-Tab Bottom Navigation Bar */}
+      <BottomNavBar currentTab="progress_tracker" onNavigate={onNavigate} />
     </div>
   );
 }
