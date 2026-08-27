@@ -11,6 +11,8 @@
     "build": "vite build",
     "android:build": "vite build && cap sync android",
     "android:open": "cap open android",
+    "video:render": "npm run build --prefix video",
+    "video:preview": "npm run dev --prefix video",
     "lint": "oxlint",
     "preview": "vite preview"
   },
