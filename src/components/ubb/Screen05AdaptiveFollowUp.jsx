@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -10,11 +10,15 @@ import {
   Heart,
   Activity,
   Users,
-  ChevronRight
+  ChevronRight,
+  RotateCcw,
+  CalendarCheck,
+  Award
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
 import { SproutCompanion } from './SproutCompanion';
+import { BottomNavBar } from './BottomNavBar';
 
 // =======================================================================
 // 10 RESEARCH-BACKED PSYCHOMETRIC QUESTIONS (WHO-5, GAD-7, PSS-10, PSQI, SCS)
@@ -216,12 +220,24 @@ export function Screen05AdaptiveFollowUp({
   userProfile
 }) {
   const t = getTranslation(selectedLanguage);
-  const [currentStep, setCurrentStep] = useState(0); // 0 to 9 for questions, 10 for review
+  const [currentStep, setCurrentStep] = useState(0); // 0 to 9 for questions
   const [responses, setResponses] = useState({});
   const [customNotes, setCustomNotes] = useState('');
   const [showSosModal, setShowSosModal] = useState(false);
+  const [existingCheckIn, setExistingCheckIn] = useState(null);
+  const [isRetaking, setIsRetaking] = useState(false);
 
   const langKey = selectedLanguage === 'mr' ? 'mr' : selectedLanguage === 'hi' ? 'hi' : 'en';
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('ubb_active_assessment');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setExistingCheckIn(parsed);
+      }
+    } catch {}
+  }, []);
 
   const handleSelectOption = (questionId, value) => {
     setResponses((prev) => ({ ...prev, [questionId]: value }));
@@ -278,8 +294,12 @@ export function Screen05AdaptiveFollowUp({
       completedAt: new Date().toISOString()
     };
 
-    // Save to Supabase and LocalStorage
+    // Save to LocalStorage & Supabase
     try {
+      localStorage.setItem('ubb_active_assessment', JSON.stringify(payload));
+      setExistingCheckIn(payload);
+      setIsRetaking(false);
+
       const user = await ubbSupabase.getCurrentUser();
       await ubbSupabase.saveScreeningLog({
         user_id: user?.id || 'anon_user',
@@ -296,12 +316,123 @@ export function Screen05AdaptiveFollowUp({
     }
   };
 
+  // ================= VIEW A: TODAY'S COMPLETED CHECK-IN ACTIVE SUMMARY =================
+  if (existingCheckIn && !isRetaking) {
+    const score = Number(Number(existingCheckIn.score).toFixed(1));
+    const isSupport1 = score >= 7.5;
+    const isSupport2 = score >= 4.5 && score < 7.5;
+
+    return (
+      <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none font-sans">
+        {/* Header */}
+        <div className="px-5 pt-3.5 pb-2.5 bg-[#f9fbeb] border-b border-[#c5c8bc]/40 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onNavigate('dashboard')}
+              className="p-1.5 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <div>
+              <span className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold block">
+                Tab 4 · Assessment Status
+              </span>
+              <h2 className="font-fraunces text-base font-bold text-[#1a1d14]">
+                Today's Check-in Complete
+              </h2>
+            </div>
+          </div>
+
+          <span className="font-mono text-[9px] bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full font-bold border border-emerald-200">
+            ✓ Active
+          </span>
+        </div>
+
+        {/* Content Body */}
+        <div className="flex-1 px-4 py-3.5 overflow-y-auto space-y-3.5 pb-24">
+          {/* Sprout Companion */}
+          <div className="flex justify-center">
+            <SproutCompanion
+              emotion={isSupport1 ? 'joy' : 'cozy'}
+              size="md"
+              message="Your check-in is saved for today. Here is your active wellbeing overview."
+              showSpeech={true}
+            />
+          </div>
+
+          {/* Active Score Card */}
+          <div className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-2.5 shadow-xs">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[#5e5c52] font-bold block">
+                  Active Wellbeing Score
+                </span>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="font-fraunces text-3xl font-extrabold text-[#1a1d14]">{score}</span>
+                  <span className="text-xs text-[#5e5c52] font-mono font-bold">/ 10.0</span>
+                </div>
+              </div>
+
+              <div
+                className={`px-3 py-1 rounded-full font-mono text-[10px] font-bold border ${
+                  isSupport1
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                    : isSupport2
+                    ? 'bg-amber-50 text-amber-800 border-amber-300'
+                    : 'bg-red-50 text-red-800 border-red-300'
+                }`}
+              >
+                {isSupport1 ? '🟢 Flourishing' : isSupport2 ? '🟡 Moderate Strain' : '🔴 High Distress'}
+              </div>
+            </div>
+
+            <div className="w-full bg-[#edefe0] h-2 rounded-full overflow-hidden">
+              <div
+                style={{ width: `${Math.min(100, Math.max(10, score * 10))}%` }}
+                className={`h-full rounded-full ${
+                  isSupport1 ? 'bg-[#526140]' : isSupport2 ? 'bg-[#815505]' : 'bg-[#ba1a1a]'
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="space-y-2 pt-1">
+            <button
+              onClick={() => onNavigate('support_guidance', { assessmentResult: existingCheckIn })}
+              className="w-full py-3 rounded-2xl bg-[#526140] hover:bg-[#435034] text-white font-bold text-xs shadow-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>View Recommended Support Tier →</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setResponses({});
+                setCurrentStep(0);
+                setIsRetaking(true);
+              }}
+              className="w-full py-2.5 rounded-2xl bg-white border border-[#c5c8bc] hover:bg-[#f3f5e6] text-[#5e5c52] font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Retake or Update Assessment</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 4-Tab Bottom Navigation Bar */}
+        <BottomNavBar currentTab="questions_flow" onNavigate={onNavigate} />
+      </div>
+    );
+  }
+
+  // ================= VIEW B: 10-QUESTION INTERACTIVE ASSESSMENT =================
   const currentQ = PSYCHOMETRIC_QUESTIONS[currentStep];
   const progressPercent = Math.round(((currentStep + 1) / PSYCHOMETRIC_QUESTIONS.length) * 100);
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none font-sans relative">
-      {/* ================= CRISIS RED-FLAG EMERGENCY MODAL ================= */}
+      {/* CRISIS RED-FLAG EMERGENCY MODAL */}
       {showSosModal && (
         <div className="absolute inset-0 bg-black/70 backdrop-blur-md z-50 p-5 flex items-center justify-center animate-fadeIn">
           <div className="bg-[#14282B] text-white border border-red-500/50 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl text-center">
@@ -358,7 +489,13 @@ export function Screen05AdaptiveFollowUp({
             </button>
           ) : (
             <button
-              onClick={() => onNavigate('dashboard')}
+              onClick={() => {
+                if (existingCheckIn) {
+                  setIsRetaking(false);
+                } else {
+                  onNavigate('dashboard');
+                }
+              }}
               className="p-1.5 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -388,7 +525,7 @@ export function Screen05AdaptiveFollowUp({
       </div>
 
       {/* Question Card Body */}
-      <div className="flex-1 px-4 py-2.5 overflow-y-auto space-y-3">
+      <div className="flex-1 px-4 py-2.5 overflow-y-auto space-y-3 pb-24">
         {/* Expressive Companion (Listening Mode) */}
         <div className="flex justify-center pt-1">
           <SproutCompanion
@@ -432,7 +569,7 @@ export function Screen05AdaptiveFollowUp({
           </div>
         </div>
 
-        {/* Optional Open-Ended Text Box (Checked by Safety Sentinel) */}
+        {/* Optional Open-Ended Text Box */}
         {currentStep === PSYCHOMETRIC_QUESTIONS.length - 1 && (
           <div className="bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-3xl p-3.5 space-y-2 animate-fadeIn">
             <span className="font-mono text-[9px] uppercase tracking-wider text-[#5e5c52] font-bold block">
@@ -450,7 +587,7 @@ export function Screen05AdaptiveFollowUp({
       </div>
 
       {/* Bottom Navigation Controls */}
-      <div className="px-4 py-3 bg-[#f9fbeb] border-t border-[#c5c8bc]/40 flex items-center justify-between">
+      <div className="px-4 py-3 bg-[#f9fbeb] border-t border-[#c5c8bc]/40 flex items-center justify-between z-20">
         <span className="font-mono text-[10px] text-[#5e5c52]">
           {Object.keys(responses).length} of 10 Answered
         </span>
