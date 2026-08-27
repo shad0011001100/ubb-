@@ -97,16 +97,9 @@ export function Screen00AnimatedShowcase({
       <div className="my-auto flex flex-col items-center text-center z-10 space-y-6">
         {/* Animated Glowing Logo Container */}
         <div className="relative flex items-center justify-center">
-          {/* Radial Ambient Halo */}
+          {/* Seamless Floating Logo */}
           <div
-            className={`absolute w-44 h-44 rounded-full bg-[#526140]/20 blur-2xl transition-all duration-1000 ${
-              phase >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-            } ${pulseScale ? 'scale-110' : 'scale-95'}`}
-          />
-
-          {/* Logo Frame with Soft Outer Border & Floating Shadow */}
-          <div
-            className={`w-36 h-36 sm:w-40 sm:h-40 rounded-[32px] bg-white/90 backdrop-blur-xl border border-white/80 p-4 shadow-xl flex items-center justify-center transition-all duration-1000 transform relative ${
+            className={`w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center transition-all duration-1000 transform relative ${
               phase >= 1
                 ? 'opacity-100 translate-y-0 scale-100'
                 : 'opacity-0 translate-y-8 scale-90'
@@ -115,15 +108,10 @@ export function Screen00AnimatedShowcase({
             <img
               src={ubbLogoLight || ubbIcon}
               alt="Ubb Logo"
-              className={`w-full h-full object-contain filter drop-shadow-md transition-transform duration-700 ${
+              className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-700 ${
                 pulseScale ? 'scale-105' : 'scale-100'
               }`}
             />
-
-            {/* Sparkle Badge */}
-            <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-[#815505] text-[#ffddb3] flex items-center justify-center shadow-md animate-bounce">
-              <Sparkles className="w-3.5 h-3.5" />
-            </div>
           </div>
         </div>
 

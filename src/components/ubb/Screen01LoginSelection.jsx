@@ -60,11 +60,11 @@ export function Screen01LoginSelection({
 
         {/* Brand Emblem with Uploaded Stitch Logo */}
         <div className="text-center mb-3">
-          <div className="w-16 h-16 rounded-3xl bg-white border border-[#c5c8bc]/60 p-2 flex items-center justify-center mx-auto mb-2 shadow-xs">
+          <div className="w-16 h-16 flex items-center justify-center mx-auto mb-2">
             <img
               src={ubbLogoLight || ubbIcon}
               alt="Ubb Logo"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain mix-blend-multiply"
             />
           </div>
 

@@ -71,8 +71,8 @@ export function VolunteerAuthScreen({
           <div className="w-6" />
         </div>
 
-        <div className="w-14 h-14 rounded-3xl bg-white border border-[#c5c8bc]/60 p-2 flex items-center justify-center mx-auto mb-2 shadow-xs">
-          <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain" />
+        <div className="w-14 h-14 flex items-center justify-center mx-auto mb-2">
+          <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain mix-blend-multiply" />
         </div>
 
         <h2 className="font-fraunces text-2xl font-bold text-[#1a1d14] mb-0.5">
