@@ -29,8 +29,8 @@ export function Screen03StudentDashboard({
       {/* Top Visual App Bar */}
       <div className="px-5 pt-3.5 pb-2.5 flex items-center justify-between bg-[#f9fbeb] border-b border-[#c5c8bc]/40">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 flex items-center justify-center">
-            <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain mix-blend-multiply" />
+          <div className="w-8 h-8 flex items-center justify-center">
+            <img src={ubbLogoLight || ubbIcon} alt="Ubb Logo" className="w-full h-full object-contain" />
           </div>
           <span className="font-fraunces font-bold text-lg tracking-tight text-[#526140]">
             {t.common.appName}

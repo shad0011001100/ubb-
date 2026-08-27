@@ -60,11 +60,11 @@ export function Screen01LoginSelection({
 
         {/* Brand Emblem with Clean Logo */}
         <div className="text-center mb-3">
-          <div className="w-14 h-14 flex items-center justify-center mx-auto mb-1">
+          <div className="w-16 h-16 flex items-center justify-center mx-auto mb-1">
             <img
               src={ubbLogoLight || ubbIcon}
               alt="Ubb Logo"
-              className="w-full h-full object-contain mix-blend-multiply"
+              className="w-full h-full object-contain"
             />
           </div>
 

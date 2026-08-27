@@ -107,7 +107,7 @@ export function Screen00AnimatedShowcase({
             <img
               src={ubbLogoLight || ubbIcon}
               alt="Ubb Logo"
-              className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-700 ${
+              className={`w-full h-full object-contain filter drop-shadow-sm transition-transform duration-700 ${
                 pulseScale ? 'scale-105' : 'scale-100'
               }`}
             />
