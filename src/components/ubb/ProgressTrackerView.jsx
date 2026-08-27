@@ -37,30 +37,40 @@ export function ProgressTrackerView({
 
   useEffect(() => {
     const loadLogs = async () => {
+      let loaded = [];
+      try {
+        const stored = localStorage.getItem('ubb_supabase_screenings');
+        if (stored) {
+          loaded = JSON.parse(stored);
+        }
+      } catch {}
+
       try {
         const user = await ubbSupabase.getCurrentUser();
         const logs = await ubbSupabase.getScreeningLogs(user?.id);
         if (logs && logs.length > 0) {
-          setScreeningLogs(logs);
-        } else {
-          // Default historical baseline
-          setScreeningLogs([
-            { id: 1, score: 7.5, risk_tier: 'LOW', created_at: new Date().toISOString() },
-            { id: 2, score: 6.8, risk_tier: 'MODERATE', created_at: new Date(Date.now() - 86400000).toISOString() },
-            { id: 3, score: 8.2, risk_tier: 'LOW', created_at: new Date(Date.now() - 172800000).toISOString() },
-            { id: 4, score: 6.0, risk_tier: 'MODERATE', created_at: new Date(Date.now() - 259200000).toISOString() }
-          ]);
+          loaded = logs;
         }
-      } catch {
+      } catch {}
+
+      if (loaded.length > 0) {
+        setScreeningLogs(loaded);
+      } else {
+        // Initial clean baseline
         setScreeningLogs([
-          { id: 1, score: 7.5, risk_tier: 'LOW', created_at: new Date().toISOString() }
+          { id: 1, score: 7.2, risk_tier: 'LOW', created_at: new Date().toISOString() },
+          { id: 2, score: 6.8, risk_tier: 'MODERATE', created_at: new Date(Date.now() - 86400000).toISOString() },
+          { id: 3, score: 8.0, risk_tier: 'LOW', created_at: new Date(Date.now() - 172800000).toISOString() },
+          { id: 4, score: 6.2, risk_tier: 'MODERATE', created_at: new Date(Date.now() - 259200000).toISOString() }
         ]);
       }
     };
     loadLogs();
   }, []);
 
-  const latestScore = screeningLogs[0]?.score || 7.5;
+  const latestScore = screeningLogs[0]?.score 
+    ? Number(Number(screeningLogs[0].score).toFixed(1)) 
+    : 7.2;
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none font-sans">

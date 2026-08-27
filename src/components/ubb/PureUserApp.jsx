@@ -258,6 +258,7 @@ export function PureUserApp({ onOpenDevPortal }) {
 
         {currentScreen === 'support_guidance' && (
           <Screen07SupportGuidance
+            assessmentResult={screenParams?.assessmentResult || currentCheckIn?.assessmentResult || currentCheckIn}
             checkInData={currentCheckIn}
             selectedLanguage={selectedLanguage}
             onSelectLevel={handleSelectLevel}

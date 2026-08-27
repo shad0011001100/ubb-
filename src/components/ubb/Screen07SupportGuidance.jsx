@@ -27,9 +27,13 @@ export function Screen07SupportGuidance({
 }) {
   const t = getTranslation(selectedLanguage);
 
-  const score = assessmentResult?.score || 7.5;
-  const riskTier = assessmentResult?.risk_tier || (score >= 7.5 ? 'LOW' : score >= 4.5 ? 'MODERATE' : 'SEVERE');
-  const responses = assessmentResult?.responses || {};
+  const activeResult = assessmentResult || checkInData?.assessmentResult || checkInData;
+  const score = typeof activeResult?.score === 'number' 
+    ? Number(activeResult.score.toFixed(1)) 
+    : (activeResult?.score ? Number(Number(activeResult.score).toFixed(1)) : 7.5);
+
+  const riskTier = activeResult?.risk_tier || (score >= 7.5 ? 'LOW' : score >= 4.5 ? 'MODERATE' : 'SEVERE');
+  const responses = activeResult?.responses || {};
 
   // Compute highest stress domain to generate dynamic "You Are Not Alone" cohort copy
   const getCohortBenchmark = () => {
