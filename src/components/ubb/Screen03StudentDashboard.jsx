@@ -1,28 +1,131 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
   BookOpen,
+  Heart,
+  Plus,
+  Send,
   MessageSquare,
-  Users,
-  AlertCircle,
   ShieldCheck,
-  ChevronRight,
-  CalendarCheck,
-  Headset,
-  Wrench
+  CheckCircle2,
+  TrendingUp,
+  FileText,
+  Smile,
+  HelpCircle
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
+import { ubbSupabase } from '../../services/supabase';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
 import ubbIcon from '../../assets/ubb-icon.png';
+
+const INITIAL_WALL_POSTS = [
+  {
+    id: 1,
+    author: 'Sprout_089',
+    text: 'To whoever is studying late tonight: take a deep breath. You are doing so much better than you give yourself credit for.',
+    warmthCount: 24,
+    date: '2 hours ago',
+    tag: '#ExamRelief'
+  },
+  {
+    id: 2,
+    author: 'Sprout_142',
+    text: 'It is okay to pause for an hour without feeling guilty. Rest is part of the work.',
+    warmthCount: 38,
+    date: '5 hours ago',
+    tag: '#SelfCare'
+  },
+  {
+    id: 3,
+    author: 'Sprout_019',
+    text: 'आजचा दिवस थोडा कठीण गेला तरी उद्याची सकाळ नवीन संधी घेऊन येईल. स्वतःवर विश्वास ठेवा! 🌻',
+    warmthCount: 19,
+    date: 'Today',
+    tag: '#Hope'
+  },
+  {
+    id: 4,
+    author: 'Sprout_311',
+    text: 'If you felt lonely in college today, remember there is a whole community here rooting for you silently.',
+    warmthCount: 42,
+    date: 'Today',
+    tag: '#Together'
+  }
+];
 
 export function Screen03StudentDashboard({
   userProfile,
   onNavigate,
-  onOpenSOS,
   selectedLanguage = 'en'
 }) {
   const t = getTranslation(selectedLanguage);
   const anonId = userProfile?.anonymous_tag || userProfile?.anonymousId || 'UBB-7K4P-29';
+
+  const [posts, setPosts] = useState(INITIAL_WALL_POSTS);
+  const [likedPosts, setLikedPosts] = useState({});
+  const [showComposer, setShowComposer] = useState(false);
+  const [newNoteText, setNewNoteText] = useState('');
+  const [postSuccess, setPostSuccess] = useState(false);
+
+  useEffect(() => {
+    const loadCommunityPosts = async () => {
+      try {
+        const letters = await ubbSupabase.getCommunityLetters();
+        if (letters && letters.length > 0) {
+          const mapped = letters.map((l) => ({
+            id: l.id,
+            author: l.author_tag || 'Sprout_Anon',
+            text: l.content,
+            warmthCount: l.warmth_count || 15,
+            date: 'Recently',
+            tag: '#Sanctuary'
+          }));
+          setPosts([...mapped, ...INITIAL_WALL_POSTS]);
+        }
+      } catch {}
+    };
+    loadCommunityPosts();
+  }, []);
+
+  const handleWarmth = (id) => {
+    if (likedPosts[id]) return;
+    setLikedPosts((prev) => ({ ...prev, [id]: true }));
+    setPosts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, warmthCount: p.warmthCount + 1 } : p))
+    );
+    try {
+      ubbSupabase.incrementWarmth(id);
+    } catch {}
+  };
+
+  const handlePostNote = async () => {
+    if (!newNoteText.trim()) return;
+
+    const newPost = {
+      id: Date.now(),
+      author: anonId,
+      text: newNoteText.trim(),
+      warmthCount: 1,
+      date: 'Just now',
+      tag: '#StudentVoice'
+    };
+
+    setPosts([newPost, ...posts]);
+    setNewNoteText('');
+    setPostSuccess(true);
+
+    try {
+      await ubbSupabase.createCommunityLetter({
+        content: newPost.text,
+        author_tag: anonId
+      });
+    } catch {}
+
+    setTimeout(() => {
+      setPostSuccess(false);
+      setShowComposer(false);
+    }, 2000);
+  };
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none relative font-sans">
@@ -37,178 +140,170 @@ export function Screen03StudentDashboard({
           </span>
         </div>
 
-        {/* User Identity Pill with Visual Pulse */}
+        {/* User Identity Pill */}
         <div className="flex items-center gap-1.5 bg-[#edefe0] border border-[#c5c8bc]/60 px-3 py-1 rounded-full shadow-2xs">
           <div className="w-2 h-2 rounded-full bg-[#526140] animate-pulse" />
           <span className="font-mono text-[10.5px] text-[#526140] font-bold">{anonId}</span>
         </div>
       </div>
 
-      {/* Main Visual Scrollable Content */}
-      <div className="flex-1 px-4 py-3.5 overflow-y-auto space-y-3.5 pb-20">
-        {/* ================= 1. SANCTUARY WELCOME & GROUNDING HERO ================= */}
-        <section className="bg-gradient-to-br from-[#f3f5e6] via-[#f9fbeb] to-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-4 shadow-xs relative overflow-hidden space-y-2">
+      {/* Main Content: HERO WALL OF THOUGHTS */}
+      <div className="flex-1 px-4 py-3.5 overflow-y-auto space-y-3.5 pb-24">
+        {/* Wall of Thoughts Banner Header */}
+        <div className="bg-gradient-to-br from-[#f3f5e6] via-[#f9fbeb] to-[#edefe0] border border-[#c5c8bc]/60 rounded-3xl p-4 shadow-xs relative overflow-hidden space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 bg-[#526140]/10 text-[#526140] px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold border border-[#526140]/20">
               <Sparkles className="w-3 h-3 text-[#526140]" />
-              <span>Safe Sanctuary</span>
+              <span>Peer Community Sanctuary</span>
             </div>
-            <span className="font-mono text-[9.5px] text-[#526140] font-bold bg-white/80 px-2 py-0.5 rounded-full border border-[#c5c8bc]/60">
-              Zero Judgment
-            </span>
+            <button
+              onClick={() => setShowComposer(!showComposer)}
+              className="font-mono text-[9.5px] bg-[#526140] hover:bg-[#435034] text-white px-3 py-1 rounded-full font-bold shadow-xs cursor-pointer flex items-center gap-1"
+            >
+              <Plus className="w-3 h-3" />
+              <span>Share Thought</span>
+            </button>
           </div>
 
           <div>
-            <h2 className="font-fraunces text-base font-bold text-[#1a1d14] leading-snug">
-              Welcome back, {anonId}
-            </h2>
+            <h1 className="font-fraunces text-lg font-bold text-[#1a1d14]">
+              Wall of Thoughts (ऊब)
+            </h1>
             <p className="text-xs text-[#5e5c52] mt-0.5 leading-relaxed">
-              "{t.screen3.quote}"
+              Read warm, anonymous encouragement from peers. You are never fighting your battles alone.
             </p>
           </div>
-        </section>
-
-        {/* ================= 2. SANCTUARY TOOLS (SUPPORT 1) ================= */}
-        <div className="space-y-2.5">
-          <div className="flex items-center justify-between px-1">
-            <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-              Sanctuary Tools
-            </span>
-            <span className="font-mono text-[9px] text-[#526140] bg-[#edefe0] px-2 py-0.5 rounded-full font-bold">
-              Support 1
-            </span>
-          </div>
-
-          {/* Tools Card navigating to Support 1 */}
-          <div
-            onClick={() => onNavigate('level1_express')}
-            className="bg-gradient-to-r from-[#526140] to-[#435034] text-white rounded-3xl p-3.5 flex items-center justify-between cursor-pointer shadow-xs hover:scale-101 transition-all active:scale-99"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-white shadow-2xs">
-                <Wrench className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-white">Self-Help Tools</b>
-                  <span className="font-mono text-[8px] bg-[#ffddb3] text-[#435034] px-1.5 py-0.2 rounded-full font-bold">
-                    Instant
-                  </span>
-                </div>
-                <span className="text-[10.5px] text-white/80 block">
-                  Let It Out · Private Journal · MoodTunes
-                </span>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-white/80" />
-          </div>
         </div>
 
-        {/* ================= 3. HUMAN CARE BANNER TILES ================= */}
-        <div className="space-y-2 pt-1">
-          {/* Peer Talk Card */}
-          <div
-            onClick={() => onNavigate('level2_peer')}
-            className="bg-white border-2 border-[#526140] rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-xs hover:bg-[#f3f5e6] active:scale-99"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#526140] text-white flex items-center justify-center shadow-2xs">
-                <Users className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">Talk to a Peer Volunteer</b>
-                  <span className="font-mono text-[8px] bg-[#526140] text-white px-1.5 py-0.2 rounded-full font-bold">
-                    Online
-                  </span>
-                </div>
-                <span className="text-[10.5px] text-[#5e5c52] block">
-                  Trained psychology seniors · 100% Confidential
-                </span>
-              </div>
+        {/* Anonymous Post Composer Modal */}
+        {showComposer && (
+          <div className="bg-white border border-[#526140]/40 rounded-3xl p-4 space-y-2.5 shadow-sm animate-fadeIn">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#526140] font-bold">
+                Write an Anonymous Note for Peers
+              </span>
+              <span className="text-[9px] font-mono text-[#75786e]">100% Anonymous</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#526140]" />
-          </div>
 
-          {/* Counsellor Clinical Booking */}
-          <div
-            onClick={() => onNavigate('level3_care')}
-            className="bg-white border border-[#c5c8bc]/60 rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs hover:bg-red-50/30 active:scale-99"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-red-100 text-red-700 flex items-center justify-center shadow-2xs">
-                <CalendarCheck className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">Book Campus Counsellor</b>
-                  <span className="font-mono text-[8px] bg-red-100 text-red-800 px-1.5 py-0.2 rounded-full font-bold">
-                    Support 3
-                  </span>
-                </div>
-                <span className="text-[10.5px] text-[#5e5c52] block">
-                  Licensed clinical consultations
-                </span>
-              </div>
+            <textarea
+              rows={3}
+              value={newNoteText}
+              onChange={(e) => setNewNoteText(e.target.value)}
+              placeholder="Share a gentle thought, words of encouragement, or how you got through today..."
+              className="w-full bg-[#f3f5e6] border border-[#c5c8bc]/60 rounded-2xl p-3 text-xs text-[#1a1d14] placeholder-[#75786e] focus:outline-none focus:border-[#526140] resize-none"
+            />
+
+            <div className="flex items-center justify-between pt-1">
+              <button
+                onClick={() => setShowComposer(false)}
+                className="text-xs text-[#5e5c52] hover:text-[#1a1d14] font-semibold cursor-pointer px-2"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handlePostNote}
+                disabled={!newNoteText.trim()}
+                className={`px-4 py-2 rounded-full font-bold text-xs flex items-center gap-1.5 shadow-xs transition-all ${
+                  newNoteText.trim()
+                    ? 'bg-[#526140] hover:bg-[#435034] text-white cursor-pointer'
+                    : 'bg-[#c5c8bc]/50 text-[#75786e] cursor-not-allowed'
+                }`}
+              >
+                <Send className="w-3 h-3" />
+                <span>Post Thought</span>
+              </button>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e]" />
+
+            {postSuccess && (
+              <div className="bg-emerald-50 border border-emerald-300 rounded-xl p-2 text-center text-xs font-bold text-emerald-900 animate-fadeIn">
+                ✨ Your thought has been added to the sanctuary wall!
+              </div>
+            )}
           </div>
+        )}
+
+        {/* Peer Thoughts Cards Feed */}
+        <div className="space-y-3">
+          {posts.map((post) => {
+            const hasLiked = likedPosts[post.id];
+            return (
+              <div
+                key={post.id}
+                className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-2.5 shadow-2xs hover:border-[#c5c8bc] transition-all"
+              >
+                <div className="flex items-center justify-between text-[9.5px] font-mono">
+                  <span className="font-bold text-[#526140]">{post.author}</span>
+                  <span className="text-[#75786e]">{post.date}</span>
+                </div>
+
+                <p className="text-xs text-[#1a1d14] leading-relaxed whitespace-pre-wrap">
+                  "{post.text}"
+                </p>
+
+                <div className="flex items-center justify-between pt-1 border-t border-[#f3f5e6]">
+                  <span className="font-mono text-[9px] text-[#815505] bg-[#ffddb3]/30 px-2 py-0.5 rounded-full font-semibold">
+                    {post.tag}
+                  </span>
+
+                  <button
+                    onClick={() => handleWarmth(post.id)}
+                    className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                      hasLiked
+                        ? 'bg-rose-100 text-rose-700 shadow-2xs'
+                        : 'bg-[#f3f5e6] hover:bg-rose-50 text-[#5e5c52] hover:text-rose-600'
+                    }`}
+                  >
+                    <Heart className={`w-3.5 h-3.5 ${hasLiked ? 'fill-rose-600 text-rose-600' : ''}`} />
+                    <span className="font-mono text-[11px]">{post.warmthCount}</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
-
-        {/* ================= 4. EMERGENCY SOS STRIP ================= */}
-        <button
-          onClick={onOpenSOS}
-          className="w-full bg-[#ba1a1a] hover:bg-[#93000a] text-white rounded-3xl p-3 flex items-center gap-3 text-left transition-all cursor-pointer shadow-sm active:scale-98"
-        >
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-            <AlertCircle className="w-4 h-4 text-white" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="font-semibold text-xs leading-tight">{t.common.emergencySOS}</div>
-            <span className="text-[10px] text-white/80 block truncate">24x7 Campus Crisis & Tele-MANAS 14416</span>
-          </div>
-          <span className="text-xs font-bold text-white/90">→</span>
-        </button>
       </div>
 
-      {/* ================= BOTTOM NAVIGATION OPTIONS: HOME, WALL, TALK, SUPPORT ================= */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-[#c5c8bc]/60 flex items-center justify-around px-3 z-10 shadow-lg">
-        {/* 1. Home */}
-        <button
-          onClick={() => onNavigate('dashboard')}
-          className="flex flex-col items-center gap-0.5 text-[#526140] font-bold cursor-pointer py-1"
-        >
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="2.2"/></svg>
-          <span className="text-[10px]">{t.common.home}</span>
-        </button>
+      {/* ================= STRICT SINGLE-LOCATION 4-TAB BOTTOM NAVIGATION ================= */}
+      <nav className="absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-[#c5c8bc]/60 px-3 py-2 z-30 shadow-lg">
+        <div className="grid grid-cols-4 gap-1 max-w-md mx-auto">
+          {/* TAB 1: ARTICLES / EMERGENCY */}
+          <button
+            onClick={() => onNavigate('articles_emergency')}
+            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-red-700 hover:bg-red-50/50 transition-all cursor-pointer"
+          >
+            <BookOpen className="w-4 h-4 text-red-600" />
+            <span className="text-[9px] font-bold font-mono mt-1 text-center">Articles/SOS</span>
+          </button>
 
-        {/* 2. Wall of Thoughts */}
-        <button
-          onClick={() => onNavigate('wall_of_thoughts')}
-          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
-        >
-          <MessageSquare className="w-5 h-5 text-[#815505]" />
-          <span className="text-[10px]">Wall</span>
-        </button>
+          {/* TAB 2: MOOD CHECK-IN & TOOLS */}
+          <button
+            onClick={() => onNavigate('mood_checkin')}
+            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-[#526140] hover:bg-[#f3f5e6] transition-all cursor-pointer"
+          >
+            <Smile className="w-4 h-4 text-[#526140]" />
+            <span className="text-[9px] font-bold font-mono mt-1 text-center">Mood & Tools</span>
+          </button>
 
-        {/* 3. Talk */}
-        <button
-          onClick={() => onNavigate('level2_peer')}
-          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
-        >
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" strokeWidth="2"/></svg>
-          <span className="text-[10px]">{t.common.talk}</span>
-        </button>
+          {/* TAB 3: PROGRESS TRACKER */}
+          <button
+            onClick={() => onNavigate('progress_tracker')}
+            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-[#526140] hover:bg-[#f3f5e6] transition-all cursor-pointer"
+          >
+            <TrendingUp className="w-4 h-4 text-[#526140]" />
+            <span className="text-[9px] font-bold font-mono mt-1 text-center">Progress</span>
+          </button>
 
-        {/* 4. Support */}
-        <button
-          onClick={() => onNavigate('customer_support')}
-          className="flex flex-col items-center gap-0.5 text-[#5e5c52] hover:text-[#526140] cursor-pointer py-1"
-        >
-          <Headset className="w-5 h-5 text-[#526140]" />
-          <span className="text-[10px]">Support</span>
-        </button>
-      </div>
+          {/* TAB 4: QUESTIONS & FLOW */}
+          <button
+            onClick={() => onNavigate('questions_flow')}
+            className="flex flex-col items-center justify-center py-1 rounded-xl text-[#5e5c52] hover:text-[#815505] hover:bg-[#ffddb3]/30 transition-all cursor-pointer"
+          >
+            <HelpCircle className="w-4 h-4 text-[#815505]" />
+            <span className="text-[9px] font-bold font-mono mt-1 text-center">10-Q Flow</span>
+          </button>
+        </div>
+      </nav>
     </div>
   );
 }

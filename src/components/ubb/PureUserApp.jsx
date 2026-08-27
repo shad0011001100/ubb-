@@ -17,6 +17,8 @@ import { CounsellorDashboardView } from './CounsellorDashboardView';
 import { WallOfThoughtsView } from './WallOfThoughtsView';
 import { MyJourneyView } from './MyJourneyView';
 import { CustomerSupportView } from './CustomerSupportView';
+import { ArticlesEmergencyView } from './ArticlesEmergencyView';
+import { ProgressTrackerView } from './ProgressTrackerView';
 import { PhoneCall, ShieldAlert, X, Sparkles } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 
@@ -323,6 +325,33 @@ export function PureUserApp({ onOpenDevPortal }) {
             selectedLanguage={selectedLanguage}
             onNavigate={handleNavigate}
             onResetAllData={handleResetData}
+          />
+        )}
+
+        {currentScreen === 'articles_emergency' && (
+          <ArticlesEmergencyView
+            selectedLanguage={selectedLanguage}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'progress_tracker' && (
+          <ProgressTrackerView
+            userProfile={userProfile}
+            selectedLanguage={selectedLanguage}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'questions_flow' && (
+          <Screen05AdaptiveFollowUp
+            selectedLanguage={selectedLanguage}
+            userProfile={userProfile}
+            onCompleteAssessment={(result) => {
+              setCurrentCheckIn(result);
+              handleNavigate('support_guidance', { assessmentResult: result });
+            }}
+            onNavigate={handleNavigate}
           />
         )}
 

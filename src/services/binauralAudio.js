@@ -97,6 +97,27 @@ class BinauralBeatsEngine {
     this.isPlaying = true;
   }
 
+  /**
+   * Start generating binaural preset frequencies in real-time
+   */
+  playPreset(presetKey, volume = 0.5) {
+    let presetObj = null;
+    if (typeof presetKey === 'string') {
+      presetObj = BRAINWAVE_PRESETS[presetKey] || BRAINWAVE_PRESETS.theta;
+    } else if (presetKey && typeof presetKey === 'object') {
+      presetObj = presetKey;
+    } else {
+      presetObj = BRAINWAVE_PRESETS.theta;
+    }
+
+    this.start({
+      baseFrequency: presetObj.baseFrequency || 200,
+      beatFrequency: presetObj.beatFrequency || 6,
+      volume,
+      preset: presetObj.id || 'theta'
+    });
+  }
+
   setVolume(volume) {
     if (this.masterGain && this.audioCtx) {
       const now = this.audioCtx.currentTime;
@@ -164,5 +185,16 @@ export const BRAINWAVE_PRESETS = {
     distressState: 'Exam Stress / Lack of Focus / ADHD Paralysis',
     effect: 'Promotes calm alertness, learning, and flow-state focus.',
     tag: 'Focus & Study'
+  },
+  gamma: {
+    id: 'gamma',
+    name: 'Beta/Gamma Focus (14–30 Hz)',
+    title: 'Active Study & Problem Solving',
+    baseFrequency: 300,
+    beatFrequency: 18.0,
+    pulseSpeedSec: 1.2,
+    distressState: 'Procrastination / Low Motivation',
+    effect: 'Supports high cognitive alertness and active learning.',
+    tag: 'Active Focus'
   }
 };

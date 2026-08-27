@@ -1,8 +1,25 @@
 import React from 'react';
-import { ArrowLeft, Sparkles, Wind, Users, CalendarCheck, ChevronRight, ShieldCheck, ArrowRight, Music, Flame, BookOpen, Clock, HeartHandshake, CheckCircle } from 'lucide-react';
+import {
+  ArrowLeft,
+  Sparkles,
+  Wind,
+  Users,
+  CalendarCheck,
+  ChevronRight,
+  ShieldCheck,
+  ArrowRight,
+  Music,
+  Flame,
+  BookOpen,
+  HeartHandshake,
+  CheckCircle,
+  Activity,
+  Heart
+} from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 
 export function Screen07SupportGuidance({
+  assessmentResult,
   checkInData,
   onSelectLevel,
   onNavigate,
@@ -10,282 +27,287 @@ export function Screen07SupportGuidance({
 }) {
   const t = getTranslation(selectedLanguage);
 
-  // Compute recommendation based on mood, impact, duration, and root cause
-  const computeRecommendation = () => {
-    const mood = checkInData?.moodId || 'anxious';
-    const cause = checkInData?.clarifiedRootCause || '';
-    const intensity = checkInData?.intensity || 'moderate';
-    const impact = checkInData?.impact || '';
-    const duration = checkInData?.duration || '';
+  const score = assessmentResult?.score || 7.5;
+  const riskTier = assessmentResult?.risk_tier || (score >= 7.5 ? 'LOW' : score >= 4.5 ? 'MODERATE' : 'SEVERE');
+  const responses = assessmentResult?.responses || {};
 
-    // Severe impact, long duration, or safety trigger -> Support 3 (Meet a Counsellor)
-    if (mood === 'very_low' || intensity === 'very_strong' || checkInData?.safetyAnswer === 'yes' || (impact.toLowerCase().includes('a lot') && duration.toLowerCase().includes('longer'))) {
+  // Compute highest stress domain to generate dynamic "You Are Not Alone" cohort copy
+  const getCohortBenchmark = () => {
+    // Q2 = Academics, Q3 = Sleep, Q4 = Anxiety, Q6 = Isolation, Q10 = Self-Criticism
+    const acadScore = responses.q2 || 3;
+    const sleepScore = responses.q3 || 3;
+    const anxietyScore = responses.q4 || 2;
+    const socialScore = responses.q6 || 4;
+
+    if (acadScore <= 2) {
       return {
-        level: 3,
-        tool: 'counsellor',
-        badge: 'Support 3 · Meet a Counsellor',
-        icon: 'counsellor',
-        title: selectedLanguage === 'mr' ? 'सपोर्ट ३ : समुपदेशकांना भेटा' : selectedLanguage === 'hi' ? 'सपोर्ट ३ : काउंसलर से मिलें' : 'Support 3 : Meet a Counsellor',
-        actionLabel: selectedLanguage === 'mr' ? 'समुपदेशकाची भेट बुक करा' : selectedLanguage === 'hi' ? 'काउंसलर से अपॉइंटमेंट लें' : 'Book Confidential Session',
-        highlight: 'Licensed Support · Ongoing Care Follow-Up',
-        bullets: [
-          '★ Licensed Support',
-          '★ College-Level (e.g. Manas Counselling Centre)',
-          '★ Ongoing Care Follow-Up'
-        ],
-        targetTab: null
+        percent: 68,
+        topic: selectedLanguage === 'mr' ? 'अभ्यास व परीक्षेचा ताण' : selectedLanguage === 'hi' ? 'पढ़ाई और परीक्षा का तनाव' : 'academic & workload pressure',
+        stat: selectedLanguage === 'mr' ? '६८% महाविद्यालयीन विद्यार्थ्यांना सध्या परीक्षेचा ताण जाणवत आहे.' : selectedLanguage === 'hi' ? '६८% कॉलेज छात्रों को इस समय परीक्षा का तनाव महसूस हो रहा है।' : '68% of college peers are navigating similar academic pressure this week.'
+      };
+    } else if (sleepScore <= 2) {
+      return {
+        percent: 62,
+        topic: selectedLanguage === 'mr' ? 'अपुरी झोप व थकवा' : selectedLanguage === 'hi' ? 'नींद की कमी और थकान' : 'sleep disruption & fatigue',
+        stat: selectedLanguage === 'mr' ? '६२% विद्यार्थी सध्या अनियमित झोपेच्या समस्येने त्रस्त आहेत.' : selectedLanguage === 'hi' ? '६२% छात्र इस समय नींद की कमी से जूझ रहे हैं।' : '62% of students reported disrupted sleep patterns this week.'
+      };
+    } else if (anxietyScore >= 4) {
+      return {
+        percent: 54,
+        topic: selectedLanguage === 'mr' ? 'अस्वस्थता व चिंता' : selectedLanguage === 'hi' ? 'बेचैनी और चिंता' : 'restlessness & anxiety',
+        stat: selectedLanguage === 'mr' ? '५४% विद्यार्थ्यांना अशाच प्रकारची अस्वस्थता जाणवत आहे.' : selectedLanguage === 'hi' ? '५४% छात्रों ने ऐसी ही घबराहट महसूस की है।' : '54% of students experienced similar restlessness this semester.'
+      };
+    } else if (socialScore <= 2) {
+      return {
+        percent: 46,
+        topic: selectedLanguage === 'mr' ? 'एकटेपणा व दुरावा' : selectedLanguage === 'hi' ? 'अकेलापन और दूरी' : 'isolation & disconnection',
+        stat: selectedLanguage === 'mr' ? '४६% विद्यार्थ्यांना कॉलेजमध्ये एकटेपणा जाणवत आहे.' : selectedLanguage === 'hi' ? '४६% छात्रों को अकेलापन महसूस हो रहा है।' : '46% of students have felt disconnected or isolated lately.'
       };
     }
 
-    // Moderate impact, sad, anxious, family issues, or loneliness -> Support 2 (Talk to a Volunteer)
-    if (impact.toLowerCase().includes('moderate') || impact.toLowerCase().includes('a lot') || mood === 'sad' || mood === 'irritated' || mood === 'anxious' || cause.includes('family') || cause.includes('loneliness')) {
-      return {
-        level: 2,
-        tool: 'peer',
-        badge: 'Support 2 · Talk to a Volunteer',
-        icon: 'peer',
-        title: selectedLanguage === 'mr' ? 'सपोर्ट २ : व्हॉलंटिअरशी बोला' : selectedLanguage === 'hi' ? 'सपोर्ट २ : स्वयंसेवक से बात करें' : 'Support 2 : Talk to a Volunteer',
-        actionLabel: selectedLanguage === 'mr' ? 'स्वयंसेवकाशी मोकळेपणाने बोला' : selectedLanguage === 'hi' ? 'सहपाठी से बात करें' : 'Connect with Peer Volunteer',
-        highlight: 'Psychology Peers · 1-on-1 Private Chat',
-        bullets: [
-          '★ Peers from Psychology Dept',
-          '★ 1-on-1 Private Chat',
-          '★ Escalated Further If Needed'
-        ],
-        targetTab: null
-      };
-    }
-
-    if (mood === 'overwhelmed' || mood === 'irritated') {
-      return {
-        level: 1,
-        tool: 'let_it_out',
-        badge: 'Support 1 · Self Help Tools',
-        icon: 'flame',
-        title: selectedLanguage === 'mr' ? 'सपोर्ट १ : लेट इट आउट (व्हॉइस वेंट)' : selectedLanguage === 'hi' ? 'सपोर्ट १ : लेट इट आउट (वॉइस वेंट)' : 'Support 1 : Let It Out',
-        actionLabel: selectedLanguage === 'mr' ? 'ऑडिओ वेंट सुरू करा' : selectedLanguage === 'hi' ? 'ऑडियो वेंट शुरू करें' : 'Start Private Audio Vent',
-        highlight: 'Record Voice Note · Immediate Delete · 0 Data Transfer',
-        bullets: [
-          '★ Let It Out (Deleted Immediately, 0 Transfer)',
-          '★ Journal (Write Feelings)',
-          '★ MoodTunes (Music Therapy)'
-        ],
-        targetTab: 'let_it_out'
-      };
-    }
-
-    if (mood === 'calm' || mood === 'good') {
-      return {
-        level: 1,
-        tool: 'journal',
-        badge: 'Support 1 · Self Help Tools',
-        icon: 'journal',
-        title: selectedLanguage === 'mr' ? 'सपोर्ट १ : खाजगी डायरी' : selectedLanguage === 'hi' ? 'सपोर्ट १ : निजी डायरी' : 'Support 1 : Private Journal',
-        actionLabel: selectedLanguage === 'mr' ? 'डायरी उघडा' : selectedLanguage === 'hi' ? 'डायरी खोलें' : 'Open Private Journal',
-        highlight: 'Write Out What You Are Feeling',
-        bullets: [
-          '★ Journal (Write Feelings)',
-          '★ MoodTunes (Music Therapy)',
-          '★ Let It Out (Voice Vent)'
-        ],
-        targetTab: 'journal'
-      };
-    }
-
-    // Default -> MoodTunes Binaural Beats
     return {
-      level: 1,
-      tool: 'mood_tunes',
-      badge: 'Support 1 · Self Help Tools',
-      icon: 'music',
-      title: selectedLanguage === 'mr' ? 'सपोर्ट १ : मूडट्यून्स (म्युझिक थेरपी)' : selectedLanguage === 'hi' ? 'सपोर्ट १ : मूडट्यून्स (म्यूजिक थेरेपी)' : 'Support 1 : MoodTunes (Music Therapy)',
-      actionLabel: selectedLanguage === 'mr' ? 'ध्वनी सुरू करा' : selectedLanguage === 'hi' ? 'संगीत शुरू करें' : 'Start Music Therapy',
-      highlight: 'Acoustic Soundscapes & Brainwave Grounding',
-      bullets: [
-        '★ MoodTunes (Music Therapy)',
-        '★ Let It Out (Voice Vent)',
-        '★ Journal (Write Feelings)'
-      ],
-      targetTab: 'mood_tunes'
+      percent: 59,
+      topic: selectedLanguage === 'mr' ? 'दैनंदिन ताण' : selectedLanguage === 'hi' ? 'दैनिक तनाव' : 'general workload stress',
+      stat: selectedLanguage === 'mr' ? '५९% विद्यार्थी स्वतःच्या मानसिक स्वास्थ्यासाठी सजगपणे प्रयत्न करत आहेत.' : selectedLanguage === 'hi' ? '५९% छात्र अपने मानसिक स्वास्थ्य का ध्यान रख रहे हैं।' : '59% of peers are proactively taking steps for mental wellness.'
     };
   };
 
-  const rec = computeRecommendation();
+  const cohort = getCohortBenchmark();
 
-  const handleLaunchRecommended = () => {
-    if (rec.level === 3) {
-      onSelectLevel(3);
-    } else if (rec.level === 2) {
-      onSelectLevel(2);
-    } else {
-      onNavigate('level1_express', { defaultTab: rec.targetTab || 'mood_tunes' });
-    }
-  };
+  // Determine Primary Recommendation
+  const isSupport3 = score < 4.5;
+  const isSupport2 = score >= 4.5 && score < 7.5;
+  const isSupport1 = score >= 7.5;
 
   return (
     <div className="h-full bg-[#f9fbeb] text-[#1a1d14] flex flex-col justify-between overflow-hidden select-none font-sans">
       {/* Top Header */}
-      <div className="px-5 pt-4 pb-2.5 bg-[#f9fbeb] border-b border-[#c5c8bc]/40 flex items-center justify-between">
+      <div className="px-5 pt-3.5 pb-2.5 bg-[#f9fbeb] border-b border-[#c5c8bc]/40 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
-            onClick={() => onNavigate('mood_checkin')}
+            onClick={() => onNavigate('dashboard')}
             className="p-1.5 rounded-full hover:bg-[#edefe0] text-[#5e5c52] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <div className="font-mono text-[9px] uppercase tracking-wider text-[#815505] font-bold">
-              AI Support Match
-            </div>
+            <span className="font-mono text-[9px] uppercase tracking-wider text-[#815505] font-bold block">
+              Psychometric Triage
+            </span>
             <h2 className="font-fraunces text-base font-bold text-[#1a1d14]">
-              {t.screen7.guidanceTitle}
+              {selectedLanguage === 'mr' ? 'तुमचे मूल्यांकन व मार्गदर्शन' : selectedLanguage === 'hi' ? 'आपका मूल्यांकन व मार्गदर्शन' : 'Your Assessment & Guidance'}
             </h2>
           </div>
         </div>
 
-        <div className="flex items-center gap-1 text-[9.5px] font-mono bg-[#edefe0] text-[#526140] px-2.5 py-0.5 rounded-full border border-[#c5c8bc]/60 font-bold">
-          <ShieldCheck className="w-3 h-3 text-[#526140]" />
-          <span>Zero PII</span>
-        </div>
+        <span className="font-mono text-[9px] bg-[#526140]/10 text-[#526140] px-2.5 py-0.5 rounded-full border border-[#526140]/20 font-bold">
+          Zero PII
+        </span>
       </div>
 
-      {/* Main Guidance Cards */}
-      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-6">
-        {/* ================= PROMINENT VISUAL AI RECOMMENDATION HERO CARD ================= */}
-        <section className="bg-gradient-to-br from-[#fdc16d]/30 via-[#f9fbeb] to-[#edefe0] border-2 border-[#815505] rounded-3xl p-4 shadow-sm space-y-2.5 animate-fadeIn relative overflow-hidden">
-          {/* Top Visual Badges */}
+      {/* Main Content Area */}
+      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3.5 pb-6">
+        {/* ================= 1. WELLBEING SCORE HERO CARD ================= */}
+        <div className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-3 shadow-xs animate-fadeIn">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 bg-[#815505] text-[#ffddb3] px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold shadow-2xs">
-              <Sparkles className="w-3 h-3 text-[#ffddb3]" />
-              <span>AI Recommendation</span>
-            </div>
-            <span className="font-mono text-[9px] text-[#526140] font-bold bg-white/90 px-2 py-0.5 rounded-full border border-[#c5c8bc]/60">
-              {rec.badge}
-            </span>
-          </div>
-
-          <div>
-            <h3 className="font-fraunces text-base font-bold text-[#1a1d14]">
-              {rec.title}
-            </h3>
-            <span className="text-xs text-[#815505] font-medium block mt-0.5">
-              {rec.highlight}
-            </span>
-          </div>
-
-          {/* Visual Benefit Checkmark Chips */}
-          <div className="space-y-1 pt-1">
-            {rec.bullets.map((b, idx) => (
-              <div key={idx} className="bg-white/85 border border-[#c5c8bc]/50 rounded-xl px-2.5 py-1.5 shadow-2xs text-left">
-                <span className="text-[10px] font-medium text-[#1a1d14] leading-tight block">
-                  {b}
+            <div className="space-y-0.5">
+              <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold block">
+                Normalized Wellbeing Score
+              </span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-fraunces text-3xl font-extrabold text-[#1a1d14]">
+                  {score}
                 </span>
+                <span className="text-xs text-[#5e5c52] font-bold font-mono">/ 10.0</span>
               </div>
-            ))}
+            </div>
+
+            {/* Visual Status Chip */}
+            <div
+              className={`px-3 py-1 rounded-full font-mono text-[10px] font-bold border ${
+                isSupport1
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                  : isSupport2
+                  ? 'bg-amber-50 text-amber-800 border-amber-300'
+                  : 'bg-red-50 text-red-800 border-red-300'
+              }`}
+            >
+              {isSupport1 ? '🟢 Flourishing / Stable' : isSupport2 ? '🟡 Moderate Strain' : '🔴 High Distress'}
+            </div>
           </div>
 
-          <button
-            onClick={handleLaunchRecommended}
-            className="w-full py-3 rounded-full bg-[#526140] hover:bg-[#435034] text-white font-bold text-xs transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2 mt-1"
-          >
-            <span>{rec.actionLabel}</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </section>
+          {/* Linear Gauge */}
+          <div className="w-full bg-[#edefe0] h-2 rounded-full overflow-hidden">
+            <div
+              style={{ width: `${Math.min(100, Math.max(10, score * 10))}%` }}
+              className={`h-full rounded-full transition-all duration-700 ${
+                isSupport1 ? 'bg-[#526140]' : isSupport2 ? 'bg-[#815505]' : 'bg-[#ba1a1a]'
+              }`}
+            />
+          </div>
+        </div>
 
-        {/* Section Header */}
-        <div className="pt-1 flex items-center justify-between px-1">
-          <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold">
-            All 3 Support Options (Choose Freely)
+        {/* ================= 2. "YOU ARE NOT ALONE" COHORT BENCHMARK ================= */}
+        <div className="bg-[#f3f5e6] border border-[#815505]/40 rounded-3xl p-4 flex items-start gap-3 shadow-2xs animate-fadeIn">
+          <div className="w-9 h-9 rounded-2xl bg-[#815505]/15 text-[#815505] flex items-center justify-center shrink-0 mt-0.5">
+            <Users className="w-5 h-5" />
+          </div>
+          <div className="space-y-1">
+            <div className="flex items-center gap-1.5">
+              <b className="text-xs text-[#1a1d14]">You Are Not Alone</b>
+              <span className="font-mono text-[9px] bg-[#815505]/20 text-[#815505] px-1.5 py-0.2 rounded-md font-bold">
+                {cohort.percent}% Peers
+              </span>
+            </div>
+            <p className="text-[11.5px] text-[#5e5c52] leading-relaxed">
+              {cohort.stat}
+            </p>
+          </div>
+        </div>
+
+        {/* ================= 3. RECOMMENDED SUPPORT HIGHLIGHT ================= */}
+        <div className="space-y-2 pt-1">
+          <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#5e5c52] font-bold block px-1">
+            Recommended Stepped-Care Tier
           </span>
+
+          {/* SUPPORT 1 CARD */}
+          <div
+            className={`p-4 rounded-3xl border transition-all ${
+              isSupport1
+                ? 'bg-emerald-50/70 border-2 border-[#526140] shadow-sm'
+                : 'bg-white border-[#c5c8bc]/60 opacity-80'
+            }`}
+          >
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[#526140] font-bold block">
+                  Support 1
+                </span>
+                <h3 className="font-fraunces text-sm font-bold text-[#1a1d14]">
+                  Self Help Tools
+                </h3>
+              </div>
+              {isSupport1 && (
+                <span className="text-[9px] font-mono bg-[#526140] text-white px-2 py-0.5 rounded-full font-bold">
+                  Recommended
+                </span>
+              )}
+            </div>
+
+            <ul className="space-y-1 text-xs text-[#5e5c52] mb-3">
+              <li>★ <b>Let It Out</b> — record voice note, deleted immediately (0 data transfer).</li>
+              <li>★ <b>Guided Breathing</b> — 4-7-8 relaxing breath & box breathing.</li>
+              <li>★ <b>Private Journal</b> — write out what you are feeling (encrypted).</li>
+              <li>★ <b>MoodTunes</b> — offline neuro-acoustic therapy.</li>
+            </ul>
+
+            <button
+              onClick={() => onSelectLevel ? onSelectLevel(1) : onNavigate('level1_express')}
+              className={`w-full py-2.5 rounded-full font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer ${
+                isSupport1
+                  ? 'bg-[#526140] hover:bg-[#435034] text-white'
+                  : 'bg-[#edefe0] hover:bg-[#e0e2d3] text-[#1a1d14]'
+              }`}
+            >
+              <span>Explore Self Help Tools →</span>
+            </button>
+          </div>
+
+          {/* SUPPORT 2 CARD */}
+          <div
+            className={`p-4 rounded-3xl border transition-all ${
+              isSupport2
+                ? 'bg-amber-50/70 border-2 border-[#815505] shadow-sm'
+                : 'bg-white border-[#c5c8bc]/60 opacity-80'
+            }`}
+          >
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[#815505] font-bold block">
+                  Support 2
+                </span>
+                <h3 className="font-fraunces text-sm font-bold text-[#1a1d14]">
+                  Talk to a Volunteer
+                </h3>
+              </div>
+              {isSupport2 && (
+                <span className="text-[9px] font-mono bg-[#815505] text-white px-2 py-0.5 rounded-full font-bold">
+                  Recommended
+                </span>
+              )}
+            </div>
+
+            <ul className="space-y-1 text-xs text-[#5e5c52] mb-3">
+              <li>★ Peers from psychology department of college.</li>
+              <li>★ One-on-one confidential private chat.</li>
+              <li>★ Escalated further to counselor if needed.</li>
+            </ul>
+
+            <button
+              onClick={() => onSelectLevel ? onSelectLevel(2) : onNavigate('level2_peer')}
+              className={`w-full py-2.5 rounded-full font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer ${
+                isSupport2
+                  ? 'bg-[#815505] hover:bg-[#6a4604] text-white'
+                  : 'bg-[#edefe0] hover:bg-[#e0e2d3] text-[#1a1d14]'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Connect with Peer Volunteer →</span>
+            </button>
+          </div>
+
+          {/* SUPPORT 3 CARD */}
+          <div
+            className={`p-4 rounded-3xl border transition-all ${
+              isSupport3
+                ? 'bg-red-50/70 border-2 border-[#ba1a1a] shadow-sm'
+                : 'bg-white border-[#c5c8bc]/60 opacity-80'
+            }`}
+          >
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-[#ba1a1a] font-bold block">
+                  Support 3
+                </span>
+                <h3 className="font-fraunces text-sm font-bold text-[#1a1d14]">
+                  Meet a Counsellor
+                </h3>
+              </div>
+              {isSupport3 && (
+                <span className="text-[9px] font-mono bg-[#ba1a1a] text-white px-2 py-0.5 rounded-full font-bold">
+                  Recommended
+                </span>
+              )}
+            </div>
+
+            <ul className="space-y-1 text-xs text-[#5e5c52] mb-3">
+              <li>★ Licensed professional mental health support.</li>
+              <li>★ College level (e.g. "Manas Counselling Centre" from Fergusson College).</li>
+              <li>★ Ongoing care follow-up.</li>
+            </ul>
+
+            <button
+              onClick={() => onSelectLevel ? onSelectLevel(3) : onNavigate('level3_care')}
+              className={`w-full py-2.5 rounded-full font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer ${
+                isSupport3
+                  ? 'bg-[#ba1a1a] hover:bg-[#93000a] text-white'
+                  : 'bg-[#edefe0] hover:bg-[#e0e2d3] text-[#1a1d14]'
+              }`}
+            >
+              <CalendarCheck className="w-3.5 h-3.5" />
+              <span>Book Counsellor Session →</span>
+            </button>
+          </div>
         </div>
 
-        {/* 3 Support Cards */}
-        <div className="space-y-2">
-          {/* Support 1 Card */}
-          <div
-            onClick={() => onSelectLevel(1)}
-            className={`rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
-              rec.level === 1
-                ? 'border-2 border-[#526140] bg-[#f3f5e6] shadow-sm'
-                : 'border border-[#c5c8bc]/60 bg-white hover:bg-[#f3f5e6]'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-2xl bg-[#526140]/15 flex items-center justify-center text-[#526140]">
-                <Wind className="w-4.5 h-4.5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">Support 1 : Self Help Tools</b>
-                  <span className="font-mono text-[8px] bg-[#526140]/15 text-[#526140] px-1.5 py-0.2 rounded-full font-bold">
-                    Instant
-                  </span>
-                </div>
-                <span className="text-[10px] text-[#5e5c52] block leading-tight mt-0.5">
-                  ★ Let It Out · ★ Journal · ★ MoodTunes
-                </span>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e] flex-shrink-0" />
-          </div>
-
-          {/* Support 2 Card */}
-          <div
-            onClick={() => onSelectLevel(2)}
-            className={`rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
-              rec.level === 2
-                ? 'border-2 border-[#526140] bg-[#f3f5e6] shadow-sm'
-                : 'border border-[#c5c8bc]/60 bg-white hover:bg-[#f3f5e6]'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-2xl bg-[#526140]/15 flex items-center justify-center text-[#526140]">
-                <Users className="w-4.5 h-4.5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">Support 2 : Talk to a Volunteer</b>
-                  <span className="font-mono text-[8px] bg-[#526140] text-white px-1.5 py-0.2 rounded-full font-bold">
-                    Peers
-                  </span>
-                </div>
-                <span className="text-[10px] text-[#5e5c52] block leading-tight mt-0.5">
-                  ★ Psychology Peers · ★ 1-on-1 Pvt Chat · ★ Escalated If Needed
-                </span>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e] flex-shrink-0" />
-          </div>
-
-          {/* Support 3 Card */}
-          <div
-            onClick={() => onSelectLevel(3)}
-            className={`rounded-3xl p-3.5 flex items-center justify-between transition-all cursor-pointer shadow-2xs group active:scale-99 ${
-              rec.level === 3
-                ? 'border-2 border-red-700 bg-red-50/50 shadow-sm'
-                : 'border border-[#c5c8bc]/60 bg-white hover:bg-red-50/30'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-2xl bg-red-100 flex items-center justify-center text-red-800">
-                <CalendarCheck className="w-4.5 h-4.5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <b className="text-xs text-[#1a1d14]">Support 3 : Meet a Counsellor</b>
-                  <span className="font-mono text-[8px] bg-red-700 text-white px-1.5 py-0.2 rounded-full font-bold">
-                    Clinical
-                  </span>
-                </div>
-                <span className="text-[10px] text-[#5e5c52] block leading-tight mt-0.5">
-                  ★ Licensed Support · ★ College Level (e.g. Manas) · ★ Ongoing Care
-                </span>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#75786e] flex-shrink-0" />
-          </div>
-        </div>
+        {/* Done / Return to Dashboard */}
+        <button
+          onClick={() => onNavigate('dashboard')}
+          className="w-full py-3 rounded-full bg-white border border-[#c5c8bc] hover:bg-[#f3f5e6] text-[#1a1d14] font-bold text-xs cursor-pointer shadow-2xs text-center block mt-2"
+        >
+          Return to Sanctuary Dashboard
+        </button>
       </div>
     </div>
   );
