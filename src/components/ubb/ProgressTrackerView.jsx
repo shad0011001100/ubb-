@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
+import { soundEffects } from '../../services/soundEffects';
 import { BottomNavBar } from './BottomNavBar';
 
 // Mindful Milestone Badges Matrix (Option 2)
@@ -178,11 +179,18 @@ export function ProgressTrackerView({
 
           <div className="grid grid-cols-2 gap-2.5">
             {MILESTONE_BADGES.map((b) => (
-              <div
+              <button
                 key={b.id}
-                className={`p-3 rounded-2xl border transition-all flex flex-col justify-between h-24 ${
+                onClick={() => {
+                  if (b.unlocked) {
+                    soundEffects.playUnlock();
+                  } else {
+                    soundEffects.playTap(350);
+                  }
+                }}
+                className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between h-24 cursor-pointer active:scale-97 ${
                   b.unlocked
-                    ? 'bg-white border-[#c5c8bc]/70 shadow-2xs'
+                    ? 'bg-white border-[#c5c8bc]/70 shadow-2xs hover:border-[#526140]'
                     : 'bg-[#edefe0]/50 border-dashed border-[#c5c8bc]/60 opacity-60'
                 }`}
               >
@@ -198,7 +206,7 @@ export function ProgressTrackerView({
                   <b className="text-[11px] text-[#1a1d14] block leading-tight">{b.title}</b>
                   <span className="text-[9px] text-[#5e5c52] block truncate">{b.desc}</span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </section>

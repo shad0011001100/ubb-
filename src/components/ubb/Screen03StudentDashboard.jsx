@@ -11,11 +11,14 @@ import {
   TrendingUp,
   FileText,
   Smile,
-  HelpCircle
+  HelpCircle,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
 import { safetySentinel } from '../../services/safetySentinel';
+import { soundEffects } from '../../services/soundEffects';
 import { BottomNavBar } from './BottomNavBar';
 import ubbLogoLight from '../../assets/ubb-logo-light.png';
 import ubbIcon from '../../assets/ubb-icon.png';
@@ -69,6 +72,7 @@ export function Screen03StudentDashboard({
   const [newNoteText, setNewNoteText] = useState('');
   const [postSuccess, setPostSuccess] = useState(false);
   const [crisisAlert, setCrisisAlert] = useState(false);
+  const [isMuted, setIsMuted] = useState(soundEffects.isMuted());
 
   useEffect(() => {
     const loadCommunityPosts = async () => {
@@ -92,6 +96,7 @@ export function Screen03StudentDashboard({
 
   const handleWarmth = (id) => {
     if (likedPosts[id]) return;
+    soundEffects.playWarmth();
     setLikedPosts((prev) => ({ ...prev, [id]: true }));
     setPosts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, warmthCount: p.warmthCount + 1 } : p))
@@ -114,6 +119,7 @@ export function Screen03StudentDashboard({
   const handlePostNote = async () => {
     if (!newNoteText.trim() || crisisAlert) return;
 
+    soundEffects.playSuccess();
     const newPost = {
       id: Date.now(),
       author: anonId,
@@ -158,10 +164,27 @@ export function Screen03StudentDashboard({
           </div>
         </div>
 
-        {/* User Identity Pill */}
-        <div className="flex items-center gap-1.5 bg-[#edefe0] border border-[#c5c8bc]/60 px-3 py-1 rounded-full shadow-2xs">
-          <div className="w-2 h-2 rounded-full bg-[#526140] animate-pulse" />
-          <span className="font-mono text-[10.5px] text-[#526140] font-bold">{anonId}</span>
+        {/* User Identity Pill & Sound FX Toggle */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              const muted = soundEffects.toggleMute();
+              setIsMuted(muted);
+            }}
+            className="p-1.5 rounded-full bg-[#edefe0] hover:bg-[#e0e2d3] text-[#5e5c52] cursor-pointer transition-all active:scale-95"
+            title={isMuted ? "Unmute Sounds" : "Mute Sounds"}
+          >
+            {isMuted ? (
+              <VolumeX className="w-3.5 h-3.5 text-gray-400" />
+            ) : (
+              <Volume2 className="w-3.5 h-3.5 text-[#526140]" />
+            )}
+          </button>
+
+          <div className="flex items-center gap-1.5 bg-[#edefe0] border border-[#c5c8bc]/60 px-3 py-1 rounded-full shadow-2xs">
+            <div className="w-2 h-2 rounded-full bg-[#526140] animate-pulse" />
+            <span className="font-mono text-[10.5px] text-[#526140] font-bold">{anonId}</span>
+          </div>
         </div>
       </div>
 

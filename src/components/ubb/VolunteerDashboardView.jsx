@@ -18,6 +18,7 @@ import {
   Edit3
 } from 'lucide-react';
 import { ubbSupabase } from '../../services/supabase';
+import { soundEffects } from '../../services/soundEffects';
 
 const INITIAL_REQUESTS = [
   {
@@ -132,12 +133,14 @@ export function VolunteerDashboardView({
   });
 
   const handleAcceptRequest = (req) => {
+    soundEffects.playPop();
     const updated = requests.map((r) => (r.id === req.id ? { ...r, status: 'active' } : r));
     setRequests(updated);
     setSelectedRequest({ ...req, status: 'active' });
   };
 
   const handleDeclineRequest = (reqId) => {
+    soundEffects.playTap(380);
     const updated = requests.filter((r) => r.id !== reqId);
     setRequests(updated);
     if (selectedRequest?.id === reqId) setSelectedRequest(null);
@@ -145,6 +148,7 @@ export function VolunteerDashboardView({
 
   const handleConfirmEscalation = () => {
     if (!selectedRequest) return;
+    soundEffects.playPop();
     const updated = requests.map((r) =>
       r.id === selectedRequest.id ? { ...r, status: 'escalated' } : r
     );
@@ -161,6 +165,7 @@ export function VolunteerDashboardView({
     e.preventDefault();
     if (!replyText.trim()) return;
 
+    soundEffects.playTap(580);
     const newMsg = {
       id: Date.now(),
       sender: 'volunteer',
@@ -175,6 +180,7 @@ export function VolunteerDashboardView({
     e.preventDefault();
     if (!newWallThought.trim()) return;
 
+    soundEffects.playSuccess();
     const newPost = {
       id: `vp-${Date.now()}`,
       author: `${volunteerName} (Peer Guide)`,

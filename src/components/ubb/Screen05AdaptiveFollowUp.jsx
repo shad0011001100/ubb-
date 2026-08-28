@@ -18,6 +18,7 @@ import {
 import { getTranslation } from '../../services/translations';
 import { ubbSupabase } from '../../services/supabase';
 import { safetySentinel } from '../../services/safetySentinel';
+import { soundEffects } from '../../services/soundEffects';
 import { SproutCompanion } from './SproutCompanion';
 import { BottomNavBar } from './BottomNavBar';
 
@@ -241,6 +242,7 @@ export function Screen05AdaptiveFollowUp({
   }, []);
 
   const handleSelectOption = (questionId, value) => {
+    soundEffects.playTap(440 + value * 55);
     setResponses((prev) => ({ ...prev, [questionId]: value }));
   };
 
@@ -270,6 +272,7 @@ export function Screen05AdaptiveFollowUp({
   };
 
   const handleFinish = async () => {
+    soundEffects.playSuccess();
     const finalScore = calculateScore();
     let riskTier = 'LOW';
     let recommendedSupport = 'support_1';

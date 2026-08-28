@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 import { binauralEngine, BRAINWAVE_PRESETS } from '../../services/binauralAudio';
+import { soundEffects } from '../../services/soundEffects';
 import { BottomNavBar } from './BottomNavBar';
 import { SproutCompanion } from './SproutCompanion';
 
@@ -258,7 +259,7 @@ export function Screen08Level1Express({
       <div className="px-4 pt-2.5">
         <div className="grid grid-cols-4 gap-1 bg-[#edefe0] p-1 rounded-2xl border border-[#c5c8bc]/60">
           <button
-            onClick={() => setActiveSubTab('let_it_out')}
+            onClick={() => { soundEffects.playTap(480); setActiveSubTab('let_it_out'); }}
             className={`py-2 rounded-xl text-[10.5px] font-bold flex items-center justify-center gap-1 transition-all cursor-pointer ${
               activeSubTab === 'let_it_out'
                 ? 'bg-amber-100 text-[#815505] shadow-xs'
@@ -270,7 +271,7 @@ export function Screen08Level1Express({
           </button>
 
           <button
-            onClick={() => setActiveSubTab('breathe')}
+            onClick={() => { soundEffects.playTap(520); setActiveSubTab('breathe'); }}
             className={`py-2 rounded-xl text-[10.5px] font-bold flex items-center justify-center gap-1 transition-all cursor-pointer ${
               activeSubTab === 'breathe'
                 ? 'bg-[#526140] text-white shadow-xs'
@@ -282,7 +283,7 @@ export function Screen08Level1Express({
           </button>
 
           <button
-            onClick={() => setActiveSubTab('mood_tunes')}
+            onClick={() => { soundEffects.playTap(560); setActiveSubTab('mood_tunes'); }}
             className={`py-2 rounded-xl text-[10.5px] font-bold flex items-center justify-center gap-1 transition-all cursor-pointer ${
               activeSubTab === 'mood_tunes'
                 ? 'bg-[#526140] text-white shadow-xs'
@@ -294,7 +295,7 @@ export function Screen08Level1Express({
           </button>
 
           <button
-            onClick={() => setActiveSubTab('journal')}
+            onClick={() => { soundEffects.playTap(600); setActiveSubTab('journal'); }}
             className={`py-2 rounded-xl text-[10.5px] font-bold flex items-center justify-center gap-1 transition-all cursor-pointer ${
               activeSubTab === 'journal'
                 ? 'bg-[#5e5c52] text-white shadow-xs'

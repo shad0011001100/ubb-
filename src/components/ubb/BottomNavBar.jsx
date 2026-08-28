@@ -1,13 +1,19 @@
 import React from 'react';
 import { BookOpen, Smile, TrendingUp, HelpCircle, HeartHandshake } from 'lucide-react';
+import { soundEffects } from '../../services/soundEffects';
 
 export function BottomNavBar({ currentTab = 'home', onNavigate }) {
+  const handleTabClick = (route) => {
+    soundEffects.playTap(route === 'questions_flow' ? 620 : 520);
+    onNavigate(route);
+  };
+
   return (
     <nav className="fixed sm:absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-[#c5c8bc]/60 px-3 py-2 z-40 shadow-lg">
       <div className="grid grid-cols-4 gap-1 max-w-md mx-auto">
         {/* TAB 1: ARTICLES / EMERGENCY */}
         <button
-          onClick={() => onNavigate('articles_emergency')}
+          onClick={() => handleTabClick('articles_emergency')}
           className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer ${
             currentTab === 'articles_emergency'
               ? 'bg-red-50 text-red-700 font-bold'
@@ -20,7 +26,7 @@ export function BottomNavBar({ currentTab = 'home', onNavigate }) {
 
         {/* TAB 2: MOOD & TOOLS (SUPPORT 1) */}
         <button
-          onClick={() => onNavigate('level1_express')}
+          onClick={() => handleTabClick('level1_express')}
           className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer ${
             currentTab === 'level1_express' || currentTab === 'mood_tools'
               ? 'bg-[#f3f5e6] text-[#526140] font-bold'
@@ -33,7 +39,7 @@ export function BottomNavBar({ currentTab = 'home', onNavigate }) {
 
         {/* TAB 3: PROGRESS TRACKER */}
         <button
-          onClick={() => onNavigate('progress_tracker')}
+          onClick={() => handleTabClick('progress_tracker')}
           className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer ${
             currentTab === 'progress_tracker'
               ? 'bg-[#f3f5e6] text-[#526140] font-bold'
@@ -46,7 +52,7 @@ export function BottomNavBar({ currentTab = 'home', onNavigate }) {
 
         {/* TAB 4: 10-Q PSYCHOMETRIC FLOW */}
         <button
-          onClick={() => onNavigate('questions_flow')}
+          onClick={() => handleTabClick('questions_flow')}
           className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer ${
             currentTab === 'questions_flow' || currentTab === 'adaptive_followup'
               ? 'bg-[#ffddb3]/40 text-[#815505] font-bold'
