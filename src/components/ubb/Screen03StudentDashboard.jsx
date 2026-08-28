@@ -111,13 +111,25 @@ export function Screen03StudentDashboard({
     const analysis = safetySentinel.analyzeText(text);
     if (analysis.isCrisis) {
       setCrisisAlert(true);
+      if (analysis.targetTier >= 3) {
+        onNavigate('emergency_crisis_redirect', { crisisAnalysis: analysis });
+        setShowComposer(false);
+      }
     } else {
       setCrisisAlert(false);
     }
   };
 
   const handlePostNote = async () => {
-    if (!newNoteText.trim() || crisisAlert) return;
+    if (!newNoteText.trim()) return;
+
+    const analysis = safetySentinel.analyzeText(newNoteText);
+    if (analysis.isCrisis) {
+      onNavigate('emergency_crisis_redirect', { crisisAnalysis: analysis });
+      setShowComposer(false);
+      setNewNoteText('');
+      return;
+    }
 
     soundEffects.playSuccess();
     const newPost = {

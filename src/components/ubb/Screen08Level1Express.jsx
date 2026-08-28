@@ -25,6 +25,7 @@ import {
 import { getTranslation } from '../../services/translations';
 import { binauralEngine, BRAINWAVE_PRESETS } from '../../services/binauralAudio';
 import { soundEffects } from '../../services/soundEffects';
+import { safetySentinel } from '../../services/safetySentinel';
 import { BottomNavBar } from './BottomNavBar';
 import { SproutCompanion } from './SproutCompanion';
 
@@ -199,6 +200,15 @@ export function Screen08Level1Express({
   const handleSaveJournalEntry = () => {
     if (!newEntryText.trim()) return;
 
+    const analysis = safetySentinel.analyzeText(newEntryText);
+    if (analysis.isCrisis) {
+      if (onNavigate) {
+        onNavigate('emergency_crisis_redirect', { crisisAnalysis: analysis });
+        return;
+      }
+    }
+
+    soundEffects.playSuccess();
     const entry = {
       id: Date.now(),
       text: newEntryText.trim(),

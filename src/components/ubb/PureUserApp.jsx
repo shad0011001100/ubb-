@@ -19,6 +19,7 @@ import { MyJourneyView } from './MyJourneyView';
 import { CustomerSupportView } from './CustomerSupportView';
 import { ArticlesEmergencyView } from './ArticlesEmergencyView';
 import { ProgressTrackerView } from './ProgressTrackerView';
+import { EmergencyCrisisRedirectView } from './EmergencyCrisisRedirectView';
 import { PhoneCall, ShieldAlert, X, Sparkles } from 'lucide-react';
 import { getTranslation } from '../../services/translations';
 
@@ -362,6 +363,15 @@ export function PureUserApp({ onOpenDevPortal }) {
             selectedLanguage={selectedLanguage}
             onBack={() => setCurrentScreen('dashboard')}
             onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentScreen === 'emergency_crisis_redirect' && (
+          <EmergencyCrisisRedirectView
+            crisisAnalysis={screenParams?.crisisAnalysis}
+            onSelectLevel={handleSelectLevel}
+            onNavigate={handleNavigate}
+            selectedLanguage={selectedLanguage}
           />
         )}
 

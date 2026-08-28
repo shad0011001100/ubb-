@@ -251,7 +251,11 @@ export function Screen05AdaptiveFollowUp({
     setCustomNotes(text);
     const analysis = safetySentinel.analyzeText(text);
     if (analysis.isCrisis) {
-      setShowSosModal(true);
+      if (onNavigate) {
+        onNavigate('emergency_crisis_redirect', { crisisAnalysis: analysis });
+      } else {
+        setShowSosModal(true);
+      }
     }
   };
 
@@ -272,6 +276,14 @@ export function Screen05AdaptiveFollowUp({
   };
 
   const handleFinish = async () => {
+    const analysis = safetySentinel.analyzeText(customNotes);
+    if (analysis.isCrisis) {
+      if (onNavigate) {
+        onNavigate('emergency_crisis_redirect', { crisisAnalysis: analysis });
+        return;
+      }
+    }
+
     soundEffects.playSuccess();
     const finalScore = calculateScore();
     let riskTier = 'LOW';
