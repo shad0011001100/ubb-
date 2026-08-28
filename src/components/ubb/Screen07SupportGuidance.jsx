@@ -110,7 +110,7 @@ export function Screen07SupportGuidance({
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3.5 pb-6">
+      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3.5 pb-10">
         {/* ================= 1. WELLBEING SCORE HERO CARD ================= */}
         <div className="bg-white border border-[#c5c8bc]/70 rounded-3xl p-4 space-y-3 shadow-xs animate-fadeIn">
           <div className="flex items-center justify-between">

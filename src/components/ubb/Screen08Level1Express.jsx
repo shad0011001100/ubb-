@@ -309,7 +309,7 @@ export function Screen08Level1Express({
       </div>
 
       {/* ================= MAIN CONTENT ================= */}
-      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-6">
+      <div className="flex-1 px-4 py-3 overflow-y-auto space-y-3 pb-24">
         {/* ================= TAB 1: LET IT OUT (VOICE VENT + LIVE REACTIVE WAVEFORM) ================= */}
         {activeSubTab === 'let_it_out' && (
           <div className="space-y-3.5 animate-fadeIn">
